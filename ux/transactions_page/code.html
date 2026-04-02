@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PayShield AI - Transactions</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#144bb8",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111621",
+                        "border-light": "#e5e7eb",
+                        "border-dark": "#1f2937",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for table if needed */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#111318] dark:text-white font-display antialiased overflow-hidden">
+<div class="flex h-screen w-full overflow-hidden">
+<!-- Sidebar -->
+<aside class="hidden w-64 flex-col border-r border-border-light dark:border-border-dark bg-white dark:bg-[#1a202c] md:flex">
+<div class="flex h-full flex-col justify-between p-4">
+<div class="flex flex-col gap-6">
+<!-- Logo Area -->
+<div class="flex items-center gap-3 px-2">
+<div class="flex items-center justify-center size-10 rounded-xl bg-primary text-white">
+<span class="material-symbols-outlined text-2xl">shield</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-[#111318] dark:text-white text-base font-bold leading-normal">PayShield AI</h1>
+<p class="text-[#636f88] dark:text-gray-400 text-xs font-normal leading-normal">Enterprise Guard</p>
+</div>
+</div>
+<!-- Navigation -->
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#636f88] dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+<p class="text-sm font-medium leading-normal">Overview</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary dark:bg-primary/20" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">list_alt</span>
+<p class="text-sm font-medium leading-normal">Transactions</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#636f88] dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">analytics</span>
+<p class="text-sm font-medium leading-normal">Analysis</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#636f88] dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">gavel</span>
+<p class="text-sm font-medium leading-normal">Risk Rules</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#636f88] dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">description</span>
+<p class="text-sm font-medium leading-normal">Reports</p>
+</a>
+</div>
+</div>
+<!-- Bottom Actions -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#636f88] dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors group">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+<p class="text-sm font-medium leading-normal">Settings</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 border-t border-border-light dark:border-border-dark mt-2 pt-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-9 ring-2 ring-white dark:ring-gray-800" data-alt="User profile picture of risk analyst" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBkRSIarhrpk24C2q34aFe6qa2zLKGPD_1XGc0YLBpve_Et23kNfUzU38eEOogCVi1AjlvNGknacP86brRKH9Pn8517rtvt91jDWiJLwhWFzTA070hyWH9j65IodDHSnudYfPSKjrup6QFJ5aR18cKPVxUFsSexNADnglta5lvpyrwCyK0WrBllMvWI8Me34HGnm49jLZfHfC_SpG6MYaMkGi-AleYstCM6P6slZWK8OfhmnfQtnWBPXQ7Bwh-RfLYeDEtjNiEsqPwR");'></div>
+<div class="flex flex-col">
+<p class="text-sm font-medium text-[#111318] dark:text-white">Alex Morgan</p>
+<p class="text-xs text-[#636f88] dark:text-gray-400">Senior Analyst</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full overflow-hidden relative">
+<!-- Top Header (Breadcrumbs + Actions) -->
+<header class="flex-none h-16 flex items-center justify-between px-6 bg-white dark:bg-[#1a202c] border-b border-border-light dark:border-border-dark z-20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#636f88] md:hidden cursor-pointer">menu</span>
+<nav class="flex items-center text-sm font-medium text-[#636f88] dark:text-gray-400">
+<a class="hover:text-primary transition-colors" href="#">Dashboard</a>
+<span class="material-symbols-outlined text-base mx-1">chevron_right</span>
+<span class="text-[#111318] dark:text-white">Transactions Monitor</span>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center bg-background-light dark:bg-gray-800 rounded-lg px-3 py-2 border border-transparent focus-within:border-primary focus-within:ring-1 focus-within:ring-primary w-64 transition-all">
+<span class="material-symbols-outlined text-[#636f88] text-[20px]">search</span>
+<input class="bg-transparent border-none text-sm ml-2 w-full focus:ring-0 text-[#111318] dark:text-white placeholder-[#636f88] p-0 h-auto leading-none" placeholder="Search ID, Merchant..." type="text"/>
+</div>
+<button class="relative p-2 text-[#636f88] hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full border-2 border-white dark:border-[#1a202c]"></span>
+</button>
+<button class="flex items-center justify-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-white text-sm font-bold rounded-lg transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span class="hidden sm:inline">Invite User</span>
+</button>
+</div>
+</header>
+<!-- Scrollable Content Area -->
+<div class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-6 custom-scrollbar">
+<div class="mx-auto max-w-[1400px] flex flex-col gap-6 pb-10">
+<!-- Page Heading & Actions -->
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+<div class="flex flex-col gap-1">
+<h1 class="text-[#111318] dark:text-white text-3xl font-bold tracking-tight">Transactions</h1>
+<p class="text-[#636f88] dark:text-gray-400 text-sm">Real-time fraud detection and payment analysis stream.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#1a202c] border border-border-light dark:border-border-dark rounded-lg text-sm font-medium text-[#111318] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                                Export CSV
+                            </button>
+</div>
+</div>
+<!-- Stats Row -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Stat Card 1 -->
+<div class="bg-white dark:bg-[#1a202c] rounded-xl p-5 border border-border-light dark:border-border-dark shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<p class="text-[#636f88] dark:text-gray-400 text-sm font-medium">Total Volume (24h)</p>
+<span class="material-symbols-outlined text-gray-400">payments</span>
+</div>
+<div class="flex items-end gap-2">
+<p class="text-2xl font-bold text-[#111318] dark:text-white">$4.2M</p>
+<span class="flex items-center text-xs font-medium text-green-600 bg-green-100 dark:bg-green-900/30 px-1.5 py-0.5 rounded mb-1">
+<span class="material-symbols-outlined text-[12px] mr-0.5">arrow_upward</span>
+                                    12%
+                                </span>
+</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-white dark:bg-[#1a202c] rounded-xl p-5 border border-border-light dark:border-border-dark shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<p class="text-[#636f88] dark:text-gray-400 text-sm font-medium">High Risk Flagged</p>
+<span class="material-symbols-outlined text-gray-400">warning</span>
+</div>
+<div class="flex items-end gap-2">
+<p class="text-2xl font-bold text-[#111318] dark:text-white">142</p>
+<span class="flex items-center text-xs font-medium text-red-600 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded mb-1">
+<span class="material-symbols-outlined text-[12px] mr-0.5">arrow_upward</span>
+                                    5%
+                                </span>
+</div>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-white dark:bg-[#1a202c] rounded-xl p-5 border border-border-light dark:border-border-dark shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<p class="text-[#636f88] dark:text-gray-400 text-sm font-medium">Pending Review</p>
+<span class="material-symbols-outlined text-gray-400">hourglass_top</span>
+</div>
+<div class="flex items-end gap-2">
+<p class="text-2xl font-bold text-[#111318] dark:text-white">28</p>
+<span class="flex items-center text-xs font-medium text-orange-600 bg-orange-100 dark:bg-orange-900/30 px-1.5 py-0.5 rounded mb-1">
+<span class="material-symbols-outlined text-[12px] mr-0.5">arrow_downward</span>
+                                    2%
+                                </span>
+</div>
+</div>
+<!-- Stat Card 4 -->
+<div class="bg-white dark:bg-[#1a202c] rounded-xl p-5 border border-border-light dark:border-border-dark shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<p class="text-[#636f88] dark:text-gray-400 text-sm font-medium">Avg Risk Score</p>
+<span class="material-symbols-outlined text-gray-400">analytics</span>
+</div>
+<div class="flex items-end gap-2">
+<p class="text-2xl font-bold text-[#111318] dark:text-white">14</p>
+<span class="flex items-center text-xs font-medium text-green-600 bg-green-100 dark:bg-green-900/30 px-1.5 py-0.5 rounded mb-1">
+<span class="material-symbols-outlined text-[12px] mr-0.5">arrow_downward</span>
+                                    1 pt
+                                </span>
+</div>
+</div>
+</div>
+<!-- Main Table Section -->
+<div class="bg-white dark:bg-[#1a202c] border border-border-light dark:border-border-dark rounded-xl shadow-sm flex flex-col">
+<!-- Filters Toolbar -->
+<div class="p-4 border-b border-border-light dark:border-border-dark flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center">
+<!-- Left Filters -->
+<div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+<div class="relative min-w-[140px]">
+<select class="w-full appearance-none bg-background-light dark:bg-gray-800 border border-transparent focus:border-primary text-sm text-[#111318] dark:text-white rounded-lg px-3 py-2 pr-8 outline-none focus:ring-1 focus:ring-primary cursor-pointer">
+<option>All Statuses</option>
+<option>Safe</option>
+<option>Review</option>
+<option>Fraud</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2.5 text-[#636f88] pointer-events-none text-[20px]">expand_more</span>
+</div>
+<div class="relative min-w-[140px]">
+<select class="w-full appearance-none bg-background-light dark:bg-gray-800 border border-transparent focus:border-primary text-sm text-[#111318] dark:text-white rounded-lg px-3 py-2 pr-8 outline-none focus:ring-1 focus:ring-primary cursor-pointer">
+<option>Risk Score: All</option>
+<option>High (80-100)</option>
+<option>Medium (40-79)</option>
+<option>Low (0-39)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2.5 text-[#636f88] pointer-events-none text-[20px]">expand_more</span>
+</div>
+<div class="relative min-w-[140px]">
+<select class="w-full appearance-none bg-background-light dark:bg-gray-800 border border-transparent focus:border-primary text-sm text-[#111318] dark:text-white rounded-lg px-3 py-2 pr-8 outline-none focus:ring-1 focus:ring-primary cursor-pointer">
+<option>Last 30 Days</option>
+<option>Last 7 Days</option>
+<option>Last 24 Hours</option>
+<option>Custom Range</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2.5 text-[#636f88] pointer-events-none text-[20px]">calendar_today</span>
+</div>
+</div>
+<!-- Right Actions (Filter toggle, Clear) -->
+<div class="flex items-center gap-3 w-full lg:w-auto">
+<a class="text-sm text-[#636f88] hover:text-primary font-medium whitespace-nowrap" href="#">Clear filters</a>
+<div class="h-4 w-px bg-border-light dark:bg-border-dark"></div>
+<button class="flex items-center gap-2 px-3 py-2 bg-background-light dark:bg-gray-800 text-[#111318] dark:text-white rounded-lg text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+<span>More Filters</span>
+</button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-border-light dark:border-border-dark bg-gray-50/50 dark:bg-gray-800/50">
+<th class="px-6 py-4 text-xs font-semibold text-[#636f88] dark:text-gray-400 uppercase tracking-wider w-[140px]">Transaction ID</th>
+<th class="px-6 py-4 text-xs font-semibold text-[#636f88] dark:text-gray-400 uppercase tracking-wider">Date &amp; Time</th>
+<th class="px-6 py-4 text-xs font-semibold text-[#636f88] dark:text-gray-400 uppercase tracking-wider">Merchant</th>
+<th class="px-6 py-4 text-xs font-semibold text-[#636f88] dark:text-gray-400 uppercase tracking-wider text-right">Amount</th>
+<th class="px-6 py-4 text-xs font-semibold text-[#636f88] dark:text-gray-400 uppercase tracking-wider">Payment Method</th>
+<th class="px-6 py-4 text-xs font-semibold text-[#636f88] dark:text-gray-400 uppercase tracking-wider w-[200px]">Risk Score</th>
+<th class="px-6 py-4 text-xs font-semibold text-[#636f88] dark:text-gray-400 uppercase tracking-wider text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-light dark:divide-border-dark">
+<!-- Row 1: High Risk -->
+<tr class="group hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors cursor-pointer">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="font-mono text-sm font-medium text-primary">TRX-9982-AB</span>
+<span class="material-symbols-outlined text-[14px] text-gray-400 opacity-0 group-hover:opacity-100 cursor-pointer">content_copy</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<p class="text-sm text-[#111318] dark:text-white">Oct 24, 2023</p>
+<p class="text-xs text-[#636f88]">14:32:01 PM</p>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<div class="bg-gray-100 rounded p-1" data-alt="Merchant Logo Placeholder">
+<span class="material-symbols-outlined text-gray-500 text-[16px]">storefront</span>
+</div>
+<span class="text-sm font-medium text-[#111318] dark:text-white">TechGizmo Inc.</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<span class="text-sm font-bold text-[#111318] dark:text-white">$1,250.00</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#144bb8]">credit_card</span>
+<span class="text-sm text-[#111318] dark:text-white">Visa •••• 4242</span>
+<div class="w-px h-3 bg-gray-300 mx-1"></div>
+<span class="text-xs text-[#636f88]" title="United States">🇺🇸 US</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap align-middle">
+<div class="flex flex-col gap-1 w-full max-w-[160px]">
+<div class="flex justify-between items-center text-xs">
+<span class="font-bold text-red-600">88/100</span>
+<span class="text-red-600 font-medium">High</span>
+</div>
+<div class="w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-red-600 rounded-full" style="width: 88%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border border-red-200 dark:border-red-900/50">
+                                                Fraud
+                                            </span>
+</td>
+</tr>
+<!-- Row 2: Medium Risk -->
+<tr class="group hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors cursor-pointer">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="font-mono text-sm font-medium text-primary">TRX-9981-AC</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<p class="text-sm text-[#111318] dark:text-white">Oct 24, 2023</p>
+<p class="text-xs text-[#636f88]">14:28:45 PM</p>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<div class="bg-gray-100 rounded p-1" data-alt="Merchant Logo Placeholder">
+<span class="material-symbols-outlined text-gray-500 text-[16px]">shopping_bag</span>
+</div>
+<span class="text-sm font-medium text-[#111318] dark:text-white">Urban Styles</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<span class="text-sm font-bold text-[#111318] dark:text-white">$342.50</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#111318]">account_balance_wallet</span>
+<span class="text-sm text-[#111318] dark:text-white">PayPal</span>
+<div class="w-px h-3 bg-gray-300 mx-1"></div>
+<span class="text-xs text-[#636f88]" title="Canada">🇨🇦 CA</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap align-middle">
+<div class="flex flex-col gap-1 w-full max-w-[160px]">
+<div class="flex justify-between items-center text-xs">
+<span class="font-bold text-orange-600">45/100</span>
+<span class="text-orange-600 font-medium">Medium</span>
+</div>
+<div class="w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-orange-500 rounded-full" style="width: 45%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300 border border-orange-200 dark:border-orange-900/50">
+                                                Review
+                                            </span>
+</td>
+</tr>
+<!-- Row 3: Low Risk -->
+<tr class="group hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors cursor-pointer">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="font-mono text-sm font-medium text-primary">TRX-9980-XD</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<p class="text-sm text-[#111318] dark:text-white">Oct 24, 2023</p>
+<p class="text-xs text-[#636f88]">14:15:10 PM</p>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<div class="bg-gray-100 rounded p-1" data-alt="Merchant Logo Placeholder">
+<span class="material-symbols-outlined text-gray-500 text-[16px]">local_cafe</span>
+</div>
+<span class="text-sm font-medium text-[#111318] dark:text-white">Coffee House</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<span class="text-sm font-bold text-[#111318] dark:text-white">$12.90</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-orange-600">credit_card</span>
+<span class="text-sm text-[#111318] dark:text-white">Mastercard •••• 1102</span>
+<div class="w-px h-3 bg-gray-300 mx-1"></div>
+<span class="text-xs text-[#636f88]" title="United Kingdom">🇬🇧 UK</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap align-middle">
+<div class="flex flex-col gap-1 w-full max-w-[160px]">
+<div class="flex justify-between items-center text-xs">
+<span class="font-bold text-green-600">8/100</span>
+<span class="text-green-600 font-medium">Low</span>
+</div>
+<div class="w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-green-500 rounded-full" style="width: 8%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border border-green-200 dark:border-green-900/50">
+                                                Safe
+                                            </span>
+</td>
+</tr>
+<!-- Row 4: Low Risk -->
+<tr class="group hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors cursor-pointer">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="font-mono text-sm font-medium text-primary">TRX-9979-ZZ</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<p class="text-sm text-[#111318] dark:text-white">Oct 24, 2023</p>
+<p class="text-xs text-[#636f88]">14:12:33 PM</p>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<div class="bg-gray-100 rounded p-1" data-alt="Merchant Logo Placeholder">
+<span class="material-symbols-outlined text-gray-500 text-[16px]">flight</span>
+</div>
+<span class="text-sm font-medium text-[#111318] dark:text-white">SkyHigh Airlines</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<span class="text-sm font-bold text-[#111318] dark:text-white">$850.00</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#144bb8]">credit_card</span>
+<span class="text-sm text-[#111318] dark:text-white">Visa •••• 9921</span>
+<div class="w-px h-3 bg-gray-300 mx-1"></div>
+<span class="text-xs text-[#636f88]" title="France">🇫🇷 FR</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap align-middle">
+<div class="flex flex-col gap-1 w-full max-w-[160px]">
+<div class="flex justify-between items-center text-xs">
+<span class="font-bold text-green-600">14/100</span>
+<span class="text-green-600 font-medium">Low</span>
+</div>
+<div class="w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-green-500 rounded-full" style="width: 14%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border border-green-200 dark:border-green-900/50">
+                                                Safe
+                                            </span>
+</td>
+</tr>
+<!-- Row 5: Medium Risk -->
+<tr class="group hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors cursor-pointer">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="font-mono text-sm font-medium text-primary">TRX-9978-QA</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<p class="text-sm text-[#111318] dark:text-white">Oct 24, 2023</p>
+<p class="text-xs text-[#636f88]">14:05:12 PM</p>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<div class="bg-gray-100 rounded p-1" data-alt="Merchant Logo Placeholder">
+<span class="material-symbols-outlined text-gray-500 text-[16px]">smartphone</span>
+</div>
+<span class="text-sm font-medium text-[#111318] dark:text-white">Mobile World</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<span class="text-sm font-bold text-[#111318] dark:text-white">$999.00</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#144bb8]">credit_card</span>
+<span class="text-sm text-[#111318] dark:text-white">Amex •••• 3005</span>
+<div class="w-px h-3 bg-gray-300 mx-1"></div>
+<span class="text-xs text-[#636f88]" title="Brazil">🇧🇷 BR</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap align-middle">
+<div class="flex flex-col gap-1 w-full max-w-[160px]">
+<div class="flex justify-between items-center text-xs">
+<span class="font-bold text-orange-600">62/100</span>
+<span class="text-orange-600 font-medium">Medium</span>
+</div>
+<div class="w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-orange-500 rounded-full" style="width: 62%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300 border border-orange-200 dark:border-orange-900/50">
+                                                Review
+                                            </span>
+</td>
+</tr>
+<!-- Row 6: Fraud Risk -->
+<tr class="group hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors cursor-pointer border-none">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="font-mono text-sm font-medium text-primary">TRX-9977-FF</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<p class="text-sm text-[#111318] dark:text-white">Oct 24, 2023</p>
+<p class="text-xs text-[#636f88]">13:58:20 PM</p>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<div class="bg-gray-100 rounded p-1" data-alt="Merchant Logo Placeholder">
+<span class="material-symbols-outlined text-gray-500 text-[16px]">sports_esports</span>
+</div>
+<span class="text-sm font-medium text-[#111318] dark:text-white">GameZone Digital</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<span class="text-sm font-bold text-[#111318] dark:text-white">$5,400.00</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#144bb8]">credit_card</span>
+<span class="text-sm text-[#111318] dark:text-white">Visa •••• 1234</span>
+<div class="w-px h-3 bg-gray-300 mx-1"></div>
+<span class="text-xs text-[#636f88]" title="Russia">🇷🇺 RU</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap align-middle">
+<div class="flex flex-col gap-1 w-full max-w-[160px]">
+<div class="flex justify-between items-center text-xs">
+<span class="font-bold text-red-600">95/100</span>
+<span class="text-red-600 font-medium">Critical</span>
+</div>
+<div class="w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-red-600 rounded-full" style="width: 95%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border border-red-200 dark:border-red-900/50">
+                                                Fraud
+                                            </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="border-t border-border-light dark:border-border-dark px-4 py-3 flex items-center justify-between">
+<div class="flex items-center gap-2 text-sm text-[#636f88] dark:text-gray-400">
+<span>Rows per page:</span>
+<select class="bg-transparent border-none text-sm font-medium text-[#111318] dark:text-white focus:ring-0 p-0 pr-6">
+<option>10</option>
+<option>20</option>
+<option>50</option>
+</select>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-sm text-[#636f88] dark:text-gray-400 mr-2">1-6 of 145</span>
+<button class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 disabled:opacity-50">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</button>
+<button class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-[#111318] dark:text-white">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

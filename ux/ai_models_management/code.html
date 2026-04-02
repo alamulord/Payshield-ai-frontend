@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AI Models Management - PayShield AI</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#13daec',
+              'background-light': '#f6f8f8',
+              'background-dark': '#102022',
+              'surface-dark': '#16282a',
+              'surface-darker': '#0d1a1c',
+              'border-dark': '#2a3e40',
+            },
+            fontFamily: {
+              display: ['Inter', 'sans-serif'],
+            },
+            borderRadius: {
+              DEFAULT: '0.25rem',
+              lg: '0.5rem',
+              xl: '0.75rem',
+              full: '9999px',
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Custom scrollbar for dark theme */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #102022;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #2a3e40;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #3b5254;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .material-symbols-filled {
+        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-hidden"
+  >
+    <div class="flex h-screen w-full overflow-hidden">
+      <!-- Side Navigation -->
+      <aside
+        class="w-64 flex-shrink-0 flex flex-col border-r border-border-dark bg-background-dark hidden md:flex"
+      >
+        <div class="p-6 flex items-center gap-3">
+          <div
+            class="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center"
+          >
+            <span class="material-symbols-outlined text-primary">shield</span>
+          </div>
+          <div>
+            <h1 class="text-white font-bold text-lg leading-none">
+              PayShield AI
+            </h1>
+            <p class="text-slate-400 text-xs">Enterprise Risk</p>
+          </div>
+        </div>
+        <nav class="flex-1 flex flex-col gap-1 px-4 py-4 overflow-y-auto">
+          <a
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors group"
+            href="#"
+          >
+            <span
+              class="material-symbols-outlined group-hover:scale-110 transition-transform"
+              >dashboard</span
+            >
+            <span class="text-sm font-medium">Dashboard</span>
+          </a>
+          <a
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors group"
+            href="#"
+          >
+            <span
+              class="material-symbols-outlined group-hover:scale-110 transition-transform"
+              >payments</span
+            >
+            <span class="text-sm font-medium">Transactions</span>
+          </a>
+          <a
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors group"
+            href="#"
+          >
+            <span
+              class="material-symbols-outlined group-hover:scale-110 transition-transform"
+              >gavel</span
+            >
+            <span class="text-sm font-medium">Rules</span>
+          </a>
+          <a
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary border border-primary/20"
+            href="#"
+          >
+            <span class="material-symbols-filled">neurology</span>
+            <span class="text-sm font-medium">AI Models</span>
+          </a>
+          <a
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors group"
+            href="#"
+          >
+            <span
+              class="material-symbols-outlined group-hover:scale-110 transition-transform"
+              >history</span
+            >
+            <span class="text-sm font-medium">Audit Logs</span>
+          </a>
+        </nav>
+        <div class="p-4 border-t border-border-dark">
+          <a
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors group"
+            href="#"
+          >
+            <span
+              class="material-symbols-outlined group-hover:scale-110 transition-transform"
+              >settings</span
+            >
+            <span class="text-sm font-medium">Settings</span>
+          </a>
+          <div class="flex items-center gap-3 mt-4 px-3">
+            <div
+              class="h-8 w-8 rounded-full bg-cover bg-center ring-2 ring-border-dark"
+              data-alt="User profile avatar placeholder"
+              style="
+                background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA5rla6DLeL-ng277EoHSdWeoiYifbktdTuprF6D-wgxiCOaTaMql-KH1A8asq7iX5RL1jnKYwCVbv9Kbk19EYSUt0lw7C1uruK9bzf34jKRKK7lkJgsjp9lxW_M5yPvjITipPxpnJpzTARSBRGGeOMIw6DFFAknzCWIgXldmsoWQJQqYkoGR8xhf5iLRr3S5jIjO8pvyqMgFBLlbG7RuMvjcMdmv_Tkpj1LcXuz5_eiZ7H8TAPrC9m5BQP0T5ksmWLTq8MMp1jD6SO');
+              "
+            ></div>
+            <div class="flex flex-col">
+              <p class="text-xs font-medium text-white">Alex Morgan</p>
+              <p class="text-[10px] text-slate-400">Risk Analyst</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+      <!-- Main Content -->
+      <main
+        class="flex-1 flex flex-col h-full overflow-hidden bg-background-dark relative"
+      >
+        <!-- decorative glow -->
+        <div
+          class="absolute top-0 left-0 w-full h-96 bg-primary/5 blur-3xl pointer-events-none z-0"
+        ></div>
+        <!-- Header -->
+        <header
+          class="h-auto flex-shrink-0 px-8 py-6 z-10 border-b border-border-dark/50 backdrop-blur-sm"
+        >
+          <div class="flex flex-col gap-4">
+            <!-- Breadcrumbs -->
+            <div class="flex items-center gap-2 text-sm">
+              <a
+                class="text-slate-400 hover:text-white transition-colors"
+                href="#"
+                >Risk Management</a
+              >
+              <span class="text-slate-600">/</span>
+              <span class="text-white font-medium">AI Models</span>
+            </div>
+            <!-- Title & Actions -->
+            <div class="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <h1 class="text-3xl font-bold text-white tracking-tight">
+                  AI Model Governance
+                </h1>
+                <p class="text-slate-400 mt-1">
+                  Manage, evaluate, and deploy fraud detection models.
+                </p>
+              </div>
+              <div class="flex gap-3">
+                <button
+                  class="flex items-center justify-center gap-2 h-10 px-4 rounded-lg border border-border-dark bg-surface-dark text-white text-sm font-medium hover:bg-border-dark transition-colors"
+                >
+                  <span class="material-symbols-outlined text-[18px]"
+                    >compare_arrows</span
+                  >
+                  Compare
+                </button>
+                <button
+                  class="flex items-center justify-center gap-2 h-10 px-4 rounded-lg bg-primary text-background-dark text-sm font-bold shadow-[0_0_15px_rgba(19,218,236,0.3)] hover:shadow-[0_0_20px_rgba(19,218,236,0.5)] transition-all"
+                >
+                  <span class="material-symbols-outlined text-[18px]">add</span>
+                  Train New Model
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+        <!-- Scrollable Content -->
+        <div class="flex-1 overflow-y-auto z-10 p-8 pt-6">
+          <div class="flex flex-col gap-6 max-w-[1600px] mx-auto">
+            <!-- KPI Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div
+                class="flex flex-col gap-1 p-5 rounded-xl border border-border-dark bg-surface-dark/50 backdrop-blur-md"
+              >
+                <div class="flex items-center justify-between">
+                  <p class="text-slate-400 text-sm font-medium">
+                    Active Model Health
+                  </p>
+                  <span class="material-symbols-outlined text-green-500 text-lg"
+                    >ecg_heart</span
+                  >
+                </div>
+                <div class="flex items-end gap-2 mt-1">
+                  <p class="text-white text-2xl font-bold">98.5%</p>
+                  <span
+                    class="text-green-500 text-xs font-medium bg-green-500/10 px-1.5 py-0.5 rounded flex items-center gap-0.5"
+                  >
+                    <span class="material-symbols-outlined text-[12px]"
+                      >trending_up</span
+                    >
+                    0.4%
+                  </span>
+                </div>
+              </div>
+              <div
+                class="flex flex-col gap-1 p-5 rounded-xl border border-border-dark bg-surface-dark/50 backdrop-blur-md"
+              >
+                <div class="flex items-center justify-between">
+                  <p class="text-slate-400 text-sm font-medium">
+                    Daily Predictions
+                  </p>
+                  <span class="material-symbols-outlined text-primary text-lg"
+                    >query_stats</span
+                  >
+                </div>
+                <div class="flex items-end gap-2 mt-1">
+                  <p class="text-white text-2xl font-bold">1.2M</p>
+                  <span
+                    class="text-green-500 text-xs font-medium bg-green-500/10 px-1.5 py-0.5 rounded flex items-center gap-0.5"
+                  >
+                    <span class="material-symbols-outlined text-[12px]"
+                      >trending_up</span
+                    >
+                    12%
+                  </span>
+                </div>
+              </div>
+              <div
+                class="flex flex-col gap-1 p-5 rounded-xl border border-border-dark bg-surface-dark/50 backdrop-blur-md"
+              >
+                <div class="flex items-center justify-between">
+                  <p class="text-slate-400 text-sm font-medium">
+                    Shadow Model Drift
+                  </p>
+                  <span
+                    class="material-symbols-outlined text-orange-400 text-lg"
+                    >warning</span
+                  >
+                </div>
+                <div class="flex items-end gap-2 mt-1">
+                  <p class="text-white text-2xl font-bold">0.05%</p>
+                  <span
+                    class="text-orange-400 text-xs font-medium bg-orange-400/10 px-1.5 py-0.5 rounded flex items-center gap-0.5"
+                  >
+                    Stable
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!-- Main Grid: List vs Detail -->
+            <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+              <!-- Left Panel: Model Registry -->
+              <div class="xl:col-span-8 flex flex-col gap-4">
+                <div class="flex items-center justify-between">
+                  <h3
+                    class="text-white font-semibold text-lg flex items-center gap-2"
+                  >
+                    <span class="material-symbols-outlined text-primary"
+                      >list</span
+                    >
+                    Model Registry
+                  </h3>
+                  <div class="flex gap-2">
+                    <div class="relative">
+                      <span
+                        class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500 text-[18px]"
+                        >search</span
+                      >
+                      <input
+                        class="h-9 pl-9 pr-4 bg-surface-dark border border-border-dark rounded-lg text-sm text-white focus:outline-none focus:border-primary placeholder-slate-500"
+                        placeholder="Search versions..."
+                        type="text"
+                      />
+                    </div>
+                    <button
+                      class="h-9 px-3 rounded-lg border border-border-dark bg-surface-dark text-slate-300 hover:text-white hover:bg-border-dark transition-colors"
+                    >
+                      <span class="material-symbols-outlined text-[18px]"
+                        >filter_list</span
+                      >
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="w-full overflow-hidden rounded-xl border border-border-dark bg-surface-dark/30 shadow-sm"
+                >
+                  <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                      <thead>
+                        <tr
+                          class="bg-surface-darker border-b border-border-dark text-xs uppercase text-slate-400 font-semibold tracking-wider"
+                        >
+                          <th class="px-6 py-4">Model ID</th>
+                          <th class="px-6 py-4">Status</th>
+                          <th class="px-6 py-4">Training Date</th>
+                          <th class="px-6 py-4 text-right">AUC</th>
+                          <th class="px-6 py-4 text-right">Precision</th>
+                          <th class="px-6 py-4 text-right">Recall</th>
+                          <th class="px-6 py-4 w-10"></th>
+                        </tr>
+                      </thead>
+                      <tbody class="divide-y divide-border-dark text-sm">
+                        <!-- Row 1: Active -->
+                        <tr
+                          class="group hover:bg-white/5 transition-colors cursor-pointer border-l-2 border-l-primary bg-white/[0.02]"
+                        >
+                          <td class="px-6 py-4">
+                            <div class="flex flex-col">
+                              <span class="text-white font-medium"
+                                >Fraud-v4.2</span
+                              >
+                              <span class="text-slate-500 text-xs">v4.2.0</span>
+                            </div>
+                          </td>
+                          <td class="px-6 py-4">
+                            <span
+                              class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20"
+                            >
+                              <span
+                                class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"
+                              ></span>
+                              Active
+                            </span>
+                          </td>
+                          <td class="px-6 py-4 text-slate-400">Oct 24, 2023</td>
+                          <td class="px-6 py-4 text-right text-white font-mono">
+                            0.94
+                          </td>
+                          <td
+                            class="px-6 py-4 text-right text-slate-300 font-mono"
+                          >
+                            0.92
+                          </td>
+                          <td
+                            class="px-6 py-4 text-right text-slate-300 font-mono"
+                          >
+                            0.89
+                          </td>
+                          <td class="px-6 py-4 text-right">
+                            <button
+                              class="text-slate-500 hover:text-white p-1 rounded hover:bg-white/10 opacity-0 group-hover:opacity-100 transition-all"
+                            >
+                              <span
+                                class="material-symbols-outlined text-[20px]"
+                                >more_vert</span
+                              >
+                            </button>
+                          </td>
+                        </tr>
+                        <!-- Row 2: Shadow -->
+                        <tr
+                          class="group hover:bg-white/5 transition-colors cursor-pointer border-l-2 border-l-transparent"
+                        >
+                          <td class="px-6 py-4">
+                            <div class="flex flex-col">
+                              <span class="text-white font-medium"
+                                >Fraud-v4.3-RC</span
+                              >
+                              <span class="text-slate-500 text-xs">v4.3.0</span>
+                            </div>
+                          </td>
+                          <td class="px-6 py-4">
+                            <span
+                              class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-500 border border-amber-500/20"
+                            >
+                              <span
+                                class="material-symbols-outlined text-[14px]"
+                                >visibility</span
+                              >
+                              Shadow
+                            </span>
+                          </td>
+                          <td class="px-6 py-4 text-slate-400">Oct 28, 2023</td>
+                          <td class="px-6 py-4 text-right text-white font-mono">
+                            0.96
+                          </td>
+                          <td
+                            class="px-6 py-4 text-right text-slate-300 font-mono"
+                          >
+                            0.94
+                          </td>
+                          <td
+                            class="px-6 py-4 text-right text-slate-300 font-mono"
+                          >
+                            0.91
+                          </td>
+                          <td class="px-6 py-4 text-right">
+                            <button
+                              class="text-slate-500 hover:text-white p-1 rounded hover:bg-white/10 opacity-0 group-hover:opacity-100 transition-all"
+                            >
+                              <span
+                                class="material-symbols-outlined text-[20px]"
+                                >more_vert</span
+                              >
+                            </button>
+                          </td>
+                        </tr>
+                        <!-- Row 3: Retired -->
+                        <tr
+                          class="group hover:bg-white/5 transition-colors cursor-pointer border-l-2 border-l-transparent"
+                        >
+                          <td class="px-6 py-4">
+                            <div class="flex flex-col">
+                              <span class="text-slate-400 font-medium"
+                                >Fraud-v4.1</span
+                              >
+                              <span class="text-slate-600 text-xs">v4.1.0</span>
+                            </div>
+                          </td>
+                          <td class="px-6 py-4">
+                            <span
+                              class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-700/30 text-slate-400 border border-slate-700/50"
+                            >
+                              Retired
+                            </span>
+                          </td>
+                          <td class="px-6 py-4 text-slate-500">Sep 15, 2023</td>
+                          <td
+                            class="px-6 py-4 text-right text-slate-500 font-mono"
+                          >
+                            0.91
+                          </td>
+                          <td
+                            class="px-6 py-4 text-right text-slate-500 font-mono"
+                          >
+                            0.88
+                          </td>
+                          <td
+                            class="px-6 py-4 text-right text-slate-500 font-mono"
+                          >
+                            0.85
+                          </td>
+                          <td class="px-6 py-4 text-right">
+                            <button
+                              class="text-slate-500 hover:text-white p-1 rounded hover:bg-white/10 opacity-0 group-hover:opacity-100 transition-all"
+                            >
+                              <span
+                                class="material-symbols-outlined text-[20px]"
+                                >more_vert</span
+                              >
+                            </button>
+                          </td>
+                        </tr>
+                        <!-- Row 4: Training -->
+                        <tr
+                          class="group hover:bg-white/5 transition-colors cursor-pointer border-l-2 border-l-transparent"
+                        >
+                          <td class="px-6 py-4">
+                            <div class="flex flex-col">
+                              <span class="text-white font-medium"
+                                >Fraud-Exp-A</span
+                              >
+                              <span class="text-slate-500 text-xs">v0.1.0</span>
+                            </div>
+                          </td>
+                          <td class="px-6 py-4">
+                            <span
+                              class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                            >
+                              <span
+                                class="material-symbols-outlined text-[14px] animate-spin"
+                                >sync</span
+                              >
+                              Training
+                            </span>
+                          </td>
+                          <td class="px-6 py-4 text-slate-400">Nov 01, 2023</td>
+                          <td
+                            class="px-6 py-4 text-right text-slate-600 font-mono"
+                          >
+                            -
+                          </td>
+                          <td
+                            class="px-6 py-4 text-right text-slate-600 font-mono"
+                          >
+                            -
+                          </td>
+                          <td
+                            class="px-6 py-4 text-right text-slate-600 font-mono"
+                          >
+                            -
+                          </td>
+                          <td class="px-6 py-4 text-right">
+                            <button
+                              class="text-slate-500 hover:text-white p-1 rounded hover:bg-white/10 opacity-0 group-hover:opacity-100 transition-all"
+                            >
+                              <span
+                                class="material-symbols-outlined text-[20px]"
+                                >more_vert</span
+                              >
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <!-- Right Panel: Selected Model Detail -->
+              <div class="xl:col-span-4 flex flex-col gap-4">
+                <div class="flex items-center justify-between">
+                  <h3
+                    class="text-white font-semibold text-lg flex items-center gap-2"
+                  >
+                    <span class="material-symbols-outlined text-primary"
+                      >analytics</span
+                    >
+                    Model Analysis
+                  </h3>
+                  <span
+                    class="text-xs font-mono text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20"
+                    >Fraud-v4.2</span
+                  >
+                </div>
+                <div
+                  class="flex-1 flex flex-col gap-4 p-5 rounded-xl border border-border-dark bg-surface-dark shadow-xl"
+                >
+                  <!-- Performance Chart Placeholder -->
+                  <div class="flex flex-col gap-2">
+                    <div class="flex justify-between items-center">
+                      <p class="text-sm font-medium text-white">
+                        ROC Curve Comparison
+                      </p>
+                      <div class="flex gap-2 text-[10px]">
+                        <div class="flex items-center gap-1 text-primary">
+                          <div class="w-2 h-2 rounded-full bg-primary"></div>
+                          Current
+                        </div>
+                        <div class="flex items-center gap-1 text-slate-500">
+                          <div class="w-2 h-2 rounded-full bg-slate-500"></div>
+                          Baseline
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="h-40 w-full bg-surface-darker rounded-lg border border-border-dark relative overflow-hidden group cursor-crosshair"
+                    >
+                      <!-- Grid lines -->
+                      <div
+                        class="absolute inset-0 flex flex-col justify-between p-4 opacity-20"
+                      >
+                        <div class="w-full h-px bg-slate-500"></div>
+                        <div class="w-full h-px bg-slate-500"></div>
+                        <div class="w-full h-px bg-slate-500"></div>
+                        <div class="w-full h-px bg-slate-500"></div>
+                      </div>
+                      <!-- Gradient abstract chart -->
+                      <div
+                        class="absolute bottom-0 left-0 right-0 h-full w-full bg-cover bg-no-repeat opacity-80"
+                        data-alt="Abstract line chart showing increasing trend, comparing two datasets"
+                        style="
+                          background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCVGfgZkcOLiViHfj35uYDLTtbTu9EWGflIJh36-nEoO-cRuUotUX65jBF-PhEit2YQVmZGzd83QYsKCbLUGpGYGX4LY4gtsbRkYmY1DN197VMcVCuGJ6kEKLKPM85LilWQo7Yv1dM_UO4JimRQxX0a2YvrrICKMOAlwyWqNZ-LIAHUmjTwpZiS3a5qwjtmWycSPXLpta0s5w5yQ73_MhQphvpvzb7QoPgLp1qAX1agp6tv_t0W3Sp_AJRhbX8Y_ZiwWZhIVCJ9CLzz');
+                        "
+                      ></div>
+                      <!-- Tooltip hint -->
+                      <div
+                        class="absolute top-8 left-1/2 bg-surface-darker border border-border-dark px-2 py-1 rounded text-xs text-white shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+                      >
+                        AUC: 0.94
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Feature Importance -->
+                  <div class="flex flex-col gap-3 mt-2">
+                    <p class="text-sm font-medium text-white">
+                      Top Feature Importance
+                    </p>
+                    <div class="flex flex-col gap-3">
+                      <div class="group">
+                        <div class="flex justify-between text-xs mb-1">
+                          <span
+                            class="text-slate-400 group-hover:text-white transition-colors"
+                            >IP Geolocation Mismatch</span
+                          >
+                          <span class="text-primary font-mono">0.88</span>
+                        </div>
+                        <div
+                          class="h-1.5 w-full bg-surface-darker rounded-full overflow-hidden"
+                        >
+                          <div
+                            class="h-full bg-primary w-[88%] rounded-full shadow-[0_0_10px_rgba(19,218,236,0.5)]"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="group">
+                        <div class="flex justify-between text-xs mb-1">
+                          <span
+                            class="text-slate-400 group-hover:text-white transition-colors"
+                            >Device Trust Score</span
+                          >
+                          <span class="text-primary font-mono">0.72</span>
+                        </div>
+                        <div
+                          class="h-1.5 w-full bg-surface-darker rounded-full overflow-hidden"
+                        >
+                          <div
+                            class="h-full bg-primary/70 w-[72%] rounded-full"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="group">
+                        <div class="flex justify-between text-xs mb-1">
+                          <span
+                            class="text-slate-400 group-hover:text-white transition-colors"
+                            >Transaction Velocity (1h)</span
+                          >
+                          <span class="text-primary font-mono">0.54</span>
+                        </div>
+                        <div
+                          class="h-1.5 w-full bg-surface-darker rounded-full overflow-hidden"
+                        >
+                          <div
+                            class="h-full bg-primary/50 w-[54%] rounded-full"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="h-px bg-border-dark my-1"></div>
+                  <!-- Deployment Zone -->
+                  <div class="flex flex-col gap-3">
+                    <p
+                      class="text-sm font-medium text-white flex items-center gap-2"
+                    >
+                      <span
+                        class="material-symbols-outlined text-orange-400 text-sm"
+                        >rocket_launch</span
+                      >
+                      Deployment Control
+                    </p>
+                    <div
+                      class="bg-surface-darker p-3 rounded-lg border border-border-dark"
+                    >
+                      <div class="flex justify-between items-center mb-2">
+                        <span class="text-xs text-slate-400"
+                          >Canary Traffic</span
+                        >
+                        <span class="text-xs font-bold text-white">100%</span>
+                      </div>
+                      <input
+                        class="w-full h-1 bg-border-dark rounded-lg appearance-none cursor-pointer accent-primary"
+                        max="100"
+                        min="0"
+                        type="range"
+                        value="100"
+                      />
+                      <div
+                        class="flex justify-between mt-1 text-[10px] text-slate-500"
+                      >
+                        <span>0%</span>
+                        <span>50%</span>
+                        <span>100%</span>
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 mt-1">
+                      <button
+                        class="flex items-center justify-center gap-2 h-9 rounded-lg border border-border-dark bg-transparent text-slate-300 text-xs font-medium hover:bg-white/5 hover:text-white hover:border-slate-500 transition-all"
+                      >
+                        <span class="material-symbols-outlined text-sm"
+                          >undo</span
+                        >
+                        Rollback
+                      </button>
+                      <button
+                        class="flex items-center justify-center gap-2 h-9 rounded-lg bg-white text-black text-xs font-bold hover:bg-slate-200 transition-all"
+                      >
+                        <span class="material-symbols-outlined text-sm"
+                          >publish</span
+                        >
+                        Promote
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

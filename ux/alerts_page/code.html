@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>PayShield AI - Fraud Alerts Queue</title>
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Theme Configuration -->
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#f27f0d',
+              'background-light': '#f8f7f5',
+              'background-dark': '#221910',
+              'surface-dark': '#2c241b',
+              'surface-light': '#ffffff',
+            },
+            fontFamily: {
+              display: ['Inter', 'sans-serif'],
+              mono: [
+                'ui-monospace',
+                'SFMono-Regular',
+                'Menlo',
+                'Monaco',
+                'Consolas',
+                'Liberation Mono',
+                'Courier New',
+                'monospace',
+              ],
+            },
+            borderRadius: {
+              DEFAULT: '0.25rem',
+              lg: '0.5rem',
+              xl: '0.75rem',
+              full: '9999px',
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white transition-colors duration-200"
+  >
+    <div class="relative flex min-h-screen w-full flex-row overflow-x-hidden">
+      <!-- SideNavBar -->
+      <aside
+        class="w-64 shrink-0 hidden lg:flex flex-col border-r border-[#e6e8eb] dark:border-[#393028] bg-surface-light dark:bg-surface-dark h-screen sticky top-0"
+      >
+        <div class="flex h-full flex-col justify-between p-4">
+          <div class="flex flex-col gap-8">
+            <div class="flex flex-col px-3">
+              <div class="flex items-center gap-2">
+                <div
+                  class="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/20 text-primary"
+                >
+                  <span class="material-symbols-outlined">shield</span>
+                </div>
+                <h1
+                  class="text-[#111418] dark:text-white text-lg font-bold leading-normal"
+                >
+                  PayShield AI
+                </h1>
+              </div>
+              <p
+                class="text-[#637588] dark:text-[#baab9c] text-xs font-normal leading-normal mt-1 pl-10"
+              >
+                Fraud Ops Center
+              </p>
+            </div>
+            <nav class="flex flex-col gap-2">
+              <a
+                class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#637588] dark:text-[#baab9c] hover:bg-[#f0f2f5] dark:hover:bg-[#393028] transition-colors group"
+                href="#"
+              >
+                <span
+                  class="material-symbols-outlined text-[#637588] dark:text-[#baab9c] group-hover:text-[#111418] dark:group-hover:text-white"
+                  >dashboard</span
+                >
+                <p
+                  class="text-sm font-medium leading-normal group-hover:text-[#111418] dark:group-hover:text-white"
+                >
+                  Dashboard
+                </p>
+              </a>
+              <a
+                class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary transition-colors"
+                href="#"
+              >
+                <span class="material-symbols-outlined fill-1"
+                  >notifications_active</span
+                >
+                <p class="text-sm font-medium leading-normal">Alerts</p>
+              </a>
+              <a
+                class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#637588] dark:text-[#baab9c] hover:bg-[#f0f2f5] dark:hover:bg-[#393028] transition-colors group"
+                href="#"
+              >
+                <span
+                  class="material-symbols-outlined text-[#637588] dark:text-[#baab9c] group-hover:text-[#111418] dark:group-hover:text-white"
+                  >gavel</span
+                >
+                <p
+                  class="text-sm font-medium leading-normal group-hover:text-[#111418] dark:group-hover:text-white"
+                >
+                  Rules
+                </p>
+              </a>
+              <a
+                class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#637588] dark:text-[#baab9c] hover:bg-[#f0f2f5] dark:hover:bg-[#393028] transition-colors group"
+                href="#"
+              >
+                <span
+                  class="material-symbols-outlined text-[#637588] dark:text-[#baab9c] group-hover:text-[#111418] dark:group-hover:text-white"
+                  >settings</span
+                >
+                <p
+                  class="text-sm font-medium leading-normal group-hover:text-[#111418] dark:group-hover:text-white"
+                >
+                  Settings
+                </p>
+              </a>
+            </nav>
+          </div>
+          <div class="px-3">
+            <div
+              class="flex items-center gap-3 rounded-xl bg-[#f0f2f5] dark:bg-[#393028] p-3"
+            >
+              <div
+                class="w-10 h-10 rounded-full bg-gray-300 overflow-hidden"
+                data-alt="Profile picture of the logged in user"
+                style="
+                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuApUFUMyS7JDVoyNzl83PfIiLhfxpRUSJG-KG5m9bOrd8QhA5tZbtHV5-Tnp-JxrqnXvX8BNrQxnev4mwUOp7g1xq9N3clRwYu4tQdFWZVL1z5UXGbR7JpdwkKe-1Z6p8RPoW6zGMxjRcWoAEvrhna_3yZ-MRcaiXM4zrVUVuAAfH3OsfxFHTXHzHBsUQXObPHNZp3Awefc8IdZ2Dpx8W7SolxXvbE9AoM0eslmirkWpy4lm48j0DSceDLojjwiETxMRVBcLlldGqLc');
+                  background-size: cover;
+                  background-position: center;
+                "
+              ></div>
+              <div class="flex flex-col overflow-hidden">
+                <p
+                  class="text-[#111418] dark:text-white text-sm font-medium leading-tight truncate"
+                >
+                  Alex Morgan
+                </p>
+                <p
+                  class="text-[#637588] dark:text-[#baab9c] text-xs font-normal leading-tight truncate"
+                >
+                  Sr. Risk Analyst
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+      <!-- Main Content -->
+      <main
+        class="flex-1 flex flex-col h-screen overflow-y-auto bg-background-light dark:bg-background-dark"
+      >
+        <div
+          class="w-full max-w-[1200px] mx-auto p-6 md:p-8 lg:p-10 flex flex-col gap-8"
+        >
+          <!-- PageHeading -->
+          <header class="flex flex-wrap justify-between items-end gap-4">
+            <div class="flex flex-col gap-2">
+              <h2
+                class="text-[#111418] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]"
+              >
+                Fraud Alerts Queue
+              </h2>
+              <div class="flex items-center gap-2">
+                <span
+                  class="flex h-2 w-2 rounded-full bg-primary animate-pulse"
+                ></span>
+                <p
+                  class="text-[#637588] dark:text-[#baab9c] text-base font-normal leading-normal"
+                >
+                  14 High Priority items require immediate attention.
+                </p>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <button
+                class="flex items-center justify-center gap-2 h-10 px-4 rounded-lg bg-surface-light dark:bg-surface-dark border border-[#dce0e5] dark:border-[#393028] text-[#111418] dark:text-white text-sm font-medium hover:bg-gray-50 dark:hover:bg-[#393028] transition-colors"
+              >
+                <span class="material-symbols-outlined text-[20px]"
+                  >file_download</span
+                >
+                Export CSV
+              </button>
+            </div>
+          </header>
+          <!-- Stats -->
+          <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div
+              class="flex flex-col gap-2 rounded-xl p-6 bg-surface-light dark:bg-surface-dark border border-[#e6e8eb] dark:border-transparent shadow-sm"
+            >
+              <div class="flex items-center justify-between">
+                <p
+                  class="text-[#637588] dark:text-[#baab9c] text-sm font-medium leading-normal"
+                >
+                  Total Value at Risk
+                </p>
+                <span
+                  class="material-symbols-outlined text-[#637588] dark:text-[#baab9c]"
+                  >payments</span
+                >
+              </div>
+              <div class="flex items-baseline gap-2">
+                <p
+                  class="text-[#111418] dark:text-white font-mono text-2xl font-bold leading-tight"
+                >
+                  $452,000
+                </p>
+                <p
+                  class="text-[#0bda16] text-sm font-medium leading-normal flex items-center"
+                >
+                  <span class="material-symbols-outlined text-[16px]"
+                    >arrow_upward</span
+                  >
+                  12%
+                </p>
+              </div>
+            </div>
+            <div
+              class="flex flex-col gap-2 rounded-xl p-6 bg-surface-light dark:bg-surface-dark border border-[#e6e8eb] dark:border-transparent shadow-sm"
+            >
+              <div class="flex items-center justify-between">
+                <p
+                  class="text-[#637588] dark:text-[#baab9c] text-sm font-medium leading-normal"
+                >
+                  Open Alerts
+                </p>
+                <span
+                  class="material-symbols-outlined text-[#637588] dark:text-[#baab9c]"
+                  >notifications</span
+                >
+              </div>
+              <div class="flex items-baseline gap-2">
+                <p
+                  class="text-[#111418] dark:text-white font-mono text-2xl font-bold leading-tight"
+                >
+                  42
+                </p>
+                <p
+                  class="text-[#0bda16] text-sm font-medium leading-normal flex items-center"
+                >
+                  <span class="material-symbols-outlined text-[16px]"
+                    >arrow_upward</span
+                  >
+                  5%
+                </p>
+              </div>
+            </div>
+            <div
+              class="flex flex-col gap-2 rounded-xl p-6 bg-surface-light dark:bg-surface-dark border border-[#e6e8eb] dark:border-transparent shadow-sm"
+            >
+              <div class="flex items-center justify-between">
+                <p
+                  class="text-[#637588] dark:text-[#baab9c] text-sm font-medium leading-normal"
+                >
+                  SLA Breaches
+                </p>
+                <span class="material-symbols-outlined text-[#fa3f38]"
+                  >timer_off</span
+                >
+              </div>
+              <div class="flex items-baseline gap-2">
+                <p
+                  class="text-[#111418] dark:text-white font-mono text-2xl font-bold leading-tight"
+                >
+                  3
+                </p>
+                <p
+                  class="text-[#fa3f38] text-sm font-medium leading-normal flex items-center"
+                >
+                  Critical
+                </p>
+              </div>
+            </div>
+          </section>
+          <!-- Search & Filters -->
+          <section class="flex flex-col gap-4">
+            <div
+              class="flex flex-col lg:flex-row lg:items-center justify-between gap-4"
+            >
+              <!-- SearchBar -->
+              <div class="relative flex flex-1 h-12">
+                <div
+                  class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none"
+                >
+                  <span
+                    class="material-symbols-outlined text-[#637588] dark:text-[#baab9c]"
+                    >search</span
+                  >
+                </div>
+                <input
+                  class="block w-full h-full rounded-xl border border-[#dce0e5] dark:border-transparent bg-surface-light dark:bg-surface-dark py-2 pl-12 pr-4 text-[#111418] dark:text-white placeholder-[#637588] dark:placeholder-[#baab9c] focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm"
+                  placeholder="Search by Transaction ID, User, or Amount..."
+                  type="text"
+                />
+              </div>
+              <!-- Chips / Filters -->
+              <div
+                class="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0 no-scrollbar"
+              >
+                <button
+                  class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-surface-light dark:bg-surface-dark border border-primary/50 dark:border-primary/30 pl-3 pr-3 hover:bg-primary/5 transition-colors"
+                >
+                  <span
+                    class="material-symbols-outlined text-primary text-[20px]"
+                    >warning</span
+                  >
+                  <p
+                    class="text-[#111418] dark:text-white text-sm font-medium leading-normal"
+                  >
+                    Risk: High
+                  </p>
+                  <span
+                    class="material-symbols-outlined text-[#637588] dark:text-[#baab9c] text-[20px]"
+                    >expand_more</span
+                  >
+                </button>
+                <button
+                  class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-surface-light dark:bg-surface-dark border border-[#dce0e5] dark:border-transparent pl-3 pr-3 hover:bg-gray-50 dark:hover:bg-[#393028] transition-colors"
+                >
+                  <span
+                    class="material-symbols-outlined text-[#637588] dark:text-[#baab9c] text-[20px]"
+                    >star</span
+                  >
+                  <p
+                    class="text-[#111418] dark:text-white text-sm font-medium leading-normal"
+                  >
+                    Status: New
+                  </p>
+                  <span
+                    class="material-symbols-outlined text-[#637588] dark:text-[#baab9c] text-[20px]"
+                    >expand_more</span
+                  >
+                </button>
+                <button
+                  class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-surface-light dark:bg-surface-dark border border-[#dce0e5] dark:border-transparent pl-3 pr-3 hover:bg-gray-50 dark:hover:bg-[#393028] transition-colors"
+                >
+                  <span
+                    class="material-symbols-outlined text-[#637588] dark:text-[#baab9c] text-[20px]"
+                    >calendar_today</span
+                  >
+                  <p
+                    class="text-[#111418] dark:text-white text-sm font-medium leading-normal"
+                  >
+                    Date: Today
+                  </p>
+                  <span
+                    class="material-symbols-outlined text-[#637588] dark:text-[#baab9c] text-[20px]"
+                    >expand_more</span
+                  >
+                </button>
+              </div>
+            </div>
+          </section>
+          <!-- Alerts List -->
+          <section class="flex flex-col gap-4">
+            <div class="flex items-center justify-between px-2">
+              <p class="text-[#637588] dark:text-[#baab9c] text-sm font-medium">
+                Sorted by Risk Score (Desc)
+              </p>
+              <div class="flex items-center gap-2">
+                <button
+                  class="text-primary text-sm font-medium hover:underline"
+                >
+                  Select All
+                </button>
+              </div>
+            </div>
+            <!-- Alert Item 1 (High Risk) -->
+            <div
+              class="group relative flex flex-col md:flex-row gap-4 rounded-xl bg-surface-light dark:bg-surface-dark border border-primary/30 p-5 shadow-sm hover:shadow-md transition-all"
+            >
+              <div
+                class="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl bg-primary"
+              ></div>
+              <!-- Left: Score -->
+              <div class="flex shrink-0 items-start md:items-center">
+                <div
+                  class="relative flex h-16 w-16 items-center justify-center rounded-full border-4 border-primary/20 bg-primary/10 text-primary shadow-[0_0_20px_rgba(242,127,13,0.15)]"
+                >
+                  <span class="font-mono text-xl font-bold">98</span>
+                </div>
+              </div>
+              <!-- Middle: Details -->
+              <div class="flex flex-1 flex-col justify-center gap-2">
+                <div class="flex flex-wrap items-baseline gap-2">
+                  <h3 class="text-lg font-bold text-[#111418] dark:text-white">
+                    $4,520.00
+                  </h3>
+                  <span class="text-sm text-[#637588] dark:text-[#baab9c]"
+                    >at Apple Store</span
+                  >
+                  <span
+                    class="rounded bg-[#f0f2f5] dark:bg-[#393028] px-2 py-0.5 text-xs font-medium text-[#111418] dark:text-white"
+                    >eCommerce</span
+                  >
+                </div>
+                <div
+                  class="flex flex-wrap items-center gap-3 text-sm text-[#637588] dark:text-[#baab9c]"
+                >
+                  <div class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]"
+                      >fingerprint</span
+                    >
+                    <span>TXN-88329</span>
+                  </div>
+                  <span
+                    class="h-1 w-1 rounded-full bg-[#637588] dark:bg-[#baab9c]"
+                  ></span>
+                  <div class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]"
+                      >person</span
+                    >
+                    <span>john.doe</span>
+                  </div>
+                  <span
+                    class="h-1 w-1 rounded-full bg-[#637588] dark:bg-[#baab9c]"
+                  ></span>
+                  <div class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]"
+                      >public</span
+                    >
+                    <span>United States</span>
+                  </div>
+                </div>
+                <div class="mt-1 flex gap-2">
+                  <span
+                    class="inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium bg-red-500/10 text-red-600 dark:text-red-400"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >bolt</span
+                    >
+                    Velocity Spike
+                  </span>
+                  <span
+                    class="inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium bg-orange-500/10 text-orange-600 dark:text-orange-400"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >devices</span
+                    >
+                    New Device
+                  </span>
+                </div>
+              </div>
+              <!-- Right: Actions & SLA -->
+              <div
+                class="flex flex-col items-end justify-between gap-4 md:min-w-[200px]"
+              >
+                <div class="flex flex-col items-end">
+                  <div class="flex items-center gap-2">
+                    <span class="h-2 w-2 rounded-full bg-primary"></span>
+                    <p
+                      class="text-sm font-medium text-[#111418] dark:text-white"
+                    >
+                      Status: New
+                    </p>
+                  </div>
+                  <p class="font-mono text-xs font-bold text-red-500 mt-1">
+                    SLA: 12m remaining
+                  </p>
+                </div>
+                <div class="flex w-full justify-end gap-2">
+                  <button
+                    class="h-9 px-4 rounded-lg bg-surface-light dark:bg-[#393028] border border-[#dce0e5] dark:border-transparent text-[#111418] dark:text-white text-sm font-medium hover:bg-gray-100 dark:hover:bg-[#4a4036] transition-colors"
+                  >
+                    Dismiss
+                  </button>
+                  <button
+                    class="h-9 px-4 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
+                  >
+                    Investigate
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Alert Item 2 (High Risk) -->
+            <div
+              class="group relative flex flex-col md:flex-row gap-4 rounded-xl bg-surface-light dark:bg-surface-dark border border-[#e6e8eb] dark:border-transparent p-5 shadow-sm hover:shadow-md transition-all"
+            >
+              <!-- Left: Score -->
+              <div class="flex shrink-0 items-start md:items-center">
+                <div
+                  class="relative flex h-16 w-16 items-center justify-center rounded-full border-4 border-orange-400/20 bg-orange-400/5 text-orange-500 dark:text-orange-400"
+                >
+                  <span class="font-mono text-xl font-bold">84</span>
+                </div>
+              </div>
+              <!-- Middle: Details -->
+              <div class="flex flex-1 flex-col justify-center gap-2">
+                <div class="flex flex-wrap items-baseline gap-2">
+                  <h3 class="text-lg font-bold text-[#111418] dark:text-white">
+                    $12,999.00
+                  </h3>
+                  <span class="text-sm text-[#637588] dark:text-[#baab9c]"
+                    >at Best Buy</span
+                  >
+                  <span
+                    class="rounded bg-[#f0f2f5] dark:bg-[#393028] px-2 py-0.5 text-xs font-medium text-[#111418] dark:text-white"
+                    >Retail</span
+                  >
+                </div>
+                <div
+                  class="flex flex-wrap items-center gap-3 text-sm text-[#637588] dark:text-[#baab9c]"
+                >
+                  <div class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]"
+                      >fingerprint</span
+                    >
+                    <span>TXN-88330</span>
+                  </div>
+                  <span
+                    class="h-1 w-1 rounded-full bg-[#637588] dark:bg-[#baab9c]"
+                  ></span>
+                  <div class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]"
+                      >person</span
+                    >
+                    <span>sarah.connor</span>
+                  </div>
+                  <span
+                    class="h-1 w-1 rounded-full bg-[#637588] dark:bg-[#baab9c]"
+                  ></span>
+                  <div class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]"
+                      >public</span
+                    >
+                    <span>Germany</span>
+                  </div>
+                </div>
+                <div class="mt-1 flex gap-2">
+                  <span
+                    class="inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium bg-orange-500/10 text-orange-600 dark:text-orange-400"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >location_off</span
+                    >
+                    IP Mismatch
+                  </span>
+                </div>
+              </div>
+              <!-- Right: Actions & SLA -->
+              <div
+                class="flex flex-col items-end justify-between gap-4 md:min-w-[200px]"
+              >
+                <div class="flex flex-col items-end">
+                  <div class="flex items-center gap-2">
+                    <span class="h-2 w-2 rounded-full bg-yellow-500"></span>
+                    <p
+                      class="text-sm font-medium text-[#111418] dark:text-white"
+                    >
+                      Status: In Review
+                    </p>
+                  </div>
+                  <p
+                    class="font-mono text-xs font-bold text-[#637588] dark:text-[#baab9c] mt-1"
+                  >
+                    SLA: 45m remaining
+                  </p>
+                </div>
+                <div class="flex w-full justify-end gap-2">
+                  <button
+                    class="h-9 px-4 rounded-lg bg-surface-light dark:bg-[#393028] border border-[#dce0e5] dark:border-transparent text-[#111418] dark:text-white text-sm font-medium hover:bg-gray-100 dark:hover:bg-[#4a4036] transition-colors"
+                  >
+                    Dismiss
+                  </button>
+                  <button
+                    class="h-9 px-4 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
+                  >
+                    Resume
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Alert Item 3 (Medium Risk) -->
+            <div
+              class="group relative flex flex-col md:flex-row gap-4 rounded-xl bg-surface-light dark:bg-surface-dark border border-[#e6e8eb] dark:border-transparent p-5 shadow-sm hover:shadow-md transition-all opacity-80 hover:opacity-100"
+            >
+              <!-- Left: Score -->
+              <div class="flex shrink-0 items-start md:items-center">
+                <div
+                  class="relative flex h-16 w-16 items-center justify-center rounded-full border-4 border-yellow-500/20 bg-yellow-500/5 text-yellow-600 dark:text-yellow-500"
+                >
+                  <span class="font-mono text-xl font-bold">65</span>
+                </div>
+              </div>
+              <!-- Middle: Details -->
+              <div class="flex flex-1 flex-col justify-center gap-2">
+                <div class="flex flex-wrap items-baseline gap-2">
+                  <h3 class="text-lg font-bold text-[#111418] dark:text-white">
+                    $85.00
+                  </h3>
+                  <span class="text-sm text-[#637588] dark:text-[#baab9c]"
+                    >at Uber Eats</span
+                  >
+                  <span
+                    class="rounded bg-[#f0f2f5] dark:bg-[#393028] px-2 py-0.5 text-xs font-medium text-[#111418] dark:text-white"
+                    >Service</span
+                  >
+                </div>
+                <div
+                  class="flex flex-wrap items-center gap-3 text-sm text-[#637588] dark:text-[#baab9c]"
+                >
+                  <div class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]"
+                      >fingerprint</span
+                    >
+                    <span>TXN-88331</span>
+                  </div>
+                  <span
+                    class="h-1 w-1 rounded-full bg-[#637588] dark:bg-[#baab9c]"
+                  ></span>
+                  <div class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]"
+                      >person</span
+                    >
+                    <span>mike.ross</span>
+                  </div>
+                  <span
+                    class="h-1 w-1 rounded-full bg-[#637588] dark:bg-[#baab9c]"
+                  ></span>
+                  <div class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]"
+                      >public</span
+                    >
+                    <span>Canada</span>
+                  </div>
+                </div>
+                <div class="mt-1 flex gap-2">
+                  <span
+                    class="inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium bg-yellow-500/10 text-yellow-600 dark:text-yellow-500"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >history</span
+                    >
+                    Unusual Time
+                  </span>
+                </div>
+              </div>
+              <!-- Right: Actions & SLA -->
+              <div
+                class="flex flex-col items-end justify-between gap-4 md:min-w-[200px]"
+              >
+                <div class="flex flex-col items-end">
+                  <div class="flex items-center gap-2">
+                    <span class="h-2 w-2 rounded-full bg-blue-500"></span>
+                    <p
+                      class="text-sm font-medium text-[#111418] dark:text-white"
+                    >
+                      Status: New
+                    </p>
+                  </div>
+                  <p
+                    class="font-mono text-xs font-bold text-[#637588] dark:text-[#baab9c] mt-1"
+                  >
+                    SLA: 2h remaining
+                  </p>
+                </div>
+                <div class="flex w-full justify-end gap-2">
+                  <button
+                    class="h-9 px-4 rounded-lg bg-surface-light dark:bg-[#393028] border border-[#dce0e5] dark:border-transparent text-[#111418] dark:text-white text-sm font-medium hover:bg-gray-100 dark:hover:bg-[#4a4036] transition-colors"
+                  >
+                    Dismiss
+                  </button>
+                  <button
+                    class="h-9 px-4 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
+                  >
+                    Investigate
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div class="flex justify-center pt-6">
+            <button
+              class="flex items-center gap-2 text-[#637588] dark:text-[#baab9c] hover:text-[#111418] dark:hover:text-white text-sm font-medium transition-colors"
+            >
+              Load more alerts
+              <span class="material-symbols-outlined text-[18px]"
+                >expand_more</span
+              >
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

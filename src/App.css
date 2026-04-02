@@ -1,0 +1,4 @@
+/* Keep this minimal or remove if not needed */
+#root {
+  @apply min-h-screen flex flex-col;
+}

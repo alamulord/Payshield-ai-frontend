@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>PayShield AI - Overview</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#144bb8',
+              'background-light': '#f6f6f8',
+              'background-dark': '#111621',
+              'card-dark': '#1e2430',
+              'border-dark': '#2e3646',
+              'text-secondary': '#9da6b8',
+              'accent-success': '#0bda5e',
+              'accent-danger': '#fa6238',
+              'accent-warning': '#facc15',
+            },
+            fontFamily: {
+              display: ['Inter', 'sans-serif'],
+              mono: [
+                'ui-monospace',
+                'SFMono-Regular',
+                'Menlo',
+                'Monaco',
+                'Consolas',
+                'Liberation Mono',
+                'Courier New',
+                'monospace',
+              ],
+            },
+            borderRadius: {
+              DEFAULT: '0.25rem',
+              lg: '0.5rem',
+              xl: '0.75rem',
+              full: '9999px',
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased selection:bg-primary/30 selection:text-white"
+  >
+    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+      <!-- Header / Navigation -->
+      <header
+        class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-border-dark bg-white/80 dark:bg-[#111318]/90 backdrop-blur-md px-6 py-3"
+      >
+        <div class="flex items-center gap-8">
+          <div class="flex items-center gap-3 text-slate-900 dark:text-white">
+            <div class="size-8 text-primary">
+              <svg
+                fill="currentColor"
+                viewbox="0 0 48 48"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  clip-rule="evenodd"
+                  d="M39.475 21.6262C40.358 21.4363 40.6863 21.5589 40.7581 21.5934C40.7876 21.655 40.8547 21.857 40.8082 22.3336C40.7408 23.0255 40.4502 24.0046 39.8572 25.2301C38.6799 27.6631 36.5085 30.6631 33.5858 33.5858C30.6631 36.5085 27.6632 38.6799 25.2301 39.8572C24.0046 40.4502 23.0255 40.7407 22.3336 40.8082C21.8571 40.8547 21.6551 40.7875 21.5934 40.7581C21.5589 40.6863 21.4363 40.358 21.6262 39.475C21.8562 38.4054 22.4689 36.9657 23.5038 35.2817C24.7575 33.2417 26.5497 30.9744 28.7621 28.762C30.9744 26.5497 33.2417 24.7574 35.2817 23.5037C36.9657 22.4689 38.4054 21.8562 39.475 21.6262ZM4.41189 29.2403L18.7597 43.5881C19.8813 44.7097 21.4027 44.9179 22.7217 44.7893C24.0585 44.659 25.5148 44.1631 26.9723 43.4579C29.9052 42.0387 33.2618 39.5667 36.4142 36.4142C39.5667 33.2618 42.0387 29.9052 43.4579 26.9723C44.1631 25.5148 44.659 24.0585 44.7893 22.7217C44.9179 21.4027 44.7097 19.8813 43.5881 18.7597L29.2403 4.41187C27.8527 3.02428 25.8765 3.02573 24.2861 3.36776C22.6081 3.72863 20.7334 4.58419 18.8396 5.74801C16.4978 7.18716 13.9881 9.18353 11.5858 11.5858C9.18354 13.988 7.18717 16.4978 5.74802 18.8396C4.58421 20.7334 3.72865 22.6081 3.36778 24.2861C3.02574 25.8765 3.02429 27.8527 4.41189 29.2403Z"
+                  fill="currentColor"
+                  fill-rule="evenodd"
+                ></path>
+              </svg>
+            </div>
+            <h2
+              class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]"
+            >
+              PayShield AI
+            </h2>
+          </div>
+          <div class="hidden lg:flex items-center gap-1">
+            <a
+              class="text-primary text-sm font-semibold leading-normal px-3 py-2 bg-primary/10 rounded-lg"
+              href="#"
+              >Overview</a
+            >
+            <a
+              class="text-slate-500 dark:text-text-secondary text-sm font-medium leading-normal px-3 py-2 hover:text-slate-900 dark:hover:text-white transition-colors"
+              href="#"
+              >Transactions</a
+            >
+            <a
+              class="text-slate-500 dark:text-text-secondary text-sm font-medium leading-normal px-3 py-2 hover:text-slate-900 dark:hover:text-white transition-colors"
+              href="#"
+              >Rules Engine</a
+            >
+            <a
+              class="text-slate-500 dark:text-text-secondary text-sm font-medium leading-normal px-3 py-2 hover:text-slate-900 dark:hover:text-white transition-colors"
+              href="#"
+              >Analytics</a
+            >
+            <a
+              class="text-slate-500 dark:text-text-secondary text-sm font-medium leading-normal px-3 py-2 hover:text-slate-900 dark:hover:text-white transition-colors"
+              href="#"
+              >Settings</a
+            >
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+            <div
+              class="flex w-full flex-1 items-stretch rounded-lg h-full border border-slate-200 dark:border-border-dark bg-slate-50 dark:bg-card-dark focus-within:border-primary transition-colors"
+            >
+              <div
+                class="text-slate-400 dark:text-text-secondary flex items-center justify-center pl-3"
+              >
+                <span class="material-symbols-outlined text-[20px]"
+                  >search</span
+                >
+              </div>
+              <input
+                class="flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg bg-transparent focus:outline-0 focus:ring-0 border-none h-full placeholder:text-slate-400 dark:placeholder:text-text-secondary px-3 text-sm font-normal text-slate-900 dark:text-white"
+                placeholder="Search Txn ID..."
+                value=""
+              />
+            </div>
+          </label>
+          <div class="flex gap-2">
+            <button
+              class="flex items-center justify-center overflow-hidden rounded-lg size-10 bg-slate-100 dark:bg-card-dark text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-[#2a3241] transition-colors relative"
+            >
+              <span class="material-symbols-outlined text-[20px]"
+                >notifications</span
+              >
+              <span
+                class="absolute top-2.5 right-2.5 size-2 rounded-full bg-accent-danger border-2 border-slate-100 dark:border-card-dark"
+              ></span>
+            </button>
+            <button
+              class="flex items-center justify-center overflow-hidden rounded-lg size-10 bg-slate-100 dark:bg-card-dark text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-[#2a3241] transition-colors"
+            >
+              <span class="material-symbols-outlined text-[20px]">help</span>
+            </button>
+          </div>
+          <div
+            class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-slate-200 dark:border-border-dark cursor-pointer"
+            data-alt="User profile avatar, professional headshot"
+            style="
+              background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDI0pRlv-3kbpHR9yrc0-0ADCvVJDqToVbcbGF887zq1pKLlWpdjc27m5llyFagvH-EYgejwHVF9vb7QUi0XwWmbclpmHDhUfSVx7sQm0miivhfgeopLkVveCCldWajnZPXsZfHBTJF8ffhZxXjTZqli9hrieHA5AVhtXtWHWLqK2xl6jUReP8G8DyeBlWRl5qapeRysFt2iqczwciEUkGGmtx2slxoEYanG65z1ug4TDzEpefweIuhs9ADb_x5WoFt4ottp3Osecvd');
+            "
+          ></div>
+        </div>
+      </header>
+      <!-- Main Content -->
+      <main class="flex-1 flex justify-center py-6 px-4 md:px-8">
+        <div class="flex flex-col w-full max-w-[1400px] gap-6">
+          <!-- Page Heading -->
+          <div class="flex flex-wrap items-end justify-between gap-4">
+            <div class="flex flex-col gap-1">
+              <h1
+                class="text-slate-900 dark:text-white text-3xl font-bold leading-tight tracking-[-0.02em]"
+              >
+                Overview
+              </h1>
+              <p
+                class="text-slate-500 dark:text-text-secondary text-base font-normal"
+              >
+                Good morning, Admin. Here is today's risk posture.
+              </p>
+            </div>
+            <div class="flex gap-3">
+              <button
+                class="flex items-center justify-center rounded-lg h-10 px-4 border border-slate-200 dark:border-border-dark bg-white dark:bg-card-dark text-slate-700 dark:text-white text-sm font-semibold hover:bg-slate-50 dark:hover:bg-[#2a3241] transition-colors gap-2"
+              >
+                <span class="material-symbols-outlined text-[18px]"
+                  >download</span
+                >
+                <span>Export Report</span>
+              </button>
+              <button
+                class="flex items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:bg-blue-700 transition-colors gap-2"
+              >
+                <span class="material-symbols-outlined text-[18px]"
+                  >add_circle</span
+                >
+                <span>New Rule</span>
+              </button>
+            </div>
+          </div>
+          <!-- KPI Stats -->
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+            <!-- Stat Card 1 -->
+            <div
+              class="flex flex-col gap-3 rounded-xl p-5 border border-slate-200 dark:border-border-dark bg-white dark:bg-card-dark shadow-sm"
+            >
+              <div class="flex items-center justify-between">
+                <p
+                  class="text-slate-500 dark:text-text-secondary text-sm font-medium"
+                >
+                  Total Volume (24h)
+                </p>
+                <span
+                  class="material-symbols-outlined text-slate-400 dark:text-slate-600 text-[20px]"
+                  >payments</span
+                >
+              </div>
+              <div class="flex items-baseline gap-2">
+                <p
+                  class="text-slate-900 dark:text-white text-2xl font-bold tracking-tight font-mono"
+                >
+                  $4.2M
+                </p>
+                <span
+                  class="flex items-center text-accent-success text-xs font-bold bg-accent-success/10 px-1.5 py-0.5 rounded"
+                >
+                  <span class="material-symbols-outlined text-[14px] mr-0.5"
+                    >trending_up</span
+                  >
+                  2.5%
+                </span>
+              </div>
+              <div
+                class="w-full bg-slate-100 dark:bg-slate-700 h-1 rounded-full overflow-hidden"
+              >
+                <div
+                  class="bg-primary h-full rounded-full"
+                  style="width: 75%"
+                ></div>
+              </div>
+            </div>
+            <!-- Stat Card 2 -->
+            <div
+              class="flex flex-col gap-3 rounded-xl p-5 border border-slate-200 dark:border-border-dark bg-white dark:bg-card-dark shadow-sm"
+            >
+              <div class="flex items-center justify-between">
+                <p
+                  class="text-slate-500 dark:text-text-secondary text-sm font-medium"
+                >
+                  Fraud Rate
+                </p>
+                <span
+                  class="material-symbols-outlined text-slate-400 dark:text-slate-600 text-[20px]"
+                  >security</span
+                >
+              </div>
+              <div class="flex items-baseline gap-2">
+                <p
+                  class="text-slate-900 dark:text-white text-2xl font-bold tracking-tight font-mono"
+                >
+                  0.42%
+                </p>
+                <span
+                  class="flex items-center text-accent-success text-xs font-bold bg-accent-success/10 px-1.5 py-0.5 rounded"
+                >
+                  <span class="material-symbols-outlined text-[14px] mr-0.5"
+                    >trending_down</span
+                  >
+                  0.1%
+                </span>
+              </div>
+              <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">
+                Target: &lt; 0.5%
+              </p>
+            </div>
+            <!-- Stat Card 3 -->
+            <div
+              class="flex flex-col gap-3 rounded-xl p-5 border border-slate-200 dark:border-border-dark bg-white dark:bg-card-dark shadow-sm"
+            >
+              <div class="flex items-center justify-between">
+                <p
+                  class="text-slate-500 dark:text-text-secondary text-sm font-medium"
+                >
+                  Prevented Loss
+                </p>
+                <span
+                  class="material-symbols-outlined text-slate-400 dark:text-slate-600 text-[20px]"
+                  >shield</span
+                >
+              </div>
+              <div class="flex items-baseline gap-2">
+                <p
+                  class="text-slate-900 dark:text-white text-2xl font-bold tracking-tight font-mono"
+                >
+                  $120k
+                </p>
+                <span
+                  class="flex items-center text-accent-success text-xs font-bold bg-accent-success/10 px-1.5 py-0.5 rounded"
+                >
+                  <span class="material-symbols-outlined text-[14px] mr-0.5"
+                    >trending_up</span
+                  >
+                  4.2%
+                </span>
+              </div>
+              <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">
+                245 transactions blocked
+              </p>
+            </div>
+            <!-- Stat Card 4 -->
+            <div
+              class="flex flex-col gap-3 rounded-xl p-5 border border-slate-200 dark:border-border-dark bg-white dark:bg-card-dark shadow-sm relative overflow-hidden group"
+            >
+              <div
+                class="absolute right-0 top-0 h-full w-1 bg-accent-danger"
+              ></div>
+              <div class="flex items-center justify-between">
+                <p
+                  class="text-slate-500 dark:text-text-secondary text-sm font-medium"
+                >
+                  Active Alerts
+                </p>
+                <span
+                  class="material-symbols-outlined text-accent-danger text-[20px] animate-pulse"
+                  >notification_important</span
+                >
+              </div>
+              <div class="flex items-baseline gap-2">
+                <p
+                  class="text-slate-900 dark:text-white text-2xl font-bold tracking-tight font-mono"
+                >
+                  12
+                </p>
+                <span
+                  class="flex items-center text-accent-danger text-xs font-bold bg-accent-danger/10 px-1.5 py-0.5 rounded"
+                >
+                  +3 New
+                </span>
+              </div>
+              <button
+                class="mt-1 text-xs font-semibold text-primary hover:text-blue-400 transition-colors flex items-center gap-1 w-fit"
+              >
+                Review Alerts
+                <span class="material-symbols-outlined text-[12px]"
+                  >arrow_forward</span
+                >
+              </button>
+            </div>
+          </div>
+          <!-- Charts & Activity Grid -->
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            <!-- Main Chart -->
+            <div
+              class="xl:col-span-2 flex flex-col rounded-xl border border-slate-200 dark:border-border-dark bg-white dark:bg-card-dark shadow-sm p-6"
+            >
+              <div class="flex items-start justify-between mb-6">
+                <div>
+                  <h3 class="text-slate-900 dark:text-white text-lg font-bold">
+                    Transaction Velocity vs. Anomalies
+                  </h3>
+                  <p class="text-slate-500 dark:text-text-secondary text-sm">
+                    Real-time monitoring of traffic spikes and detected threats.
+                  </p>
+                </div>
+                <div class="flex bg-slate-100 dark:bg-[#111318] rounded-lg p-1">
+                  <button
+                    class="px-3 py-1 rounded text-xs font-semibold bg-white dark:bg-card-dark text-slate-900 dark:text-white shadow-sm"
+                  >
+                    1H
+                  </button>
+                  <button
+                    class="px-3 py-1 rounded text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                  >
+                    24H
+                  </button>
+                  <button
+                    class="px-3 py-1 rounded text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                  >
+                    7D
+                  </button>
+                </div>
+              </div>
+              <div class="relative h-[240px] w-full mt-4">
+                <!-- Simulated Chart SVG -->
+                <svg
+                  class="w-full h-full overflow-visible"
+                  preserveaspectratio="none"
+                  viewbox="0 0 100 50"
+                >
+                  <!-- Grid Lines -->
+                  <line
+                    class="text-slate-200 dark:text-slate-700"
+                    stroke="currentColor"
+                    stroke-width="0.1"
+                    x1="0"
+                    x2="100"
+                    y1="0"
+                    y2="0"
+                  ></line>
+                  <line
+                    class="text-slate-200 dark:text-slate-700"
+                    stroke="currentColor"
+                    stroke-dasharray="1,1"
+                    stroke-width="0.1"
+                    x1="0"
+                    x2="100"
+                    y1="12.5"
+                    y2="12.5"
+                  ></line>
+                  <line
+                    class="text-slate-200 dark:text-slate-700"
+                    stroke="currentColor"
+                    stroke-dasharray="1,1"
+                    stroke-width="0.1"
+                    x1="0"
+                    x2="100"
+                    y1="25"
+                    y2="25"
+                  ></line>
+                  <line
+                    class="text-slate-200 dark:text-slate-700"
+                    stroke="currentColor"
+                    stroke-dasharray="1,1"
+                    stroke-width="0.1"
+                    x1="0"
+                    x2="100"
+                    y1="37.5"
+                    y2="37.5"
+                  ></line>
+                  <line
+                    class="text-slate-200 dark:text-slate-700"
+                    stroke="currentColor"
+                    stroke-width="0.1"
+                    x1="0"
+                    x2="100"
+                    y1="50"
+                    y2="50"
+                  ></line>
+                  <!-- Data Line (Blue - Volume) -->
+                  <path
+                    d="M0 40 Q 10 35, 20 38 T 40 25 T 60 30 T 80 15 T 100 20"
+                    fill="none"
+                    stroke="#144bb8"
+                    stroke-width="0.8"
+                  ></path>
+                  <!-- Fill under blue line -->
+                  <path
+                    d="M0 40 Q 10 35, 20 38 T 40 25 T 60 30 T 80 15 T 100 20 V 50 H 0 Z"
+                    fill="url(#blueGradient)"
+                    opacity="0.2"
+                  ></path>
+                  <!-- Data Line (Red - Fraud) -->
+                  <path
+                    d="M0 48 Q 10 47, 20 48 T 40 45 T 60 46 T 80 42 T 100 44"
+                    fill="none"
+                    stroke="#fa6238"
+                    stroke-dasharray="1,0.5"
+                    stroke-width="0.8"
+                  ></path>
+                  <defs>
+                    <lineargradient
+                      id="blueGradient"
+                      x1="0"
+                      x2="0"
+                      y1="0"
+                      y2="1"
+                    >
+                      <stop offset="0%" stop-color="#144bb8"></stop>
+                      <stop
+                        offset="100%"
+                        stop-color="#144bb8"
+                        stop-opacity="0"
+                      ></stop>
+                    </lineargradient>
+                  </defs>
+                </svg>
+                <!-- X Axis Labels -->
+                <div
+                  class="flex justify-between text-[10px] text-slate-400 dark:text-slate-500 font-mono mt-2"
+                >
+                  <span>00:00</span>
+                  <span>04:00</span>
+                  <span>08:00</span>
+                  <span>12:00</span>
+                  <span>16:00</span>
+                  <span>20:00</span>
+                  <span>23:59</span>
+                </div>
+              </div>
+              <div
+                class="flex items-center gap-6 mt-6 border-t border-slate-100 dark:border-border-dark pt-4"
+              >
+                <div class="flex items-center gap-2">
+                  <div class="size-2 rounded-full bg-primary"></div>
+                  <span class="text-sm text-slate-600 dark:text-text-secondary"
+                    >Approved Vol</span
+                  >
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="size-2 rounded-full bg-accent-danger"></div>
+                  <span class="text-sm text-slate-600 dark:text-text-secondary"
+                    >Fraud Attempts</span
+                  >
+                </div>
+              </div>
+            </div>
+            <!-- System Health & Fraud Types -->
+            <div class="flex flex-col gap-6">
+              <!-- System Status -->
+              <div
+                class="rounded-xl border border-slate-200 dark:border-border-dark bg-white dark:bg-card-dark shadow-sm p-6"
+              >
+                <h3
+                  class="text-slate-900 dark:text-white text-lg font-bold mb-4"
+                >
+                  System Health
+                </h3>
+                <div class="flex flex-col gap-4">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="flex items-center justify-center size-8 rounded bg-primary/10 text-primary"
+                      >
+                        <span class="material-symbols-outlined text-[18px]"
+                          >memory</span
+                        >
+                      </div>
+                      <div>
+                        <p
+                          class="text-sm font-semibold text-slate-900 dark:text-white"
+                        >
+                          AI Engine
+                        </p>
+                        <p
+                          class="text-xs text-slate-500 dark:text-text-secondary"
+                        >
+                          v2.4.1 (Latest)
+                        </p>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <div
+                        class="size-2 rounded-full bg-accent-success animate-pulse"
+                      ></div>
+                      <span class="text-xs font-medium text-accent-success"
+                        >Operational</span
+                      >
+                    </div>
+                  </div>
+                  <div
+                    class="h-px bg-slate-100 dark:bg-border-dark w-full"
+                  ></div>
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="flex items-center justify-center size-8 rounded bg-primary/10 text-primary"
+                      >
+                        <span class="material-symbols-outlined text-[18px]"
+                          >dns</span
+                        >
+                      </div>
+                      <div>
+                        <p
+                          class="text-sm font-semibold text-slate-900 dark:text-white"
+                        >
+                          Gateway Latency
+                        </p>
+                        <p
+                          class="text-xs text-slate-500 dark:text-text-secondary"
+                        >
+                          US-East-1
+                        </p>
+                      </div>
+                    </div>
+                    <span
+                      class="text-sm font-mono font-medium text-slate-900 dark:text-white"
+                      >45ms</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <!-- Risk Distribution -->
+              <div
+                class="flex-1 rounded-xl border border-slate-200 dark:border-border-dark bg-white dark:bg-card-dark shadow-sm p-6"
+              >
+                <h3
+                  class="text-slate-900 dark:text-white text-lg font-bold mb-4"
+                >
+                  Fraud by Type
+                </h3>
+                <div class="flex items-center gap-4">
+                  <div class="relative size-32 shrink-0">
+                    <!-- CSS Donut Chart approximation -->
+                    <svg
+                      class="block w-full h-full rotate-[-90deg]"
+                      viewbox="0 0 36 36"
+                    >
+                      <!-- Ring background -->
+                      <path
+                        class="text-slate-100 dark:text-[#2a3241]"
+                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="4.5"
+                      ></path>
+                      <!-- Segment 1: Account Takeover (Blue) -->
+                      <path
+                        class="text-primary"
+                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-dasharray="40, 100"
+                        stroke-width="4.5"
+                      ></path>
+                      <!-- Segment 2: Carding (Red) -->
+                      <path
+                        class="text-accent-danger"
+                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-dasharray="25, 100"
+                        stroke-dashoffset="-40"
+                        stroke-width="4.5"
+                      ></path>
+                      <!-- Segment 3: Phishing (Yellow) -->
+                      <path
+                        class="text-accent-warning"
+                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-dasharray="15, 100"
+                        stroke-dashoffset="-65"
+                        stroke-width="4.5"
+                      ></path>
+                    </svg>
+                    <div
+                      class="absolute inset-0 flex items-center justify-center flex-col"
+                    >
+                      <span
+                        class="text-2xl font-bold text-slate-900 dark:text-white"
+                        >245</span
+                      >
+                      <span
+                        class="text-[10px] uppercase text-slate-500 dark:text-text-secondary tracking-wider"
+                        >Total</span
+                      >
+                    </div>
+                  </div>
+                  <div class="flex flex-col gap-2 w-full">
+                    <div class="flex items-center justify-between text-sm">
+                      <div class="flex items-center gap-2">
+                        <span class="size-2.5 rounded-sm bg-primary"></span>
+                        <span class="text-slate-600 dark:text-text-secondary"
+                          >Account Takeover</span
+                        >
+                      </div>
+                      <span class="font-medium text-slate-900 dark:text-white"
+                        >40%</span
+                      >
+                    </div>
+                    <div class="flex items-center justify-between text-sm">
+                      <div class="flex items-center gap-2">
+                        <span
+                          class="size-2.5 rounded-sm bg-accent-danger"
+                        ></span>
+                        <span class="text-slate-600 dark:text-text-secondary"
+                          >Carding</span
+                        >
+                      </div>
+                      <span class="font-medium text-slate-900 dark:text-white"
+                        >25%</span
+                      >
+                    </div>
+                    <div class="flex items-center justify-between text-sm">
+                      <div class="flex items-center gap-2">
+                        <span
+                          class="size-2.5 rounded-sm bg-accent-warning"
+                        ></span>
+                        <span class="text-slate-600 dark:text-text-secondary"
+                          >Phishing</span
+                        >
+                      </div>
+                      <span class="font-medium text-slate-900 dark:text-white"
+                        >15%</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Live Activity Feed -->
+          <div
+            class="flex flex-col rounded-xl border border-slate-200 dark:border-border-dark bg-white dark:bg-card-dark shadow-sm"
+          >
+            <div
+              class="flex items-center justify-between p-6 border-b border-slate-100 dark:border-border-dark"
+            >
+              <h2
+                class="text-slate-900 dark:text-white text-lg font-bold leading-tight"
+              >
+                Live Activity Feed
+              </h2>
+              <button
+                class="text-sm font-semibold text-primary hover:text-blue-400"
+              >
+                View All Transactions
+              </button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr
+                    class="bg-slate-50 dark:bg-[#111318]/50 text-slate-500 dark:text-text-secondary text-xs uppercase tracking-wider font-semibold"
+                  >
+                    <th class="px-6 py-4">Transaction ID</th>
+                    <th class="px-6 py-4">Timestamp</th>
+                    <th class="px-6 py-4">Amount</th>
+                    <th class="px-6 py-4">Entity</th>
+                    <th class="px-6 py-4">Risk Score</th>
+                    <th class="px-6 py-4">Status</th>
+                    <th class="px-6 py-4 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody
+                  class="divide-y divide-slate-100 dark:divide-border-dark text-sm"
+                >
+                  <tr
+                    class="group hover:bg-slate-50 dark:hover:bg-[#2a3241] transition-colors"
+                  >
+                    <td
+                      class="px-6 py-4 font-mono text-slate-900 dark:text-white font-medium"
+                    >
+                      #TXN-88392
+                    </td>
+                    <td
+                      class="px-6 py-4 text-slate-500 dark:text-text-secondary"
+                    >
+                      Just now
+                    </td>
+                    <td
+                      class="px-6 py-4 text-slate-900 dark:text-white font-semibold"
+                    >
+                      $4,500.00
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center gap-2">
+                        <div
+                          class="size-5 rounded bg-cover"
+                          data-alt="Company logo placeholder"
+                          style="
+                            background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCTFp5xrwW5MVDWT08tg0K5naMOkiGX491CvBXSx3WirbmDUMYcAMNCM6ke2eRocnAH_0pI_Z6s3DJM2sBmhMURATC7Ut06uRIdJuTKjMHe4tg2_BN9tsBGFnspy_55bgNzOhcRGaL2N0XLLV4N_KEuYbIacmi9IBmja-C2-SDEPuwwS344e5OlBymZz1xzmgyb07i_ePGPSkT6G4v9nvk3vdQBD3Jk9-TnzJjHw11CEW1Y48fWyES7T8osfh5O80rGC7muXyJ3NJk6');
+                          "
+                        ></div>
+                        <span class="text-slate-700 dark:text-slate-300"
+                          >Acme Corp</span
+                        >
+                      </div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <div
+                        class="w-24 bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 overflow-hidden"
+                      >
+                        <div
+                          class="bg-accent-danger h-full rounded-full"
+                          style="width: 85%"
+                        ></div>
+                      </div>
+                      <span
+                        class="text-xs text-accent-danger font-bold mt-1 block"
+                        >85/100</span
+                      >
+                    </td>
+                    <td class="px-6 py-4">
+                      <span
+                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-accent-danger/10 text-accent-danger border border-accent-danger/20"
+                      >
+                        <span
+                          class="size-1.5 rounded-full bg-accent-danger"
+                        ></span>
+                        Flagged
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                      <button
+                        class="text-slate-400 hover:text-primary dark:text-slate-500 dark:hover:text-white transition-colors"
+                      >
+                        <span class="material-symbols-outlined">more_vert</span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr
+                    class="group hover:bg-slate-50 dark:hover:bg-[#2a3241] transition-colors"
+                  >
+                    <td
+                      class="px-6 py-4 font-mono text-slate-900 dark:text-white font-medium"
+                    >
+                      #TXN-88391
+                    </td>
+                    <td
+                      class="px-6 py-4 text-slate-500 dark:text-text-secondary"
+                    >
+                      2 min ago
+                    </td>
+                    <td
+                      class="px-6 py-4 text-slate-900 dark:text-white font-semibold"
+                    >
+                      $120.50
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center gap-2">
+                        <div
+                          class="size-5 rounded bg-cover"
+                          data-alt="Company logo placeholder"
+                          style="
+                            background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAkYF16ZrvQzTZX4LsDnBjULyud9LFW2U6Ck5_nY1jvmP3RbZCEFOMU_YmEs3VqXXnMFEuYb8m7wZzOLQOrnlUJoqUI6SeCGf_Y_ZUfagLaJP8cUtYnNkisSZHaJmaMLgKAtPqgTaOiLwc_taWoFeOe3TafWxR0RilOyQEuqmgwRQ5ZbCnU0Jpquovmddn0j9a3b07IqJ0IKcQvxvm61uBJ2aFRBSIGpMARxIr9uPeZaFu6564QfdCLbhl85PmvvPJkU_BU5CHKYrND');
+                          "
+                        ></div>
+                        <span class="text-slate-700 dark:text-slate-300"
+                          >Globex Inc</span
+                        >
+                      </div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <div
+                        class="w-24 bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 overflow-hidden"
+                      >
+                        <div
+                          class="bg-accent-success h-full rounded-full"
+                          style="width: 12%"
+                        ></div>
+                      </div>
+                      <span
+                        class="text-xs text-accent-success font-bold mt-1 block"
+                        >12/100</span
+                      >
+                    </td>
+                    <td class="px-6 py-4">
+                      <span
+                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-accent-success/10 text-accent-success border border-accent-success/20"
+                      >
+                        <span
+                          class="size-1.5 rounded-full bg-accent-success"
+                        ></span>
+                        Approved
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                      <button
+                        class="text-slate-400 hover:text-primary dark:text-slate-500 dark:hover:text-white transition-colors"
+                      >
+                        <span class="material-symbols-outlined">more_vert</span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr
+                    class="group hover:bg-slate-50 dark:hover:bg-[#2a3241] transition-colors"
+                  >
+                    <td
+                      class="px-6 py-4 font-mono text-slate-900 dark:text-white font-medium"
+                    >
+                      #TXN-88390
+                    </td>
+                    <td
+                      class="px-6 py-4 text-slate-500 dark:text-text-secondary"
+                    >
+                      5 min ago
+                    </td>
+                    <td
+                      class="px-6 py-4 text-slate-900 dark:text-white font-semibold"
+                    >
+                      $990.00
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center gap-2">
+                        <div
+                          class="size-5 rounded bg-cover"
+                          data-alt="Company logo placeholder"
+                          style="
+                            background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAFwDvAyJWqAU-i8wsGo4r56WHVoep2bboz5zgj-sJ6uc-7gB7zQTg-JiKJ1GpLMJ-E-MeCPI8DaLEqui3WCWa-ThVdtdF47k2uJaLUR_MouwlaeopNHcrZ9UW-6RUoQk4jANvVqUzuwrQTzk94b1yZfjBwI35mh50FM6qCxAYbJAsHb-a0w1Xww5DhklXNerWXnqRT2TuIZ7810RAWRE8yCkfvnMHLOkv20rRzyg_eNOiG9nGbRpMq2OHT0c5JiPN3DCGMvk2bDQcS');
+                          "
+                        ></div>
+                        <span class="text-slate-700 dark:text-slate-300"
+                          >Stark Ind</span
+                        >
+                      </div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <div
+                        class="w-24 bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 overflow-hidden"
+                      >
+                        <div
+                          class="bg-accent-warning h-full rounded-full"
+                          style="width: 45%"
+                        ></div>
+                      </div>
+                      <span
+                        class="text-xs text-accent-warning font-bold mt-1 block"
+                        >45/100</span
+                      >
+                    </td>
+                    <td class="px-6 py-4">
+                      <span
+                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-accent-warning/10 text-accent-warning border border-accent-warning/20"
+                      >
+                        <span
+                          class="size-1.5 rounded-full bg-accent-warning"
+                        ></span>
+                        Review
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                      <button
+                        class="text-slate-400 hover:text-primary dark:text-slate-500 dark:hover:text-white transition-colors"
+                      >
+                        <span class="material-symbols-outlined">more_vert</span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

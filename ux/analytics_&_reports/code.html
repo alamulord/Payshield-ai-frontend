@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>PayShield AI - Analytics &amp; Reports</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#13daec',
+              'background-light': '#f6f8f8',
+              'background-dark': '#102022',
+              'card-dark': '#152326',
+              'card-border': '#283739',
+              'text-secondary': '#9db7b9',
+              'risk-high': '#fa5c38',
+              'risk-med': '#facc15',
+              'risk-low': '#0bda54',
+            },
+            fontFamily: {
+              display: ['Inter', 'sans-serif'],
+            },
+            borderRadius: {
+              DEFAULT: '0.25rem',
+              lg: '0.5rem',
+              xl: '0.75rem',
+              full: '9999px',
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Custom scrollbar for dark theme dashboard */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #111718;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #283739;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #3b5254;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-hidden"
+  >
+    <div class="flex h-screen w-full overflow-hidden">
+      <!-- Sidebar -->
+      <div
+        class="w-64 flex-shrink-0 border-r border-card-border bg-[#111718] flex flex-col justify-between p-4 hidden lg:flex"
+      >
+        <div class="flex flex-col gap-6">
+          <div class="flex gap-3 items-center px-2">
+            <div
+              class="bg-center bg-no-repeat bg-cover rounded-full size-10"
+              data-alt="Abstract geometric logo in cyan and dark blue"
+              style="
+                background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBFyCs3k2DKNywhji6mv2vK56221MBPYKtjt_VRZqFwNsYdlzN1swEJ2e3d1__hmU4XLjUILGz4hS1wSOygy7aFdzMviFYXbbgh6IFcntTUvHZr-UNxmxEKzjjKUws_CTLBpfnVcWOpq1-HU_2Yz3FiUirS9HbsUhsMiaQFES-BHJEu8f_4mvzz4LG7Pa4L8OO9fG-wtxESNuDMEX5R79hO9wI9hyj2u40PVsNyFEeUXG4hs_10XOjXiMD1Z7N8eHTkrp7qiDHmW9eY');
+              "
+            ></div>
+            <div class="flex flex-col">
+              <h1
+                class="text-white text-base font-bold leading-normal tracking-wide"
+              >
+                PayShield AI
+              </h1>
+              <p class="text-text-secondary text-xs font-normal leading-normal">
+                Risk Management
+              </p>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1">
+            <a
+              class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary hover:bg-[#1c282a] hover:text-white transition-colors group"
+              href="#"
+            >
+              <span
+                class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors"
+                >dashboard</span
+              >
+              <p class="text-sm font-medium leading-normal">Dashboard</p>
+            </a>
+            <a
+              class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary hover:bg-[#1c282a] hover:text-white transition-colors group"
+              href="#"
+            >
+              <span
+                class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors"
+                >list</span
+              >
+              <p class="text-sm font-medium leading-normal">Transactions</p>
+            </a>
+            <a
+              class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-[#283739] text-white transition-colors shadow-sm ring-1 ring-white/10"
+              href="#"
+            >
+              <span
+                class="material-symbols-outlined text-[20px] text-primary fill-1"
+                >bar_chart</span
+              >
+              <p class="text-sm font-medium leading-normal">
+                Analytics &amp; Reports
+              </p>
+            </a>
+            <a
+              class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary hover:bg-[#1c282a] hover:text-white transition-colors group"
+              href="#"
+            >
+              <span
+                class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors"
+                >shield</span
+              >
+              <p class="text-sm font-medium leading-normal">Rules Engine</p>
+            </a>
+            <a
+              class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary hover:bg-[#1c282a] hover:text-white transition-colors group"
+              href="#"
+            >
+              <span
+                class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors"
+                >group</span
+              >
+              <p class="text-sm font-medium leading-normal">Merchants</p>
+            </a>
+          </div>
+        </div>
+        <div class="flex flex-col gap-1 mt-auto">
+          <a
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary hover:bg-[#1c282a] hover:text-white transition-colors group"
+            href="#"
+          >
+            <span
+              class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors"
+              >settings</span
+            >
+            <p class="text-sm font-medium leading-normal">Settings</p>
+          </a>
+          <div
+            class="mt-4 pt-4 border-t border-card-border flex items-center gap-3 px-2"
+          >
+            <div
+              class="size-8 rounded-full bg-gradient-to-tr from-primary to-purple-500 flex items-center justify-center text-[10px] font-bold text-black"
+              data-alt="User avatar placeholder with initials"
+            >
+              JD
+            </div>
+            <div class="flex flex-col">
+              <p class="text-xs text-white font-medium">Jane Doe</p>
+              <p class="text-[10px] text-text-secondary">Admin</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Main Content -->
+      <div
+        class="flex-1 flex flex-col h-full bg-background-light dark:bg-background-dark overflow-hidden relative"
+      >
+        <!-- Top Navbar -->
+        <header
+          class="flex items-center justify-between whitespace-nowrap border-b border-card-border bg-[#111718]/90 backdrop-blur-md px-6 py-3 shrink-0 z-20"
+        >
+          <div class="flex items-center gap-4 lg:hidden">
+            <button class="text-white">
+              <span class="material-symbols-outlined">menu</span>
+            </button>
+            <h2 class="text-white text-lg font-bold">PayShield AI</h2>
+          </div>
+          <div class="hidden lg:flex items-center gap-8">
+            <div class="flex flex-col">
+              <h2
+                class="text-white text-lg font-bold leading-tight tracking-[-0.015em]"
+              >
+                Analytics &amp; Reports
+              </h2>
+              <span class="text-text-secondary text-xs"
+                >Strategic insights and risk exposure analysis</span
+              >
+            </div>
+          </div>
+          <div class="flex flex-1 justify-end gap-4 items-center">
+            <!-- Search Bar -->
+            <label
+              class="hidden md:flex flex-col min-w-40 h-9 max-w-64 group relative"
+            >
+              <div
+                class="flex w-full flex-1 items-stretch rounded-lg h-full bg-[#1c282a] border border-transparent group-focus-within:border-primary/50 transition-all"
+              >
+                <div
+                  class="text-text-secondary flex border-none items-center justify-center pl-3"
+                >
+                  <span class="material-symbols-outlined text-[20px]"
+                    >search</span
+                  >
+                </div>
+                <input
+                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-transparent h-full placeholder:text-text-secondary px-3 text-sm font-normal leading-normal"
+                  placeholder="Search data..."
+                  value=""
+                />
+              </div>
+            </label>
+            <div class="flex gap-2">
+              <button
+                class="hidden md:flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary text-[#111718] hover:bg-primary/90 transition-colors text-sm font-bold leading-normal tracking-[0.015em] shadow-[0_0_15px_rgba(19,218,236,0.3)]"
+              >
+                <span class="truncate">Export Report</span>
+              </button>
+              <button
+                class="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg size-9 bg-[#283739] hover:bg-[#3b5254] text-white transition-colors relative"
+              >
+                <span class="material-symbols-outlined text-[20px]"
+                  >notifications</span
+                >
+                <span
+                  class="absolute top-2 right-2 size-2 bg-risk-high rounded-full border border-[#283739]"
+                ></span>
+              </button>
+              <button
+                class="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg size-9 bg-[#283739] hover:bg-[#3b5254] text-white transition-colors"
+              >
+                <span class="material-symbols-outlined text-[20px]">help</span>
+              </button>
+            </div>
+          </div>
+        </header>
+        <!-- Scrollable Content Area -->
+        <main class="flex-1 overflow-y-auto p-6 md:p-8 scroll-smooth">
+          <div class="max-w-[1400px] mx-auto flex flex-col gap-6">
+            <!-- Filters -->
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <div class="flex flex-wrap gap-3">
+                <button
+                  class="flex h-9 items-center justify-center gap-x-2 rounded-lg bg-[#283739] hover:bg-[#3b5254] transition-colors pl-4 pr-3 border border-white/5"
+                >
+                  <p class="text-white text-sm font-medium">Last 30 Days</p>
+                  <span class="material-symbols-outlined text-white text-[18px]"
+                    >calendar_today</span
+                  >
+                </button>
+                <button
+                  class="flex h-9 items-center justify-center gap-x-2 rounded-lg bg-[#283739] hover:bg-[#3b5254] transition-colors pl-4 pr-3 border border-white/5"
+                >
+                  <p class="text-white text-sm font-medium">Region: Global</p>
+                  <span class="material-symbols-outlined text-white text-[18px]"
+                    >expand_more</span
+                  >
+                </button>
+                <button
+                  class="flex h-9 items-center justify-center gap-x-2 rounded-lg bg-[#283739] hover:bg-[#3b5254] transition-colors pl-4 pr-3 border border-white/5"
+                >
+                  <p class="text-white text-sm font-medium">Merchant: Retail</p>
+                  <span class="material-symbols-outlined text-white text-[18px]"
+                    >expand_more</span
+                  >
+                </button>
+              </div>
+              <div class="flex items-center gap-2 text-sm text-text-secondary">
+                <span
+                  class="size-2 rounded-full bg-green-500 animate-pulse"
+                ></span>
+                Live Updates
+              </div>
+            </div>
+            <!-- KPI Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <!-- Card 1 -->
+              <div
+                class="flex flex-col gap-2 rounded-xl p-5 border border-card-border bg-card-dark shadow-sm relative overflow-hidden group"
+              >
+                <div
+                  class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"
+                >
+                  <span class="material-symbols-outlined text-4xl text-white"
+                    >payments</span
+                  >
+                </div>
+                <p class="text-text-secondary text-sm font-medium">
+                  Total Volume
+                </p>
+                <div class="flex items-baseline gap-2">
+                  <p class="text-white text-2xl font-bold tracking-tight">
+                    $42.5M
+                  </p>
+                  <span
+                    class="text-risk-low text-xs font-medium bg-risk-low/10 px-1.5 py-0.5 rounded flex items-center"
+                  >
+                    <span class="material-symbols-outlined text-[12px] mr-0.5"
+                      >trending_up</span
+                    >
+                    12%
+                  </span>
+                </div>
+                <div
+                  class="h-1 w-full bg-[#283739] mt-2 rounded-full overflow-hidden"
+                >
+                  <div class="h-full bg-primary w-[70%]"></div>
+                </div>
+              </div>
+              <!-- Card 2 -->
+              <div
+                class="flex flex-col gap-2 rounded-xl p-5 border border-card-border bg-card-dark shadow-sm relative overflow-hidden group"
+              >
+                <div
+                  class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"
+                >
+                  <span
+                    class="material-symbols-outlined text-4xl text-risk-high"
+                    >warning</span
+                  >
+                </div>
+                <p class="text-text-secondary text-sm font-medium">
+                  Fraud Attempt Rate
+                </p>
+                <div class="flex items-baseline gap-2">
+                  <p class="text-white text-2xl font-bold tracking-tight">
+                    1.2%
+                  </p>
+                  <span
+                    class="text-risk-low text-xs font-medium bg-risk-low/10 px-1.5 py-0.5 rounded flex items-center"
+                  >
+                    <span class="material-symbols-outlined text-[12px] mr-0.5"
+                      >trending_down</span
+                    >
+                    0.1%
+                  </span>
+                </div>
+                <!-- Sparkline (CSS only representation) -->
+                <div class="h-8 w-full flex items-end gap-0.5 mt-1 opacity-50">
+                  <div class="w-1/6 bg-risk-high h-[40%] rounded-t-sm"></div>
+                  <div class="w-1/6 bg-risk-high h-[60%] rounded-t-sm"></div>
+                  <div class="w-1/6 bg-risk-high h-[30%] rounded-t-sm"></div>
+                  <div class="w-1/6 bg-risk-high h-[80%] rounded-t-sm"></div>
+                  <div class="w-1/6 bg-risk-high h-[50%] rounded-t-sm"></div>
+                  <div class="w-1/6 bg-risk-high h-[45%] rounded-t-sm"></div>
+                </div>
+              </div>
+              <!-- Card 3 -->
+              <div
+                class="flex flex-col gap-2 rounded-xl p-5 border border-card-border bg-card-dark shadow-sm relative overflow-hidden group"
+              >
+                <div
+                  class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"
+                >
+                  <span class="material-symbols-outlined text-4xl text-white"
+                    >block</span
+                  >
+                </div>
+                <p class="text-text-secondary text-sm font-medium">
+                  Blocked Amount
+                </p>
+                <div class="flex items-baseline gap-2">
+                  <p class="text-white text-2xl font-bold tracking-tight">
+                    $510k
+                  </p>
+                  <span
+                    class="text-risk-low text-xs font-medium bg-risk-low/10 px-1.5 py-0.5 rounded flex items-center"
+                  >
+                    <span class="material-symbols-outlined text-[12px] mr-0.5"
+                      >trending_up</span
+                    >
+                    5%
+                  </span>
+                </div>
+                <div
+                  class="h-1 w-full bg-[#283739] mt-2 rounded-full overflow-hidden"
+                >
+                  <div class="h-full bg-white w-[45%]"></div>
+                </div>
+              </div>
+              <!-- Card 4 -->
+              <div
+                class="flex flex-col gap-2 rounded-xl p-5 border border-card-border bg-card-dark shadow-sm relative overflow-hidden group"
+              >
+                <div
+                  class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"
+                >
+                  <span class="material-symbols-outlined text-4xl text-white"
+                    >rule</span
+                  >
+                </div>
+                <p class="text-text-secondary text-sm font-medium">
+                  False Positive Ratio
+                </p>
+                <div class="flex items-baseline gap-2">
+                  <p class="text-white text-2xl font-bold tracking-tight">
+                    0.04%
+                  </p>
+                  <span
+                    class="text-risk-low text-xs font-medium bg-risk-low/10 px-1.5 py-0.5 rounded flex items-center"
+                  >
+                    <span class="material-symbols-outlined text-[12px] mr-0.5"
+                      >trending_down</span
+                    >
+                    0.01%
+                  </span>
+                </div>
+                <div
+                  class="h-1 w-full bg-[#283739] mt-2 rounded-full overflow-hidden"
+                >
+                  <div class="h-full bg-primary w-[15%]"></div>
+                </div>
+              </div>
+            </div>
+            <!-- Main Chart Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <!-- Large Line Chart -->
+              <div
+                class="lg:col-span-2 bg-card-dark border border-card-border rounded-xl p-6 shadow-sm"
+              >
+                <div class="flex justify-between items-start mb-6">
+                  <div>
+                    <h3 class="text-white text-lg font-semibold">
+                      Fraud Trends Over Time
+                    </h3>
+                    <p class="text-text-secondary text-sm">
+                      Comparison of legitimate vs fraudulent traffic
+                    </p>
+                  </div>
+                  <div class="flex gap-2">
+                    <button
+                      class="p-1 rounded bg-[#283739] text-white hover:bg-[#3b5254]"
+                    >
+                      <span class="material-symbols-outlined text-lg"
+                        >bar_chart</span
+                      >
+                    </button>
+                    <button
+                      class="p-1 rounded hover:bg-[#283739] text-text-secondary"
+                    >
+                      <span class="material-symbols-outlined text-lg"
+                        >show_chart</span
+                      >
+                    </button>
+                  </div>
+                </div>
+                <!-- Chart Visual -->
+                <div class="relative h-[300px] w-full">
+                  <svg
+                    class="w-full h-full overflow-visible"
+                    preserveaspectratio="none"
+                    viewbox="0 0 800 300"
+                  >
+                    <!-- Grid lines -->
+                    <line
+                      stroke="#283739"
+                      stroke-dasharray="4"
+                      stroke-width="1"
+                      x1="0"
+                      x2="800"
+                      y1="0"
+                      y2="0"
+                    ></line>
+                    <line
+                      stroke="#283739"
+                      stroke-dasharray="4"
+                      stroke-width="1"
+                      x1="0"
+                      x2="800"
+                      y1="75"
+                      y2="75"
+                    ></line>
+                    <line
+                      stroke="#283739"
+                      stroke-dasharray="4"
+                      stroke-width="1"
+                      x1="0"
+                      x2="800"
+                      y1="150"
+                      y2="150"
+                    ></line>
+                    <line
+                      stroke="#283739"
+                      stroke-dasharray="4"
+                      stroke-width="1"
+                      x1="0"
+                      x2="800"
+                      y1="225"
+                      y2="225"
+                    ></line>
+                    <line
+                      stroke="#283739"
+                      stroke-width="1"
+                      x1="0"
+                      x2="800"
+                      y1="300"
+                      y2="300"
+                    ></line>
+                    <!-- Area Fill (Legitimate) -->
+                    <path
+                      d="M0,250 C100,240 200,260 300,200 C400,140 500,180 600,100 C700,50 750,80 800,40 V300 H0 Z"
+                      fill="url(#gradLegit)"
+                      opacity="0.1"
+                    ></path>
+                    <!-- Line (Legitimate) -->
+                    <path
+                      d="M0,250 C100,240 200,260 300,200 C400,140 500,180 600,100 C700,50 750,80 800,40"
+                      fill="none"
+                      stroke="#13daec"
+                      stroke-width="3"
+                    ></path>
+                    <!-- Line (Fraud - Lower volume but spikes) -->
+                    <path
+                      d="M0,290 C100,285 200,288 300,270 C350,220 380,240 400,260 C500,250 600,280 800,275"
+                      fill="none"
+                      stroke="#fa5c38"
+                      stroke-dasharray="5,5"
+                      stroke-width="2"
+                    ></path>
+                    <defs>
+                      <lineargradient
+                        id="gradLegit"
+                        x1="0%"
+                        x2="0%"
+                        y1="0%"
+                        y2="100%"
+                      >
+                        <stop
+                          offset="0%"
+                          style="stop-color: #13daec; stop-opacity: 0.5"
+                        ></stop>
+                        <stop
+                          offset="100%"
+                          style="stop-color: #13daec; stop-opacity: 0"
+                        ></stop>
+                      </lineargradient>
+                    </defs>
+                  </svg>
+                  <!-- Tooltip simulation -->
+                  <div
+                    class="absolute top-[30%] left-[37%] bg-[#1c282a] border border-primary/30 p-2 rounded shadow-lg backdrop-blur-sm"
+                  >
+                    <p class="text-[10px] text-text-secondary uppercase">
+                      Feb 12, 14:00
+                    </p>
+                    <p class="text-white text-sm font-bold">$124,043</p>
+                  </div>
+                  <div
+                    class="absolute top-[32%] left-[37%] w-2 h-2 bg-primary rounded-full border-2 border-white transform -translate-x-1/2 -translate-y-1/2 shadow-[0_0_10px_#13daec]"
+                  ></div>
+                </div>
+                <!-- X Axis Labels -->
+                <div
+                  class="flex justify-between text-xs text-text-secondary mt-4 px-2"
+                >
+                  <span>Jan 1</span>
+                  <span>Jan 5</span>
+                  <span>Jan 10</span>
+                  <span>Jan 15</span>
+                  <span>Jan 20</span>
+                  <span>Jan 25</span>
+                  <span>Jan 30</span>
+                </div>
+                <!-- Legend -->
+                <div class="flex gap-6 justify-center mt-6">
+                  <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-primary"></span>
+                    <span class="text-sm text-text-secondary"
+                      >Legitimate Traffic</span
+                    >
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span
+                      class="w-3 h-3 rounded-full border border-risk-high border-dashed"
+                    ></span>
+                    <span class="text-sm text-text-secondary"
+                      >Fraud Attempts</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <!-- Side Charts Column -->
+              <div class="flex flex-col gap-6">
+                <!-- Donut Chart Widget -->
+                <div
+                  class="flex-1 bg-card-dark border border-card-border rounded-xl p-6 shadow-sm flex flex-col"
+                >
+                  <h3 class="text-white text-lg font-semibold mb-4">
+                    Fraud by Method
+                  </h3>
+                  <div class="flex-1 flex items-center justify-center relative">
+                    <!-- CSS Donut Chart -->
+                    <div
+                      class="relative size-40 rounded-full bg-[#283739]"
+                      style="
+                        background: conic-gradient(
+                          #13daec 0% 60%,
+                          #fa5c38 60% 85%,
+                          #facc15 85% 100%
+                        );
+                      "
+                    >
+                      <div
+                        class="absolute inset-4 rounded-full bg-card-dark flex items-center justify-center flex-col"
+                      >
+                        <span class="text-2xl font-bold text-white">2.4%</span>
+                        <span class="text-[10px] text-text-secondary uppercase"
+                          >Avg Risk</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-4 space-y-3">
+                    <div class="flex justify-between items-center text-sm">
+                      <div class="flex items-center gap-2">
+                        <span class="size-2 rounded-full bg-primary"></span>
+                        <span class="text-text-secondary">Credit Card</span>
+                      </div>
+                      <span class="text-white font-medium">60%</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                      <div class="flex items-center gap-2">
+                        <span class="size-2 rounded-full bg-risk-high"></span>
+                        <span class="text-text-secondary">Crypto</span>
+                      </div>
+                      <span class="text-white font-medium">25%</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                      <div class="flex items-center gap-2">
+                        <span class="size-2 rounded-full bg-risk-med"></span>
+                        <span class="text-text-secondary">Bank Transfer</span>
+                      </div>
+                      <span class="text-white font-medium">15%</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Geo Map Widget Placeholder -->
+                <div
+                  class="h-64 bg-card-dark border border-card-border rounded-xl p-6 shadow-sm flex flex-col relative overflow-hidden"
+                >
+                  <div class="flex justify-between items-center mb-4 z-10">
+                    <h3 class="text-white text-lg font-semibold">
+                      Risk Heatmap
+                    </h3>
+                    <span
+                      class="text-xs text-risk-high font-medium border border-risk-high/30 bg-risk-high/10 px-2 py-1 rounded"
+                      >High Alert: SE Asia</span
+                    >
+                  </div>
+                  <div
+                    class="absolute inset-0 opacity-40 mix-blend-screen bg-center bg-cover"
+                    data-alt="World map highlighting Southeast Asia in red"
+                    style="
+                      background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCBqdQbxnWKUldcVxYUuSmLBiS3s3QaVlDOi4wOYkDImSkA8nFcbka0M3wpSmVXLn24XTcK0SX9ozMiIxiXIMVZkl0yAgHufnkY_X3OsFe7k3WjwdjIIXWYhfKoo2PE4tqVIRAYnAK69Ovf63tK8rBbME3tgteVI0ZjRUcIzaG76pOoU8Uwg-xFW6zS3ZgtUIrPXNLfzcTupxlkdtMyG5N264vvGqcNfVvVdotucvMOLwa_kxYlGU78Nu6ijiAQ11rhMOIN6dzJlXjb');
+                      background-size: 100%;
+                      opacity: 0.2;
+                    "
+                  ></div>
+                  <!-- Dots simulating hotspots -->
+                  <div
+                    class="absolute top-[40%] left-[70%] size-3 bg-risk-high rounded-full animate-ping z-10"
+                  ></div>
+                  <div
+                    class="absolute top-[40%] left-[70%] size-2 bg-risk-high rounded-full z-10"
+                  ></div>
+                  <div
+                    class="absolute top-[35%] left-[20%] size-3 bg-risk-med rounded-full animate-ping z-10"
+                    style="animation-delay: 1s"
+                  ></div>
+                  <div
+                    class="absolute top-[35%] left-[20%] size-2 bg-risk-med rounded-full z-10"
+                  ></div>
+                  <div class="mt-auto z-10">
+                    <div
+                      class="w-full bg-[#283739] h-2 rounded-full overflow-hidden flex"
+                    >
+                      <div class="w-[20%] bg-risk-low h-full"></div>
+                      <div class="w-[30%] bg-risk-med h-full"></div>
+                      <div class="w-[50%] bg-risk-high h-full"></div>
+                    </div>
+                    <div
+                      class="flex justify-between text-[10px] text-text-secondary mt-1"
+                    >
+                      <span>Safe</span>
+                      <span>Elevated</span>
+                      <span>Critical</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Detailed Table Section -->
+            <div
+              class="bg-card-dark border border-card-border rounded-xl shadow-sm overflow-hidden"
+            >
+              <div
+                class="p-6 border-b border-card-border flex flex-col md:flex-row justify-between md:items-center gap-4"
+              >
+                <div>
+                  <h3 class="text-white text-lg font-semibold">
+                    High Risk Merchant Accounts
+                  </h3>
+                  <p class="text-text-secondary text-sm">
+                    Accounts flagged with risk score &gt; 75 in the last 24h
+                  </p>
+                </div>
+                <div class="flex gap-2">
+                  <div class="relative">
+                    <span
+                      class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-text-secondary text-[18px]"
+                      >filter_list</span
+                    >
+                    <input
+                      class="bg-[#111718] border border-[#283739] text-white text-sm rounded-lg pl-9 pr-3 py-2 focus:ring-1 focus:ring-primary focus:border-primary outline-none placeholder:text-text-secondary/50 w-full md:w-64"
+                      placeholder="Filter merchants..."
+                      type="text"
+                    />
+                  </div>
+                  <button
+                    class="bg-[#283739] hover:bg-[#3b5254] text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                  >
+                    View All
+                  </button>
+                </div>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                  <thead
+                    class="bg-[#111718] text-text-secondary uppercase text-xs font-semibold tracking-wider"
+                  >
+                    <tr>
+                      <th class="px-6 py-4">Merchant</th>
+                      <th class="px-6 py-4">Risk Score</th>
+                      <th class="px-6 py-4">Volume (24h)</th>
+                      <th class="px-6 py-4">Chargeback Ratio</th>
+                      <th class="px-6 py-4">Region</th>
+                      <th class="px-6 py-4 text-right">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-card-border">
+                    <!-- Row 1 -->
+                    <tr class="hover:bg-[#1c282a] transition-colors group">
+                      <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                          <div
+                            class="size-8 rounded bg-[#283739] flex items-center justify-center text-white font-bold text-xs"
+                          >
+                            GS
+                          </div>
+                          <div>
+                            <p class="text-white font-medium">
+                              Global Store Ltd
+                            </p>
+                            <p class="text-text-secondary text-xs">
+                              ID: #89923
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="px-6 py-4">
+                        <div class="flex items-center gap-2">
+                          <div
+                            class="w-16 h-1.5 bg-[#283739] rounded-full overflow-hidden"
+                          >
+                            <div class="h-full bg-risk-high w-[92%]"></div>
+                          </div>
+                          <span class="text-risk-high font-bold">92</span>
+                        </div>
+                      </td>
+                      <td class="px-6 py-4 text-white font-mono">$12,450.00</td>
+                      <td class="px-6 py-4">
+                        <span
+                          class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-risk-high/10 text-risk-high border border-risk-high/20"
+                        >
+                          High (4.2%)
+                        </span>
+                      </td>
+                      <td class="px-6 py-4 text-text-secondary">
+                        North America
+                      </td>
+                      <td class="px-6 py-4 text-right">
+                        <button
+                          class="text-primary hover:text-white text-xs font-medium border border-primary/30 hover:bg-primary/10 px-3 py-1.5 rounded transition-all"
+                        >
+                          Review
+                        </button>
+                      </td>
+                    </tr>
+                    <!-- Row 2 -->
+                    <tr class="hover:bg-[#1c282a] transition-colors group">
+                      <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                          <div
+                            class="size-8 rounded bg-[#283739] flex items-center justify-center text-white font-bold text-xs"
+                          >
+                            TZ
+                          </div>
+                          <div>
+                            <p class="text-white font-medium">TechZone Inc.</p>
+                            <p class="text-text-secondary text-xs">
+                              ID: #44210
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="px-6 py-4">
+                        <div class="flex items-center gap-2">
+                          <div
+                            class="w-16 h-1.5 bg-[#283739] rounded-full overflow-hidden"
+                          >
+                            <div class="h-full bg-risk-med w-[78%]"></div>
+                          </div>
+                          <span class="text-risk-med font-bold">78</span>
+                        </div>
+                      </td>
+                      <td class="px-6 py-4 text-white font-mono">$8,230.50</td>
+                      <td class="px-6 py-4">
+                        <span
+                          class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-risk-med/10 text-risk-med border border-risk-med/20"
+                        >
+                          Med (1.8%)
+                        </span>
+                      </td>
+                      <td class="px-6 py-4 text-text-secondary">Europe</td>
+                      <td class="px-6 py-4 text-right">
+                        <button
+                          class="text-primary hover:text-white text-xs font-medium border border-primary/30 hover:bg-primary/10 px-3 py-1.5 rounded transition-all"
+                        >
+                          Review
+                        </button>
+                      </td>
+                    </tr>
+                    <!-- Row 3 -->
+                    <tr class="hover:bg-[#1c282a] transition-colors group">
+                      <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                          <div
+                            class="size-8 rounded bg-[#283739] flex items-center justify-center text-white font-bold text-xs"
+                          >
+                            QX
+                          </div>
+                          <div>
+                            <p class="text-white font-medium">Quix Express</p>
+                            <p class="text-text-secondary text-xs">
+                              ID: #11092
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="px-6 py-4">
+                        <div class="flex items-center gap-2">
+                          <div
+                            class="w-16 h-1.5 bg-[#283739] rounded-full overflow-hidden"
+                          >
+                            <div class="h-full bg-risk-low w-[25%]"></div>
+                          </div>
+                          <span class="text-risk-low font-bold">25</span>
+                        </div>
+                      </td>
+                      <td class="px-6 py-4 text-white font-mono">$45,100.00</td>
+                      <td class="px-6 py-4">
+                        <span
+                          class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-risk-low/10 text-risk-low border border-risk-low/20"
+                        >
+                          Low (0.2%)
+                        </span>
+                      </td>
+                      <td class="px-6 py-4 text-text-secondary">
+                        Asia Pacific
+                      </td>
+                      <td class="px-6 py-4 text-right">
+                        <button
+                          class="text-text-secondary hover:text-white text-xs font-medium hover:bg-[#283739] px-3 py-1.5 rounded transition-all"
+                        >
+                          Details
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div
+                class="bg-[#111718] p-4 border-t border-card-border flex justify-between items-center text-xs text-text-secondary"
+              >
+                <p>Showing 3 of 128 entries</p>
+                <div class="flex gap-2">
+                  <button
+                    class="px-3 py-1 rounded bg-[#283739] hover:bg-[#3b5254] text-white disabled:opacity-50"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    class="px-3 py-1 rounded bg-[#283739] hover:bg-[#3b5254] text-white"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer class="mt-8 text-center text-text-secondary text-xs py-4">
+            <p>© 2024 PayShield AI. Enterprise Grade Security.</p>
+          </footer>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
+
+
+

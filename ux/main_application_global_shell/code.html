@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>PayShield AI - Fraud Detection Platform</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#144bb8',
+              'primary-dark': '#0f368e',
+              'background-light': '#f8fafc',
+              'background-dark': '#0f172a',
+              'sidebar-dark': '#020617',
+            },
+            fontFamily: {
+              display: ['Inter', 'sans-serif'],
+            },
+            borderRadius: {
+              DEFAULT: '0.375rem',
+              lg: '0.5rem',
+              xl: '0.75rem',
+              '2xl': '1rem',
+              full: '9999px',
+            },
+            boxShadow: {
+              subtle: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+              card: '0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02)',
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+      .sidebar-scroll::-webkit-scrollbar-thumb {
+        background: #334155;
+      }
+      .graph-grid {
+        background-image: linear-gradient(
+          to bottom,
+          #f1f5f9 1px,
+          transparent 1px
+        );
+        background-size: 100% 20%;
+      }
+      .dark .graph-grid {
+        background-image: linear-gradient(
+          to bottom,
+          #1e293b 1px,
+          transparent 1px
+        );
+      }
+    </style>
+  </head>
+  <body
+    class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased overflow-hidden selection:bg-primary/30"
+  >
+    <div class="flex h-screen w-full">
+      <aside
+        class="flex w-72 flex-col bg-sidebar-dark border-r border-slate-800 shrink-0 transition-all duration-300 ease-in-out relative z-20"
+      >
+        <div
+          class="flex items-center gap-3 px-6 py-5 border-b border-slate-800/50"
+        >
+          <div
+            class="bg-primary flex items-center justify-center rounded-lg size-10 text-white shrink-0 shadow-lg shadow-blue-900/20"
+          >
+            <span class="material-symbols-outlined text-[24px]"
+              >shield_lock</span
+            >
+          </div>
+          <div class="flex flex-col">
+            <h1
+              class="text-white text-base font-bold leading-tight tracking-tight"
+            >
+              PayShield AI
+            </h1>
+            <p class="text-slate-400 text-xs font-normal">
+              Risk &amp; Fraud Platform
+            </p>
+          </div>
+        </div>
+        <div
+          class="flex-1 overflow-y-auto sidebar-scroll px-3 py-6 flex flex-col gap-6"
+        >
+          <div>
+            <a
+              class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary text-white group transition-colors shadow-lg shadow-primary/20"
+              href="#"
+            >
+              <span class="material-symbols-outlined text-[22px]"
+                >grid_view</span
+              >
+              <span class="text-sm font-medium">Overview</span>
+            </a>
+          </div>
+          <div class="flex flex-col gap-1">
+            <p
+              class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2"
+            >
+              Platform
+            </p>
+            <a
+              class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors group"
+              href="#"
+            >
+              <span
+                class="material-symbols-outlined text-[22px] group-hover:text-white transition-colors"
+                >dashboard</span
+              >
+              <span class="text-sm font-medium">Dashboard</span>
+            </a>
+            <a
+              class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors group"
+              href="#"
+            >
+              <span
+                class="material-symbols-outlined text-[22px] group-hover:text-white transition-colors"
+                >credit_card</span
+              >
+              <span class="text-sm font-medium">Transactions</span>
+            </a>
+            <a
+              class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors group"
+              href="#"
+            >
+              <span
+                class="material-symbols-outlined text-[22px] group-hover:text-white transition-colors"
+                >notifications</span
+              >
+              <div class="flex flex-1 justify-between items-center">
+                <span class="text-sm font-medium">Alerts</span>
+                <span
+                  class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full"
+                  >3</span
+                >
+              </div>
+            </a>
+            <a
+              class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors group"
+              href="#"
+            >
+              <span
+                class="material-symbols-outlined text-[22px] group-hover:text-white transition-colors"
+                >search</span
+              >
+              <span class="text-sm font-medium">Investigations</span>
+            </a>
+            <a
+              class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors group"
+              href="#"
+            >
+              <span
+                class="material-symbols-outlined text-[22px] group-hover:text-white transition-colors"
+                >psychology</span
+              >
+              <span class="text-sm font-medium">Models</span>
+            </a>
+            <a
+              class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors group"
+              href="#"
+            >
+              <span
+                class="material-symbols-outlined text-[22px] group-hover:text-white transition-colors"
+                >analytics</span
+              >
+              <span class="text-sm font-medium">Analytics</span>
+            </a>
+          </div>
+          <div class="flex flex-col gap-1">
+            <p
+              class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2"
+            >
+              Configuration
+            </p>
+            <a
+              class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors group"
+              href="#"
+            >
+              <span
+                class="material-symbols-outlined text-[22px] group-hover:text-white transition-colors"
+                >hub</span
+              >
+              <span class="text-sm font-medium">Integrations</span>
+            </a>
+            <a
+              class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors group"
+              href="#"
+            >
+              <span
+                class="material-symbols-outlined text-[22px] group-hover:text-white transition-colors"
+                >settings</span
+              >
+              <span class="text-sm font-medium">Settings</span>
+            </a>
+          </div>
+        </div>
+        <div class="p-4 border-t border-slate-800/50">
+          <a
+            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors"
+            href="#"
+          >
+            <span class="material-symbols-outlined text-[22px]">help</span>
+            <span class="text-sm font-medium">Help &amp; Docs</span>
+          </a>
+        </div>
+      </aside>
+      <main
+        class="flex flex-1 flex-col h-full relative overflow-hidden bg-background-light dark:bg-background-dark"
+      >
+        <header
+          class="flex items-center justify-between px-8 py-3 bg-white dark:bg-sidebar-dark border-b border-slate-200 dark:border-slate-800 shrink-0 z-10 shadow-sm"
+        >
+          <div class="flex flex-1 max-w-xl">
+            <div class="relative w-full group">
+              <div
+                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+              >
+                <span
+                  class="material-symbols-outlined text-slate-400 text-[20px]"
+                  >search</span
+                >
+              </div>
+              <input
+                class="block w-full pl-10 pr-3 py-2 border-none ring-1 ring-slate-200 dark:ring-slate-700 bg-slate-50 dark:bg-slate-800/50 rounded-lg leading-5 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:bg-white dark:focus:bg-slate-900 transition-all sm:text-sm"
+                placeholder="Search transactions, users, or alerts..."
+                type="text"
+              />
+              <div
+                class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none"
+              >
+                <span
+                  class="text-slate-400 text-xs border border-slate-200 dark:border-slate-600 rounded px-1.5 py-0.5 bg-white dark:bg-slate-700"
+                  >⌘K</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-6 ml-6">
+            <div
+              class="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-200 dark:border-emerald-900/30 rounded-full"
+            >
+              <span class="relative flex h-2 w-2">
+                <span
+                  class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"
+                ></span>
+                <span
+                  class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"
+                ></span>
+              </span>
+              <span
+                class="text-xs font-semibold text-emerald-700 dark:text-emerald-400 tracking-wide"
+                >SYSTEM OPERATIONAL</span
+              >
+            </div>
+            <div class="h-6 w-px bg-slate-200 dark:bg-slate-700"></div>
+            <div class="flex items-center gap-3">
+              <button
+                class="relative p-2 text-slate-500 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
+              >
+                <span class="material-symbols-outlined text-[24px]"
+                  >notifications</span
+                >
+                <span
+                  class="absolute top-2 right-2 h-2.5 w-2.5 rounded-full bg-red-500 border-2 border-white dark:border-sidebar-dark"
+                ></span>
+              </button>
+            </div>
+            <div class="flex items-center gap-3 pl-3 cursor-pointer group">
+              <div class="text-right hidden md:block">
+                <p
+                  class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors"
+                >
+                  J. Doe
+                </p>
+                <p class="text-xs text-slate-500">Lead Risk Analyst</p>
+              </div>
+              <div
+                class="bg-center bg-no-repeat bg-cover rounded-lg size-10 ring-2 ring-slate-100 dark:ring-slate-700 group-hover:ring-primary/50 transition-all"
+                data-alt="User profile picture of risk analyst"
+                style="
+                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA6SDuQ4x05JwAiICNH5tgiCJJ_ajIMKFEX2riyaWBOTtBXRcVN2kUKZVM1YM_PGWG556zPSnwxurR_cCeD57aGQpnWFSaMu5zZqmVi4-k-ye5Rd7i0IZYxJvqeXZJQwpgElGCdCNCmMPYGpbeV-P88guZ5RSh1xq7AKvxMt_bzJX9943TE9bfjVIdTNYcZapL2xxsQz5w0asRSyf9KJYsBZIgNIUfqGWUGXTrqUOdWbOOR43-OOoBEMmkpinEf8R1MM4Lgt2zMPtFG');
+                "
+              ></div>
+              <span class="material-symbols-outlined text-slate-400 text-sm"
+                >expand_more</span
+              >
+            </div>
+          </div>
+        </header>
+        <div class="flex-1 overflow-y-auto p-6 lg:p-8">
+          <div class="max-w-[1600px] mx-auto flex flex-col gap-6">
+            <div
+              class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2"
+            >
+              <div class="flex flex-col gap-1">
+                <nav aria-label="Breadcrumb" class="flex mb-1">
+                  <ol class="inline-flex items-center space-x-1 md:space-x-2">
+                    <li class="inline-flex items-center">
+                      <a
+                        class="inline-flex items-center text-xs font-medium text-slate-500 hover:text-primary transition-colors"
+                        href="#"
+                      >
+                        <span class="material-symbols-outlined text-[16px] mr-1"
+                          >home</span
+                        >
+                        Home
+                      </a>
+                    </li>
+                    <li>
+                      <div class="flex items-center">
+                        <span
+                          class="material-symbols-outlined text-slate-400 text-[16px]"
+                          >chevron_right</span
+                        >
+                        <span
+                          class="ml-1 text-xs font-medium text-slate-900 dark:text-white md:ml-2"
+                          >Overview</span
+                        >
+                      </div>
+                    </li>
+                  </ol>
+                </nav>
+                <h2
+                  class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight"
+                >
+                  Platform Overview
+                </h2>
+                <p class="text-slate-500 text-sm">
+                  Real-time fraud monitoring and risk assessment for
+                  <span class="font-semibold text-slate-700 dark:text-slate-300"
+                    >Today, Oct 24</span
+                  >.
+                </p>
+              </div>
+              <div class="flex gap-3">
+                <div class="relative">
+                  <button
+                    class="flex items-center justify-center gap-2 px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-subtle"
+                  >
+                    <span class="material-symbols-outlined text-[20px]"
+                      >calendar_today</span
+                    >
+                    <span>Today</span>
+                    <span
+                      class="material-symbols-outlined text-[16px] text-slate-400"
+                      >expand_more</span
+                    >
+                  </button>
+                </div>
+                <button
+                  class="flex items-center justify-center gap-2 px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-subtle"
+                >
+                  <span class="material-symbols-outlined text-[20px]"
+                    >download</span
+                  >
+                  Export
+                </button>
+                <button
+                  class="flex items-center justify-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg text-sm font-bold hover:bg-primary-dark transition-all shadow-lg shadow-primary/25"
+                >
+                  <span class="material-symbols-outlined text-[20px]">add</span>
+                  New Investigation
+                </button>
+              </div>
+            </div>
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6"
+            >
+              <div
+                class="group flex flex-col p-5 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-card hover:shadow-lg hover:border-blue-200 dark:hover:border-blue-900 transition-all duration-300 relative overflow-hidden"
+              >
+                <div
+                  class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity"
+                >
+                  <span
+                    class="material-symbols-outlined text-[64px] text-primary"
+                    >payments</span
+                  >
+                </div>
+                <div
+                  class="flex items-start justify-between mb-4 relative z-10"
+                >
+                  <div
+                    class="p-2.5 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-primary ring-1 ring-blue-100 dark:ring-blue-800"
+                  >
+                    <span class="material-symbols-outlined text-[24px]"
+                      >payments</span
+                    >
+                  </div>
+                  <span
+                    class="flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded-full border border-emerald-100 dark:border-emerald-900/50"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >trending_up</span
+                    >
+                    5.2%
+                  </span>
+                </div>
+                <div class="relative z-10">
+                  <p
+                    class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1"
+                  >
+                    Total Transactions
+                  </p>
+                  <p
+                    class="text-slate-900 dark:text-white text-3xl font-bold tracking-tight"
+                  >
+                    1.2M
+                  </p>
+                </div>
+              </div>
+              <div
+                class="group flex flex-col p-5 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-card hover:shadow-lg hover:border-red-200 dark:hover:border-red-900 transition-all duration-300 relative overflow-hidden"
+              >
+                <div
+                  class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity"
+                >
+                  <span
+                    class="material-symbols-outlined text-[64px] text-red-600"
+                    >gpp_maybe</span
+                  >
+                </div>
+                <div
+                  class="flex items-start justify-between mb-4 relative z-10"
+                >
+                  <div
+                    class="p-2.5 bg-red-50 dark:bg-red-900/30 rounded-lg text-red-600 ring-1 ring-red-100 dark:ring-red-800"
+                  >
+                    <span class="material-symbols-outlined text-[24px]"
+                      >gpp_maybe</span
+                    >
+                  </div>
+                  <span
+                    class="flex items-center gap-1 text-xs font-bold text-red-600 bg-red-50 dark:bg-red-900/30 px-2 py-1 rounded-full border border-red-100 dark:border-red-900/50"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >trending_up</span
+                    >
+                    0.05%
+                  </span>
+                </div>
+                <div class="relative z-10">
+                  <p
+                    class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1"
+                  >
+                    Fraud Rate
+                  </p>
+                  <p
+                    class="text-slate-900 dark:text-white text-3xl font-bold tracking-tight"
+                  >
+                    1.24%
+                  </p>
+                </div>
+              </div>
+              <div
+                class="group flex flex-col p-5 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-card hover:shadow-lg hover:border-emerald-200 dark:hover:border-emerald-900 transition-all duration-300 relative overflow-hidden"
+              >
+                <div
+                  class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity"
+                >
+                  <span
+                    class="material-symbols-outlined text-[64px] text-emerald-600"
+                    >verified_user</span
+                  >
+                </div>
+                <div
+                  class="flex items-start justify-between mb-4 relative z-10"
+                >
+                  <div
+                    class="p-2.5 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg text-emerald-600 ring-1 ring-emerald-100 dark:ring-emerald-800"
+                  >
+                    <span class="material-symbols-outlined text-[24px]"
+                      >verified_user</span
+                    >
+                  </div>
+                  <span
+                    class="flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded-full border border-emerald-100 dark:border-emerald-900/50"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >trending_up</span
+                    >
+                    0.1%
+                  </span>
+                </div>
+                <div class="relative z-10">
+                  <p
+                    class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1"
+                  >
+                    Prevention Rate
+                  </p>
+                  <p
+                    class="text-slate-900 dark:text-white text-3xl font-bold tracking-tight"
+                  >
+                    99.8%
+                  </p>
+                </div>
+              </div>
+              <div
+                class="group flex flex-col p-5 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-card hover:shadow-lg hover:border-purple-200 dark:hover:border-purple-900 transition-all duration-300 relative overflow-hidden"
+              >
+                <div
+                  class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity"
+                >
+                  <span
+                    class="material-symbols-outlined text-[64px] text-purple-600"
+                    >manage_search</span
+                  >
+                </div>
+                <div
+                  class="flex items-start justify-between mb-4 relative z-10"
+                >
+                  <div
+                    class="p-2.5 bg-purple-50 dark:bg-purple-900/30 rounded-lg text-purple-600 ring-1 ring-purple-100 dark:ring-purple-800"
+                  >
+                    <span class="material-symbols-outlined text-[24px]"
+                      >manage_search</span
+                    >
+                  </div>
+                  <span
+                    class="flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded-full border border-emerald-100 dark:border-emerald-900/50"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >trending_down</span
+                    >
+                    2.5%
+                  </span>
+                </div>
+                <div class="relative z-10">
+                  <p
+                    class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1"
+                  >
+                    Active Investigations
+                  </p>
+                  <p
+                    class="text-slate-900 dark:text-white text-3xl font-bold tracking-tight"
+                  >
+                    15
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div
+                class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 flex flex-col shadow-card h-[460px]"
+              >
+                <div class="flex items-center justify-between mb-6">
+                  <div>
+                    <h3
+                      class="font-bold text-slate-900 dark:text-white text-lg"
+                    >
+                      Transaction Velocity vs. Anomalies
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-1">
+                      Real-time traffic spikes and threat detection (24h)
+                    </p>
+                  </div>
+                  <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2">
+                      <span class="h-2.5 w-2.5 rounded-full bg-blue-500"></span>
+                      <span
+                        class="text-xs font-medium text-slate-600 dark:text-slate-300"
+                        >Approved Vol</span
+                      >
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="h-2.5 w-2.5 rounded-full bg-red-500"></span>
+                      <span
+                        class="text-xs font-medium text-slate-600 dark:text-slate-300"
+                        >Fraud Attempts</span
+                      >
+                    </div>
+                    <div
+                      class="flex items-center bg-slate-50 dark:bg-slate-900 rounded-lg p-1 border border-slate-200 dark:border-slate-700 ml-2"
+                    >
+                      <button
+                        class="px-3 py-1 text-xs font-medium bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm rounded-md transition-all"
+                      >
+                        24H
+                      </button>
+                      <button
+                        class="px-3 py-1 text-xs font-medium text-slate-500 hover:text-slate-900 dark:hover:text-white transition-all"
+                      >
+                        Live
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex-1 w-full relative group">
+                  <div
+                    class="absolute inset-0 graph-grid pointer-events-none opacity-50"
+                  ></div>
+                  <div
+                    class="flex items-end justify-between gap-1 h-full w-full px-2 pt-8 pb-6 z-10 relative"
+                  >
+                    <div
+                      class="absolute top-0 left-0 w-full h-full flex flex-col justify-between pointer-events-none opacity-40"
+                    >
+                      <div
+                        class="w-full border-t border-dashed border-slate-300 dark:border-slate-600/50"
+                      ></div>
+                      <div
+                        class="w-full border-t border-dashed border-slate-300 dark:border-slate-600/50"
+                      ></div>
+                      <div
+                        class="w-full border-t border-dashed border-slate-300 dark:border-slate-600/50"
+                      ></div>
+                      <div
+                        class="w-full border-t border-dashed border-slate-300 dark:border-slate-600/50"
+                      ></div>
+                    </div>
+                    <div class="absolute inset-0 z-0">
+                      <svg
+                        class="w-full h-full overflow-visible"
+                        preserveAspectRatio="none"
+                        viewBox="0 0 100 100"
+                      >
+                        <defs>
+                          <linearGradient
+                            id="blueGradient"
+                            x1="0"
+                            x2="0"
+                            y1="0"
+                            y2="1"
+                          >
+                            <stop
+                              offset="0%"
+                              stop-color="#3b82f6"
+                              stop-opacity="0.3"
+                            ></stop>
+                            <stop
+                              offset="100%"
+                              stop-color="#3b82f6"
+                              stop-opacity="0"
+                            ></stop>
+                          </linearGradient>
+                        </defs>
+                        <path
+                          d="M0 100 L0 85 L8 82 L16 75 L24 65 L32 50 L40 35 L48 45 L56 40 L64 35 L72 45 L80 60 L88 75 L96 82 L100 85 V 100 Z"
+                          fill="url(#blueGradient)"
+                        ></path>
+                        <path
+                          class="text-blue-500 stroke-2"
+                          d="M0 85 L8 82 L16 75 L24 65 L32 50 L40 35 L48 45 L56 40 L64 35 L72 45 L80 60 L88 75 L96 82 L100 85"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          vector-effect="non-scaling-stroke"
+                        ></path>
+                        <path
+                          class="text-red-500 stroke-2"
+                          d="M0 95 L10 94 L20 96 L30 92 L40 65 L50 88 L60 92 L70 95 L80 60 L90 96 L100 95"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-dasharray="4 4"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          vector-effect="non-scaling-stroke"
+                        ></path>
+                        <circle
+                          class="text-red-600 animate-pulse"
+                          cx="40"
+                          cy="65"
+                          fill="currentColor"
+                          r="1.5"
+                        ></circle>
+                        <circle
+                          class="text-blue-600"
+                          cx="40"
+                          cy="35"
+                          fill="currentColor"
+                          r="1.5"
+                        ></circle>
+                      </svg>
+                      <div
+                        class="absolute left-[40%] top-[30%] -translate-x-1/2 -translate-y-full pb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20"
+                      >
+                        <div
+                          class="bg-slate-900/90 backdrop-blur-sm text-white text-[10px] p-2.5 rounded-lg shadow-xl border border-slate-700 flex flex-col gap-1.5 min-w-[120px]"
+                        >
+                          <div
+                            class="flex justify-between border-b border-slate-700 pb-1 mb-0.5"
+                          >
+                            <span class="text-slate-400">Time</span>
+                            <span class="font-bold">14:30</span>
+                          </div>
+                          <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-1.5">
+                              <span
+                                class="w-1.5 h-1.5 rounded-full bg-blue-500"
+                              ></span
+                              ><span class="text-slate-300">Vol</span>
+                            </div>
+                            <span class="font-bold">2,842</span>
+                          </div>
+                          <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-1.5">
+                              <span
+                                class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"
+                              ></span
+                              ><span class="text-slate-300">Fraud</span>
+                            </div>
+                            <span class="font-bold text-red-400">124</span>
+                          </div>
+                        </div>
+                        <div
+                          class="w-2 h-2 bg-slate-900/90 border-r border-b border-slate-700 transform rotate-45 absolute left-1/2 -bottom-1 -translate-x-1/2"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="flex justify-between absolute bottom-0 left-0 right-0 text-[10px] text-slate-400 font-semibold px-2 uppercase tracking-wide pt-2 border-t border-slate-100 dark:border-slate-800"
+                  >
+                    <span>00:00</span>
+                    <span>06:00</span>
+                    <span>12:00</span>
+                    <span>18:00</span>
+                    <span>23:59</span>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="lg:col-span-1 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 flex flex-col h-[460px] shadow-card"
+              >
+                <div class="flex justify-between items-center mb-6 shrink-0">
+                  <div class="flex items-center gap-2">
+                    <span class="relative flex h-2.5 w-2.5">
+                      <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"
+                      ></span>
+                      <span
+                        class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"
+                      ></span>
+                    </span>
+                    <h3
+                      class="font-bold text-slate-900 dark:text-white text-lg"
+                    >
+                      Live Activity Feed
+                    </h3>
+                  </div>
+                  <button
+                    class="text-slate-400 hover:text-primary transition-colors text-xs font-medium"
+                  >
+                    View All
+                  </button>
+                </div>
+                <div class="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+                  <div class="space-y-0">
+                    <div class="flex gap-4 group">
+                      <div class="flex flex-col items-center">
+                        <div
+                          class="w-2.5 h-2.5 rounded-full bg-red-500 mt-2 ring-4 ring-white dark:ring-slate-800 z-10"
+                        ></div>
+                        <div
+                          class="w-0.5 flex-1 bg-slate-100 dark:bg-slate-700 -mt-1 group-last:hidden"
+                        ></div>
+                      </div>
+                      <div class="flex-1 pb-6 group-last:pb-0">
+                        <div class="flex justify-between items-start mb-1">
+                          <p
+                            class="text-sm font-semibold text-slate-900 dark:text-white"
+                          >
+                            Suspicious Velocity
+                          </p>
+                          <span
+                            class="text-[10px] font-medium text-slate-400 bg-slate-50 dark:bg-slate-700 px-1.5 py-0.5 rounded"
+                            >2m</span
+                          >
+                        </div>
+                        <p class="text-xs text-slate-500 leading-relaxed mb-2">
+                          High transaction volume detected for user
+                          <span
+                            class="font-medium text-slate-700 dark:text-slate-300"
+                            >@alex_m</span
+                          >. 15 txs in 2 mins.
+                        </p>
+                        <div class="flex items-center gap-2">
+                          <span
+                            class="text-[10px] font-semibold bg-red-50 text-red-600 px-2 py-0.5 rounded border border-red-100 dark:bg-red-900/20 dark:border-red-900/30"
+                            >High Severity</span
+                          >
+                          <span class="text-[10px] font-mono text-slate-400"
+                            >TX-99283</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="flex gap-4 group">
+                      <div class="flex flex-col items-center">
+                        <div
+                          class="w-2.5 h-2.5 rounded-full bg-orange-500 mt-2 ring-4 ring-white dark:ring-slate-800 z-10"
+                        ></div>
+                        <div
+                          class="w-0.5 flex-1 bg-slate-100 dark:bg-slate-700 -mt-1 group-last:hidden"
+                        ></div>
+                      </div>
+                      <div class="flex-1 pb-6 group-last:pb-0">
+                        <div class="flex justify-between items-start mb-1">
+                          <p
+                            class="text-sm font-semibold text-slate-900 dark:text-white"
+                          >
+                            IP Mismatch
+                          </p>
+                          <span
+                            class="text-[10px] font-medium text-slate-400 bg-slate-50 dark:bg-slate-700 px-1.5 py-0.5 rounded"
+                            >14m</span
+                          >
+                        </div>
+                        <p class="text-xs text-slate-500 leading-relaxed mb-2">
+                          Login attempt from unknown location (Lagos, NG) for
+                          US-based account.
+                        </p>
+                        <button
+                          class="text-xs font-semibold text-primary hover:text-primary-dark flex items-center gap-1 transition-colors"
+                        >
+                          View Geo-Map
+                          <span class="material-symbols-outlined text-[14px]"
+                            >arrow_forward</span
+                          >
+                        </button>
+                      </div>
+                    </div>
+                    <div class="flex gap-4 group">
+                      <div class="flex flex-col items-center">
+                        <div
+                          class="w-2.5 h-2.5 rounded-full bg-blue-500 mt-2 ring-4 ring-white dark:ring-slate-800 z-10"
+                        ></div>
+                        <div
+                          class="w-0.5 flex-1 bg-slate-100 dark:bg-slate-700 -mt-1 group-last:hidden"
+                        ></div>
+                      </div>
+                      <div class="flex-1 pb-6 group-last:pb-0">
+                        <div class="flex justify-between items-start mb-1">
+                          <p
+                            class="text-sm font-semibold text-slate-900 dark:text-white"
+                          >
+                            New Device
+                          </p>
+                          <span
+                            class="text-[10px] font-medium text-slate-400 bg-slate-50 dark:bg-slate-700 px-1.5 py-0.5 rounded"
+                            >25m</span
+                          >
+                        </div>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                          User
+                          <span
+                            class="font-medium text-slate-700 dark:text-slate-300"
+                            >@sarah_k</span
+                          >
+                          logged in from iPhone 15 (First seen).
+                        </p>
+                      </div>
+                    </div>
+                    <div class="flex gap-4 group">
+                      <div class="flex flex-col items-center">
+                        <div
+                          class="w-2.5 h-2.5 rounded-full bg-emerald-500 mt-2 ring-4 ring-white dark:ring-slate-800 z-10"
+                        ></div>
+                        <div
+                          class="w-0.5 flex-1 bg-slate-100 dark:bg-slate-700 -mt-1 group-last:hidden"
+                        ></div>
+                      </div>
+                      <div class="flex-1 pb-2 group-last:pb-0">
+                        <div class="flex justify-between items-start mb-1">
+                          <p
+                            class="text-sm font-semibold text-slate-900 dark:text-white"
+                          >
+                            System Auto-Resolve
+                          </p>
+                          <span
+                            class="text-[10px] font-medium text-slate-400 bg-slate-50 dark:bg-slate-700 px-1.5 py-0.5 rounded"
+                            >1h</span
+                          >
+                        </div>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                          Alert #4002 cleared by AI Model v2.4 (False Positive).
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h3
+                class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 px-1"
+              >
+                System Health
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div
+                  class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <div
+                    class="p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400"
+                  >
+                    <span class="material-symbols-outlined">api</span>
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex justify-between items-start">
+                      <p
+                        class="text-xs font-medium text-slate-500 uppercase tracking-wide"
+                      >
+                        API Latency
+                      </p>
+                      <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                    </div>
+                    <div class="flex items-baseline gap-2 mt-1">
+                      <h4
+                        class="text-xl font-bold text-slate-900 dark:text-white"
+                      >
+                        45ms
+                      </h4>
+                      <span
+                        class="text-xs font-medium text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-1.5 py-0.5 rounded flex items-center"
+                      >
+                        <span
+                          class="material-symbols-outlined text-[12px] mr-0.5"
+                          >arrow_downward</span
+                        >
+                        12ms
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <div
+                    class="p-3 bg-pink-50 dark:bg-pink-900/30 rounded-lg text-pink-600 dark:text-pink-400"
+                  >
+                    <span class="material-symbols-outlined">database</span>
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex justify-between items-start">
+                      <p
+                        class="text-xs font-medium text-slate-500 uppercase tracking-wide"
+                      >
+                        Database Load
+                      </p>
+                      <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                    </div>
+                    <div class="flex items-baseline gap-2 mt-1">
+                      <h4
+                        class="text-xl font-bold text-slate-900 dark:text-white"
+                      >
+                        24%
+                      </h4>
+                      <span class="text-xs font-medium text-slate-500"
+                        >Optimal Range</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <div
+                    class="p-3 bg-cyan-50 dark:bg-cyan-900/30 rounded-lg text-cyan-600 dark:text-cyan-400"
+                  >
+                    <span class="material-symbols-outlined">dns</span>
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex justify-between items-start">
+                      <p
+                        class="text-xs font-medium text-slate-500 uppercase tracking-wide"
+                      >
+                        Model Uptime
+                      </p>
+                      <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                    </div>
+                    <div class="flex items-baseline gap-2 mt-1">
+                      <h4
+                        class="text-xl font-bold text-slate-900 dark:text-white"
+                      >
+                        99.99%
+                      </h4>
+                      <span class="text-xs font-medium text-slate-400"
+                        >Last 30d</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

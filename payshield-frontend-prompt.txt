@@ -1,0 +1,237 @@
+PayShield AI Frontend UI (Full Application)
+
+
+### STEP 0 — SETUP AND REPO STRUCTURE
+Generate a complete, production-grade frontend for PayShield AI, a real-time digital payment fraud detection platform. Use React 18+ with TypeScript. The UI must match the provided designs exactly, with dark/light themes (toggleable), responsive layout (mobile-first), and seamless integration with the backend (FastAPI APIs). Focus on analyst workflows, real-time updates, and enterprise-grade dashboards.
+
+Start by initializing the project:
+  - Run `npm create vite@latest payshield-frontend -- --template react-ts` in a new directory. This sets up a React + TypeScript project.
+  - Choose "React" as the framework and "TypeScript" variant if prompted.
+  - Navigate into the directory: `cd payshield-frontend`.
+  - Install base dependencies: `npm install`.
+
+- **Install Additional Dependencies**:
+  - Run `npm install tailwindcss @tailwindcss/vite postcss autoprefixer @types/react @types/react-dom axios recharts @mui/material @mui/icons-material socket.io-client react-router-dom @types/socket.io-client @types/react-router-dom`.
+
+- **Configure Tailwind**:
+  - Run `npx tailwindcss init -p` to generate `tailwind.config.js` and `postcss.config.js`.
+  - Update `tailwind.config.js` with content paths and custom theme:
+    ```javascript
+    /** @type {import('tailwindcss').Config} */
+    export default {
+      content: [
+        "./index.html",
+        "./src/**/*.{js,ts,jsx,tsx}",
+      ],
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0EA5E9', // cyan
+            accent: '#F59E0B',  // orange
+            error: '#EF4444',   // red
+            success: '#10B981', // green
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+      plugins: [],
+    };
+    ```
+  - Update `src/index.css` (or create if missing) to include Tailwind directives:
+    ```css
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+    ```
+  - In `vite.config.ts`, ensure it's set up for React (Vite does this by default with the template).
+
+- **Set Up ESLint and Prettier for Code Quality**:
+  - Install: `npm install --save-dev eslint prettier eslint-plugin-react eslint-plugin-react-hooks @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-config-prettier eslint-plugin-prettier`.
+  - Create `.eslintrc.cjs` (or `.eslintrc.json`):
+    ```javascript
+    module.exports = {
+      env: { browser: true, es2021: true, node: true },
+      extends: [
+        'eslint:recommended',
+        'plugin:react/recommended',
+        'plugin:react-hooks/recommended',
+        'plugin:@typescript-eslint/recommended',
+        'prettier',
+      ],
+      parser: '@typescript-eslint/parser',
+      parserOptions: { ecmaFeatures: { jsx: true }, ecmaVersion: 'latest', sourceType: 'module' },
+      plugins: ['react', '@typescript-eslint', 'prettier'],
+      rules: {
+        'prettier/prettier': 'error',
+        'react/react-in-jsx-scope': 'off', // Not needed with React 17+
+      },
+      settings: { react: { version: 'detect' } },
+    };
+    ```
+  - Create `.prettierrc`:
+    ```json
+    {
+      "singleQuote": true,
+      "semi": true,
+      "trailingComma": "es5",
+      "printWidth": 100
+    }
+    ```
+  - Add scripts to `package.json`:
+    ```json
+    "scripts": {
+      "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+      "format": "prettier --write src/**/*.{ts,tsx,css}"
+    }
+    ```
+  - Run `npm run lint` and `npm run format` to test.
+
+This Vite-aligned setup maintains compatibility with the original compendium structure (e.g., src/app, pages, components). Run `npm run dev` to start (faster than CRA's `npm start`). If integrating with backend, update `vite.config.ts` for proxying:
+```typescript
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    proxy: {
+      '/v1': 'http://localhost:8000', // Proxy API calls to backend
+    },
+  },
+});
+
+- Structure the repo as follows (per compendium):
+  ```
+  frontend/web-app/
+  ├── src/
+  │   ├── app/
+  │   │   ├── App.tsx  // Root with Router, ThemeProvider, AuthContext
+  │   │   ├── layout.tsx  // App Shell (Sidebar + Top Bar + Main Content)
+  │   │   └── globals.css  // Tailwind imports + custom styles
+  │   ├── pages/
+  │   │   ├── Landing.tsx
+  │   │   ├── Login.tsx
+  │   │   ├── Dashboard.tsx  // Overview variants
+  │   │   ├── Integrations.tsx
+  │   │   ├── Alerts.tsx  // Fraud Alerts Queue
+  │   │   ├── Analytics.tsx  // Analytics & Reports
+  │   │   ├── Transactions.tsx  // Transactions Monitor
+  │   │   ├── Settings.tsx  // Developer Settings
+  │   │   ├── Investigations.tsx  // Case List + Detail
+  │   │   ├── Models.tsx  // AI Model Governance
+  │   │   └── NotFound.tsx
+  │   ├── components/
+  │   │   ├── common/  // Reusable: Button.tsx (variants: primary cyan, error red), Card.tsx, Table.tsx (sortable, paginated), Chart.tsx (wrap Recharts), Badge.tsx (status colors), Modal.tsx, Toast.tsx
+  │   │   ├── navigation/  // Sidebar.tsx, TopBar.tsx (search, notifications, profile)
+  │   │   ├── dashboard/  // KPICard.tsx, ActivityFeed.tsx, Heatmap.tsx
+  │   │   ├── alerts/  // AlertItem.tsx, CriticalAlertModal.tsx
+  │   │   ├── notifications/  // NotificationCenter.tsx, InlineValidation.tsx, EmptyState.tsx
+  │   │   └── investigations/  // CaseTimeline.tsx, FraudSignals.tsx, EventTimeline.tsx
+  │   ├── services/
+  │   │   ├── apiClient.ts  // Axios instance with baseURL 'http://localhost:8000/v1', JWT interceptor, error handling
+  │   │   └── socketService.ts  // Socket.io for real-time (connect to backend, subscribe to alerts.created topic)
+  │   ├── hooks/
+  │   │   ├── useAuth.ts  // Manage JWT, login/logout
+  │   │   ├── useTheme.ts  // Dark/light toggle (localStorage)
+  │   │   ├── useAlerts.ts  // Fetch /alerts, real-time updates via socket
+  │   │   └── useQuery.ts  // Custom React Query for caching (install react-query if needed)
+  │   ├── types/
+  │   │   └── index.ts  // Interfaces: Transaction, Alert, User, etc.
+  │   ├── utils/
+  │   │   └── mocks.ts  // Mock JSON data for development
+  │   └── index.tsx  // Render App
+  ├── tests/  // Unit tests for components (e.g., Dashboard.test.tsx)
+  ├── Dockerfile  // FROM node:18, COPY ., npm install, npm start
+  ├── package.json
+  └── README.md  // Setup: npm start for dev, connect to backend
+  ```
+- Use React Router for routing (e.g., /landing, /login, /dashboard, protected routes with auth).
+- Implement theme toggle (dark: bg-gray-900 text-white; light: bg-white text-gray-900).
+- For backend integration: All data fetches use apiClient (e.g., get('/analytics') for charts). Handle loading/error states. Use sockets for real-time (e.g., new alerts trigger toast). Ensure JWT auth: Store token in localStorage, add to headers. No issues later: Use types for API responses, mock backend in dev.
+
+### GLOBAL DESIGN THEME
+- Overall: Modern, enterprise fintech UI. Dark mode default (bg-gray-900, text-gray-200); light mode toggle (bg-white, text-gray-800). Rounded corners (border-radius 8px), shadows for cards, cyan accents (#0EA5E9).
+- Typography: Inter font, headings bold (h1 2xl, h2 xl), body md.
+- Colors: Primary cyan #0EA5E9, success green #10B981, warning orange #F59E0B, error red #EF4444, neutral gray #4B5563.
+- Icons: MUI icons, flags for countries.
+- Responsiveness: Grid/flex for layouts, mobile: stack vertically.
+- Real-time: Use Socket.io for live updates (e.g., activity feeds, alerts).
+- Accessibility: ARIA labels, keyboard nav.
+- No extra features; use mock JSON for data until backend connect.
+
+### STEP 1 — LANDING PAGE
+Description from design: Full-page marketing site with dark background, hero section with abstract network visual, headline "Stop Payment Fraud in Real-Time with Enterprise AI", subtext on revenue protection, CTAs "Book a Demo" (cyan button), "View Documentation" (secondary). Trusted logos (BankCorp, FlexPay, etc.). Sections: "The Fraud Landscape is Evolving" with cards (Real-Time Detection, Behavioral Biometrics, Graph Network Analysis). "Built for your entire team" with roles (Risk Analysts, Compliance Officers). Metrics: $500B+ processed, -40% manual review, <100ms response, 0% breaches. CTA: "Ready to secure your payments?" with "Get Started" (cyan), "Contact Sales" (black). Footer: Company desc, links (Platform, Company, Resources), copyright.
+- Layout: Vertical scroll, hero full-width.
+- Integration: No API; static. Link to /login.
+
+### STEP 2 — LOGIN PAGE
+Description from design: Split-screen. Left: Dark gradient bg, logo top, headline "Fraud detection at the speed of light.", subtext "Secure your transactions... Trusted by leading financial institutions.", subtle animated network lines. Right: White card, title "Welcome Back", subtitle "Enter your credentials to access the risk dashboard.", fields (Work Email, Password with show/hide), "Forgot password?" link, "Sign In" primary blue button, divider "OR CONTINUE WITH", "Sign in with SSO" secondary, footer "Don't have an account? Contact Support", secured by PayShield note.
+- Layout: Flex row (mobile: stack).
+- Integration: POST to /v1/login with email/password, store JWT, redirect to /dashboard on success. Error toast for invalid creds.
+
+### STEP 3 — APPLICATION SHELL (AUTHENTICATED LAYOUT)
+Description from designs (common across screens): Persistent layout. Left Sidebar: Dark bg, logo top, nav items (Dashboard, Transactions, Alerts with red badge, Investigations, Models, Analytics, Rules, Settings, Integrations), bottom Help & Docs. Top Bar: Search input "Search transactions, users, or alerts...", system status pill (green "System Operational"), notification bell (dropdown with Notifications Center), user profile avatar with role (e.g., "Alex Morgan, Sr. Risk Analyst").
+- Layout: Flex column, sidebar fixed left (collapse on mobile), top bar fixed, main content scrollable.
+- Integration: Use auth hook for profile. Socket for notifications (subscribe to alerts.created). Search: Query params to API (e.g., /search?q=).
+
+### STEP 4 — DASHBOARD OVERVIEW / PLATFORM OVERVIEW
+Description from designs (multiple variants, blend light/dark): Header with breadcrumb "Home > Overview", title "Platform Overview" or "Dashboard Overview", subtitle with date, actions (date selector, export, "New Investigation" blue button). KPI cards (4-5): Total Volume ($4.2M with trend), Fraud Rate (0.8% red), Prevented Loss ($125K green), False Positives (0.2% yellow), Model Health (98.5% blue); each with icon, value, trend. Main chart: "Transaction Trends" or "Velocity vs Anomalies" line chart (blue legit, red fraud; time selectors 24H/Live). Right: Live Activity Feed list (alerts with timestamps, types like Velocity Spike, IP Mismatch). Bottom: System Health cards (API Latency 45ms green, DB Load 24%, Uptime 99.9%). Variants: Light theme (white bg), dark (gray-900); include heatmap for fraud origins (world map with red spots).
+- Layout: Grid for KPIs/charts.
+- Integration: Fetch from /v1/analytics (KPI data), /v1/transactions/scored (chart data). Real-time socket for feed. Use Recharts for lines/bars/pie/heatmap.
+
+### STEP 5 — INTEGRATIONS PAGE
+Description from design: Title "Integrations", subtext "Manage secure connections...", metrics (Active 12, Health 98%). Search bar "Search providers (e.g. Stripe, Adyen)...", tabs (All Providers 24, Connected 12, Disconnected 8). Grid of cards: e.g., Stripe (logo, "Connected" green, desc, last sync, env Production, "Configure" button); PayPal Sandbox (Sync Error red, "Re-authenticate"); Braintree (Inactive blue, "Connect"); Adyen (Syncing progress 45%, "Configuring..."); Square (Connected green); Add New (gray card, "Browse Catalog" link).
+- Layout: Grid responsive (3 cols desktop, 1 mobile).
+- Integration: GET /v1/integrations for list, POST /v1/integrations/connect for actions. Poll for syncing status.
+
+### STEP 6 — FRAUD ALERTS QUEUE / ALERTS PAGE
+Description from design: Sidebar nav "Alerts" orange. Title "Fraud Alerts Queue", subtext "14 High Priority items...". KPIs: Total Value at Risk ($452,000 red up 12%), Open Alerts (42 green up 5%), SLA Breaches (3 red critical). Search bar, filters (Risk: High orange, Status: New, Date: Today). Table: Sorted by Risk Score desc, columns (Risk circle 98 orange, Amount $4,520, Merchant, User/Country, Triggers like Velocity Spike/New Device, Status New yellow, SLA 12m red, actions Dismiss/Investigate orange button).
+- Layout: Table with pagination "Load more".
+- Integration: GET /v1/alerts (filtered), socket for new alerts (add to table, toast). POST /v1/alerts/{id}/dismiss or investigate.
+
+### STEP 7 — ANALYTICS & REPORTS PAGE
+Description from design: Title "Analytics & Reports", subtext "Strategic insights...". Filters (Last 30 Days, Region Global, Merchant Retail). KPIs: Total Volume ($42.5M green 12%), Fraud Attempt Rate (1.2% green -0.1%), Blocked Amount ($510K green -5%), False Positive Ratio (0.04% green -0.01%). Charts: "Fraud Trends Over Time" line (cyan legit, orange fraud), "Fraud by Method" donut (60% Credit Card cyan, 25% Crypto orange, 15% Bank yellow), "Risk Heatmap" world map (red spots SE Asia). Bottom: "High Risk Merchant Accounts" table.
+- Layout: Grid for charts.
+- Integration: GET /v1/analytics (query params for filters). Export POST /v1/analytics/export CSV.
+
+### STEP 8 — TRANSACTIONS PAGE
+Description from design: Title "Transactions", subtext "Real-time fraud detection...". KPIs: Total Volume ($4.2M green), High Risk Flagged (142 pink), Pending Review (28 orange), Avg Risk Score (14 green). Filters (Status All, Risk All, Last 30 Days). Table: Columns (ID, Date/Time, Merchant icon, Amount, Payment Method flag/country, Risk Score bar red/orange/green).
+- Layout: Paginated table (rows per page 10).
+- Integration: GET /v1/transactions (paged, filtered), socket for new txns.
+
+### STEP 9 — DEVELOPER SETTINGS PAGE
+Description from design: Title "Developer Settings", subtext "Manage your API keys...". Sections: API Keys (Live/Test cards with keys masked, Roll/Revoke buttons), Webhook Endpoints table (URL, Events, Status toggle, Actions), Risk Thresholds slider (Fraud Score 85, rules toggles). View Audit Logs link.
+- Layout: Sections with cards/tables.
+- Integration: GET /v1/admin/keys, POST /v1/admin/roll-key. GET /v1/admin/webhooks, etc.
+
+### STEP 10 — INVESTIGATION CASE DETAIL PAGE
+Description from design: Title "Critical Case #8291-XJ High Velocity Transfer - User 49201". User card (avatar, name, location, risk 88 red, tenure). Case Timeline (dots: Large Transfer red, Password Changed, Login New Device). Submit Decision (radio: Safe/Confirm Fraud/Request Info, notes, Submit blue). Linked Transactions table. Fraud Signals cards (Velocity Exceeded red, New IP orange). Map for location. Analyst Notes chat-like. Evidence files.
+- Layout: Grid columns (left user/signals/map, center timeline/transactions, right decision/notes).
+- Integration: GET /v1/investigations/{id}, POST /v1/investigations/{id}/decision. Socket for updates.
+
+### STEP 11 — AI MODEL GOVERNANCE / MODELS PAGE
+Description from design: Title "AI Model Governance". KPIs: Active Health 98.5% green, Daily Predictions 1.2M green, Shadow Drift 0.05% orange. Model Registry table (ID, Status active/shadow/retired, Training date, AUC/Precision/Recall). Model Analysis: ROC Curve chart, Top Feature Importance bars. Deployment Control slider (Canary Traffic 100%).
+- Layout: Table + charts.
+- Integration: GET /v1/models, POST /v1/models/train-new.
+
+### STEP 12 — NOTIFICATIONS & FEEDBACK COMPONENTS
+Description from design: Toast stack (success green "Action Completed", warning yellow "Verification Pending", error red "Connection Failed"). Critical Alert Modal (title "Critical Risk Detected", details, actions Investigate/Block red). Inline Validation (red invalid API key, green verified). Empty States (icon, "All caught up!" text, button). Notification Center dropdown (grouped alerts, "Mark all read").
+- Integration: Use in other pages. Socket for toasts. No dedicated page; reusable.
+
+### STEP 13 — TRANSACTION DETAIL PAGE
+Description from design: Title "Transaction #TX-2023-8849 High Risk". Sections: DNA (amount, date, method, IP, device), Risk Assessment gauge (88/100 red, confidence bar), Explainable Factors cards (Velocity Spike +30 red, Geofencing +15 orange, New Device +5 blue). Analyst Decision buttons (Confirm Fraud red, Approve blue). Event Timeline dots. Activity Log chat. Map.
+- Layout: Similar to investigation, focused on single txn.
+- Integration: GET /v1/transactions/{id}, includes /score for explainability.
+
+### STEP 14 — CODE QUALITY & STRUCTURE
+- Split into reusable components (e.g., KPICard, AlertItem).
+- Separate pages from layout.
+- Use mock JSON for charts/tables initially (from utils/mocks.ts).
+- Consistent styling with Tailwind (e.g., className="bg-gray-900 p-4 rounded-lg").
+- Implement auth guard for protected routes.
+- Tests: Add snapshot/unit for key components.
+- Optimization: Lazy load pages, memoize charts.
+- Backend blend: All APIs async, handle 401 redirect to login, rate limits with retries. Use types for responses (e.g., interface Alert { id: string; risk: number; }).
+- Generate full code; output as zip or folder.

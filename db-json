@@ -1,0 +1,21 @@
+{
+  "analytics": {
+    "totalTransactions": 1245,
+    "fraudulentTransactions": 42,
+    "fraudRate": 3.37,
+    "totalAmount": 1250000,
+    "fraudAmount": 42000,
+    "trend": "down",
+    "trendPercentage": 15
+  },
+  "merchants": [
+    {
+      "id": 1,
+      "name": "ElectroMart",
+      "transactions": 245,
+      "fraudRate": 2.0,
+      "amount": 125000,
+      "status": "high"
+    }
+  ]
+}

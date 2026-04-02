@@ -1,0 +1,218 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>PayShield AI Login</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#144bb8',
+              'background-light': '#f6f6f8',
+              'background-dark': '#111621',
+              'surface-dark': '#1e2330',
+            },
+            fontFamily: {
+              display: ['Inter', 'sans-serif'],
+            },
+            borderRadius: {
+              DEFAULT: '0.25rem',
+              lg: '0.5rem',
+              xl: '0.75rem',
+              full: '9999px',
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="font-display bg-background-light dark:bg-background-dark text-[#111318] dark:text-white"
+  >
+    <div class="flex min-h-screen w-full">
+      <div
+        class="hidden lg:flex lg:w-1/2 relative bg-surface-dark overflow-hidden flex-col justify-between"
+      >
+        <div class="absolute inset-0 z-0">
+          <img
+            class="h-full w-full object-cover opacity-60 mix-blend-overlay"
+            data-alt="Abstract dark blue digital network nodes and connections representing artificial intelligence data flow"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2b8Mq2XZLUiVstR6qgBqok67zSMhozVG-hPsBrbWpCDf5jD5kTdLkC4MbmbTuaiEDcKPuqqtg5hpv-GPG4Nn-dwGCAc64XKICZBaRbDtz_K8zDPJOfRh4Nkq-iYosA3BsKUZEjIzHUWiVHQ7P_MdJGBm9JQ7pGuoUPqDq1EvYSM3e2Yo45t5iUvXoP3EVIKmtcwGNcSHTWe6mSuWyE9gQ8YElZ-1VIpjmGO3b4U4QPnBA_OJfM3Zg6TmcX-WGkMTI6L_oUX9rV21c"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-primary/90 to-background-dark/80 mix-blend-multiply"
+          ></div>
+        </div>
+        <div class="relative z-10 p-12 flex flex-col h-full justify-between">
+          <div>
+            <div class="flex items-center gap-3 text-white">
+              <span
+                class="material-symbols-outlined text-4xl"
+                style="font-variation-settings: 'FILL' 1"
+                >shield_lock</span
+              >
+              <span class="text-2xl font-bold tracking-tight"
+                >PayShield AI</span
+              >
+            </div>
+          </div>
+          <div class="max-w-lg">
+            <h2 class="text-3xl font-bold text-white leading-tight mb-4">
+              Fraud detection at the speed of light.
+            </h2>
+            <p class="text-blue-100 text-lg opacity-90">
+              Secure your transactions with the world's most advanced AI-driven
+              risk analysis platform. Trusted by leading financial institutions.
+            </p>
+          </div>
+          <div class="flex gap-2">
+            <div class="h-1 w-12 bg-white rounded-full"></div>
+            <div class="h-1 w-2 bg-white/30 rounded-full"></div>
+            <div class="h-1 w-2 bg-white/30 rounded-full"></div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="w-full lg:w-1/2 flex flex-col justify-center items-center p-6 lg:p-12 bg-white dark:bg-background-dark relative"
+      >
+        <div
+          class="lg:hidden absolute top-6 left-6 flex items-center gap-2 text-primary dark:text-white mb-8"
+        >
+          <span
+            class="material-symbols-outlined text-3xl"
+            style="font-variation-settings: 'FILL' 1"
+            >shield_lock</span
+          >
+          <span class="text-xl font-bold tracking-tight">PayShield AI</span>
+        </div>
+        <div class="w-full max-w-[440px] flex flex-col space-y-8">
+          <div class="text-center lg:text-left space-y-2">
+            <h1
+              class="text-[#111318] dark:text-white tracking-tight text-[32px] font-bold leading-tight"
+            >
+              Welcome Back
+            </h1>
+            <p
+              class="text-[#636f88] dark:text-gray-400 text-base font-normal leading-normal"
+            >
+              Enter your credentials to access the risk dashboard.
+            </p>
+          </div>
+          <form
+            class="flex flex-col space-y-5"
+            onsubmit="event.preventDefault();"
+          >
+            <div class="flex flex-col space-y-2">
+              <label
+                class="text-[#111318] dark:text-gray-200 text-sm font-medium leading-normal"
+              >
+                Work Email
+              </label>
+              <input
+                class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111318] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#dcdfe5] dark:border-gray-600 bg-white dark:bg-surface-dark focus:border-primary h-12 placeholder:text-[#636f88] dark:placeholder:text-gray-500 px-4 text-base font-normal leading-normal transition-all"
+                placeholder="name@company.com"
+                type="email"
+              />
+            </div>
+            <div class="flex flex-col space-y-2">
+              <div class="flex justify-between items-center">
+                <label
+                  class="text-[#111318] dark:text-gray-200 text-sm font-medium leading-normal"
+                >
+                  Password
+                </label>
+                <a
+                  class="text-primary text-sm font-medium hover:underline"
+                  href="#"
+                  >Forgot password?</a
+                >
+              </div>
+              <div class="relative flex w-full flex-1 items-center rounded-lg">
+                <input
+                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111318] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#dcdfe5] dark:border-gray-600 bg-white dark:bg-surface-dark focus:border-primary h-12 placeholder:text-[#636f88] dark:placeholder:text-gray-500 px-4 pr-12 text-base font-normal leading-normal transition-all"
+                  placeholder="Enter your password"
+                  type="password"
+                />
+                <button
+                  class="absolute right-0 top-0 bottom-0 px-3 flex items-center text-[#636f88] dark:text-gray-400 hover:text-primary transition-colors"
+                  type="button"
+                >
+                  <span
+                    class="material-symbols-outlined"
+                    style="font-size: 20px"
+                    >visibility</span
+                  >
+                </button>
+              </div>
+            </div>
+            <button
+              class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary hover:bg-primary/90 text-white text-base font-bold leading-normal tracking-[0.015em] transition-colors shadow-sm"
+            >
+              <span class="mr-2 material-symbols-outlined text-[20px]"
+                >login</span
+              >
+              Sign In
+            </button>
+            <div class="relative flex py-2 items-center">
+              <div
+                class="flex-grow border-t border-gray-200 dark:border-gray-700"
+              ></div>
+              <span
+                class="flex-shrink-0 mx-4 text-gray-400 dark:text-gray-500 text-xs uppercase font-medium"
+                >Or continue with</span
+              >
+              <div
+                class="flex-grow border-t border-gray-200 dark:border-gray-700"
+              ></div>
+            </div>
+            <button
+              class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-white dark:bg-surface-dark border border-[#dcdfe5] dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 text-[#111318] dark:text-white text-base font-medium leading-normal tracking-[0.015em] transition-colors"
+            >
+              <span
+                class="material-symbols-outlined mr-2 text-[20px] text-gray-600 dark:text-gray-400"
+                >domain</span
+              >
+              Sign in with SSO
+            </button>
+          </form>
+          <div class="pt-6 text-center">
+            <p class="text-[#636f88] dark:text-gray-500 text-sm">
+              Don't have an account?
+              <a class="text-primary font-medium hover:underline" href="#"
+                >Contact Support</a
+              >
+            </p>
+            <div
+              class="mt-12 border-t border-gray-100 dark:border-gray-800 pt-6 flex flex-col items-center gap-2"
+            >
+              <p
+                class="text-xs text-gray-400 dark:text-gray-600 flex items-center gap-1"
+              >
+                <span
+                  class="material-symbols-outlined text-[14px]"
+                  style="font-variation-settings: 'FILL' 1"
+                  >shield_lock</span
+                >
+                Secured by PayShield AI
+              </p>
+              <p class="text-xs text-gray-400 dark:text-gray-600">
+                © 2024 PayShield AI. All rights reserved.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

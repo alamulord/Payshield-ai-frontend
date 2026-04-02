@@ -1,0 +1,14 @@
+<!-- public/network-pattern.svg -->
+<svg width="100%" height="100%" viewBox="0 0 1440 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 0H1440V800H0V0Z" fill="url(#paint0_radial_1_2)"/>
+  <path d="M720 400L800 300L880 400L960 300L1040 400L1120 300L1200 400" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round"/>
+  <path d="M720 400L640 300L560 400L480 300L400 400L320 300L240 400" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round"/>
+  <path d="M720 400L800 500L880 400L960 500L1040 400L1120 500L1200 400" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round"/>
+  <path d="M720 400L640 500L560 400L480 500L400 400L320 500L240 400" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round"/>
+  <defs>
+    <radialGradient id="paint0_radial_1_2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(720 400) rotate(90) scale(400 720)">
+      <stop stop-color="#0F172A" stop-opacity="0"/>
+      <stop offset="1" stop-color="#0F172A" stop-opacity="0.8"/>
+    </radialGradient>
+  </defs>
+</svg>

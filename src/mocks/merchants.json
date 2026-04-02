@@ -1,0 +1,55 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "TechGadgets Inc.",
+      "type": "Electronics",
+      "region": "North",
+      "status": "active",
+      "transactionCount": 245,
+      "totalVolume": 125000
+    },
+    {
+      "id": 2,
+      "name": "Fashion Outlet",
+      "type": "Apparel",
+      "region": "South",
+      "status": "active",
+      "transactionCount": 189,
+      "totalVolume": 87650
+    },
+    {
+      "id": 3,
+      "name": "Home & Living",
+      "type": "Home Goods",
+      "region": "East",
+      "status": "pending",
+      "transactionCount": 56,
+      "totalVolume": 34200
+    },
+    {
+      "id": 4,
+      "name": "Gourmet Foods",
+      "type": "Food & Beverage",
+      "region": "West",
+      "status": "active",
+      "transactionCount": 312,
+      "totalVolume": 124300
+    },
+    {
+      "id": 5,
+      "name": "Mobile Solutions",
+      "type": "Telecom",
+      "region": "North",
+      "status": "suspended",
+      "transactionCount": 0,
+      "totalVolume": 0
+    }
+  ],
+  "pagination": {
+    "total": 5,
+    "page": 1,
+    "pageSize": 10,
+    "totalPages": 1
+  }
+}
