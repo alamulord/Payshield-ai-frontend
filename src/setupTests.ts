@@ -1,8 +1,6 @@
 // src/setupTests.ts
 import '@testing-library/jest-dom';
 import { TextEncoder, TextDecoder } from 'util';
-import { server } from './mocks/server';
-
 // Polyfill for TextEncoder/TextDecoder
 global.TextEncoder = TextEncoder;
 // @ts-ignore
@@ -53,11 +51,3 @@ if (typeof Response === 'undefined') {
   };
 }
 
-// Start the mock server before all tests
-beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
-
-// Reset any request handlers that may be added during tests
-afterEach(() => server.resetHandlers());
-
-// Clean up after all tests are done
-afterAll(() => server.close());

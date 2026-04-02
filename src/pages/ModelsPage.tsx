@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useCurrentTheme } from '../context/ThemeContext';
+import { useModels } from '../hooks/useApi';
 
 interface KPIStat {
   title: string;
@@ -29,13 +30,41 @@ interface FeatureImportance {
 
 const ModelsPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedModel, setSelectedModel] = useState<string>('Fraud-v4.2');
+  const [selectedModel, setSelectedModel] = useState<string>('');
   const [canaryTraffic, setCanaryTraffic] = useState<number>(100);
+
+  // ── API Hook ──
+  const { data: modelsData, loading } = useModels();
+
+  // Map API models to component format
+  const modelRegistry: Model[] = useMemo(() => {
+    if (!modelsData?.items) return [];
+    return modelsData.items.map((m: any, idx: number) => ({
+      id: m.name || `Model-${idx}`,
+      version: m.version || 'v1.0',
+      status: m.status as Model['status'],
+      trainingDate: m.training_date ? new Date(m.training_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—',
+      auc: m.auc_score ?? null,
+      precision: m.precision ?? null,
+      recall: m.recall ?? null,
+      isSelected: idx === 0,
+    }));
+  }, [modelsData]);
+
+  // Select first model by default
+  const activeModel = modelRegistry.find(m => m.id === selectedModel) || modelRegistry[0];
+  if (!selectedModel && modelRegistry.length > 0 && modelRegistry[0].id !== selectedModel) {
+    // Will be set on next render
+  }
+
+  // Compute KPI stats from real data
+  const activeModels = modelRegistry.filter(m => m.status === 'active');
+  const avgAuc = activeModels.length > 0 ? (activeModels.reduce((sum, m) => sum + (m.auc || 0), 0) / activeModels.length * 100).toFixed(1) : '0.0';
 
   const kpiStats: KPIStat[] = [
     {
       title: 'Active Model Health',
-      value: '98.5%',
+      value: `${avgAuc}%`,
       trend: '+0.4%',
       trendDirection: 'up',
       icon: 'ecg_heart',
@@ -43,65 +72,22 @@ const ModelsPage: React.FC = () => {
       statusColor: 'text-green-500',
     },
     {
-      title: 'Daily Predictions',
-      value: '1.2M',
-      trend: '+12%',
+      title: 'Total Models',
+      value: String(modelRegistry.length),
+      trend: `${activeModels.length} active`,
       trendDirection: 'up',
       icon: 'query_stats',
       iconColor: 'text-primary',
       statusColor: 'text-green-500',
     },
     {
-      title: 'Shadow Model Drift',
-      value: '0.05%',
-      trend: 'Stable',
+      title: 'Shadow Models',
+      value: String(modelRegistry.filter(m => m.status === 'shadow').length),
+      trend: 'Monitoring',
       trendDirection: 'neutral',
-      icon: 'warning',
+      icon: 'visibility',
       iconColor: 'text-orange-400',
       statusColor: 'text-orange-400',
-    },
-  ];
-
-  const modelRegistry: Model[] = [
-    {
-      id: 'Fraud-v4.2',
-      version: 'v4.2.0',
-      status: 'active',
-      trainingDate: 'Oct 24, 2023',
-      auc: 0.94,
-      precision: 0.92,
-      recall: 0.89,
-      isSelected: true,
-    },
-    {
-      id: 'Fraud-v4.3-RC',
-      version: 'v4.3.0',
-      status: 'shadow',
-      trainingDate: 'Oct 28, 2023',
-      auc: 0.96,
-      precision: 0.94,
-      recall: 0.91,
-      isSelected: false,
-    },
-    {
-      id: 'Fraud-v4.1',
-      version: 'v4.1.0',
-      status: 'retired',
-      trainingDate: 'Sep 15, 2023',
-      auc: 0.91,
-      precision: 0.88,
-      recall: 0.85,
-      isSelected: false,
-    },
-    {
-      id: 'Fraud-Exp-A',
-      version: 'v0.1.0',
-      status: 'training',
-      trainingDate: 'Nov 01, 2023',
-      auc: null,
-      precision: null,
-      recall: null,
-      isSelected: false,
     },
   ];
 

@@ -1,0 +1,27 @@
+﻿src/components/layout/AuthenticatedLayout.tsx(10,8): error TS2739: Type '{}' is missing the following properties from type 'SidebarProps': isOpen, onClose
+src/components/layout/AuthenticatedLayout.tsx(15,10): error TS2739: Type '{}' is missing the following properties from type 'TopBarProps': onMenuClick, isDarkMode, onToggleTheme
+src/components/layout/Header.tsx(11,45): error TS2339: Property 'user' does not exist on type 'AuthContextType'.
+src/mocks/handlers.ts(3,3): error TS2305: Module '"msw"' has no exported member 'rest'.
+src/mocks/handlers.ts(4,3): error TS2305: Module '"msw"' has no exported member 'RestRequest'.
+src/mocks/handlers.ts(5,3): error TS2305: Module '"msw"' has no exported member 'ResponseComposition'.
+src/mocks/handlers.ts(7,3): error TS2305: Module '"msw"' has no exported member 'RestContext'.
+src/mocks/test-utils.tsx(22,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(ui: ReactElement<any, string | JSXElementConstructor<any>>, options: RenderOptions<typeof import("C:/Users/Aliyu/Desktop/PaySheild/paysheild-architect/payshield-frontend/node_modules/@testing-library/react/node_modules/@testing-library/dom/types/queries"), HTMLElement>): RenderResult<...>', gave the following error.
+    Type 'FC<AllTheProvidersProps>' is not assignable to type 'ComponentType<{}> | undefined'.
+      Type 'FunctionComponent<AllTheProvidersProps>' is not assignable to type 'FunctionComponent<{}>'.
+        Types of parameters 'props' and 'props' are incompatible.
+          Property 'children' is missing in type '{}' but required in type 'AllTheProvidersProps'.
+  Overload 2 of 2, '(ui: ReactElement<any, string | JSXElementConstructor<any>>, options?: Omit<RenderOptions<typeof import("C:/Users/Aliyu/Desktop/PaySheild/paysheild-architect/payshield-frontend/node_modules/@testing-library/react/node_modules/@testing-library/dom/types/queries"), HTMLElement>, "queries"> | undefined): RenderResult<...>', gave the following error.
+    Type 'FC<AllTheProvidersProps>' is not assignable to type 'ComponentType<{}> | undefined'.
+      Type 'FunctionComponent<AllTheProvidersProps>' is not assignable to type 'FunctionComponent<{}>'.
+        Types of parameters 'props' and 'props' are incompatible.
+          Property 'children' is missing in type '{}' but required in type 'AllTheProvidersProps'.
+src/pages/ForgotPasswordPage.tsx(15,18): error TS2339: Property 'state' does not exist on type 'Location'.
+src/pages/ForgotPasswordPage.tsx(16,34): error TS2339: Property 'state' does not exist on type 'Location'.
+src/pages/ForgotPasswordPage.tsx(20,16): error TS2339: Property 'state' does not exist on type 'Location'.
+src/services/auth/mockAuth.ts(2,15): error TS2459: Module '"../../context/AuthContext"' declares 'User' locally, but it is not exported.
+src/services/auth/mockAuth.ts(13,5): error TS2353: Object literal may only specify known properties, and 'id' does not exist in type 'ExtendedUser'.
+src/services/auth/mockAuth.ts(39,42): error TS2339: Property 'email' does not exist on type 'ExtendedUser'.
+src/services/auth/mockAuth.ts(62,33): error TS2339: Property 'email' does not exist on type 'ExtendedUser'.
+src/services/auth/mockAuth.ts(67,7): error TS2353: Object literal may only specify known properties, and 'id' does not exist in type 'ExtendedUser'.
+src/services/auth/mockAuth.ts(116,42): error TS2339: Property 'email' does not exist on type 'ExtendedUser'.

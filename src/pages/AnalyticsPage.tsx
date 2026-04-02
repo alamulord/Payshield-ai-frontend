@@ -1,7 +1,7 @@
 // src/pages/AnalyticsPage.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useCurrentTheme } from '../context/ThemeContext';
-import { fetchApi, useFetch, usePaginatedFetch } from '../types/api';
+import { useFullAnalytics, useTrends } from '../hooks/useApi';
 import {
   FiCalendar,
   FiChevronDown,
@@ -73,40 +73,9 @@ const AnalyticsPage: React.FC = () => {
   const [page, setPage] = useState(1);
   const pageSize = 10;
 
-  // Fetch analytics data
-  const { data: analyticsData, loading: analyticsLoading } =
-    useFetch<AnalyticsData>(
-      '/analytics',
-      {
-        timeRange: filters.timeRange,
-        region: filters.region !== 'all' ? filters.region : undefined,
-        merchantType:
-          filters.merchantType !== 'all' ? filters.merchantType : undefined,
-      },
-      {
-        totalVolume: 0,
-        fraudRate: 0,
-        preventedLosses: 0,
-        topMerchants: [],
-        fraudTrends: [],
-        fraudByMethod: [],
-      }
-    );
-
-  // Fetch merchants with pagination
-  const {
-    data: merchants = [],
-    pagination,
-    loading: merchantsLoading,
-  } = usePaginatedFetch<Merchant>('/merchants', {
-    page,
-    pageSize,
-    search: filters.searchQuery || undefined,
-    timeRange: filters.timeRange,
-    region: filters.region !== 'all' ? filters.region : undefined,
-    merchantType:
-      filters.merchantType !== 'all' ? filters.merchantType : undefined,
-  });
+  // ── API Hooks ──
+  const { data: analyticsRaw, loading: analyticsLoading } = useFullAnalytics();
+  const { data: trendsData } = useTrends(12);
 
   // Handle filter changes
   const handleFilterChange = (key: keyof FilterState, value: string) => {
@@ -167,24 +136,33 @@ const AnalyticsPage: React.FC = () => {
   };
 
   // Loading and error states
-  const isLoading = analyticsLoading || merchantsLoading;
+  const isLoading = analyticsLoading;
 
-  // Extract data from responses
-  const analytics = analyticsData || {
-    totalVolume: 0,
-    fraudRate: 0,
-    preventedLosses: 0,
-    topMerchants: [],
-    fraudTrends: [],
-    fraudByMethod: [],
-  };
+  // Map API data to component format
+  const analytics: AnalyticsData = useMemo(() => {
+    if (!analyticsRaw) return { totalVolume: 0, fraudRate: 0, preventedLosses: 0, topMerchants: [], fraudTrends: [], fraudByMethod: [] };
+    return {
+      totalVolume: analyticsRaw.total_volume || 0,
+      fraudRate: analyticsRaw.fraud_rate || 0,
+      preventedLosses: analyticsRaw.prevented_losses || 0,
+      topMerchants: (analyticsRaw.top_merchants || []).map((m: any, idx: number) => ({
+        id: String(idx),
+        name: m.name,
+        initials: m.name.split(' ').map((w: string) => w[0]).join('').toUpperCase().slice(0, 2),
+        region: 'global',
+        riskScore: m.risk_score || 0,
+        volume: m.volume || '$0',
+        chargebackRatio: String(m.fraud_rate ?? 0),
+        status: (m.risk_score ?? 0) > 70 ? 'high' as const : (m.risk_score ?? 0) > 40 ? 'medium' as const : 'low' as const,
+      })),
+      fraudTrends: analyticsRaw.fraud_trends || trendsData?.data || [],
+      fraudByMethod: analyticsRaw.fraud_by_method || [],
+    };
+  }, [analyticsRaw, trendsData]);
 
-  const paginationData = pagination || {
-    page: 1,
-    pageSize,
-    totalItems: 0,
-    totalPages: 1,
-  };
+  // Use topMerchants as the Merchants table data
+  const merchants = analytics.topMerchants;
+  const paginationData = { page: 1, pageSize: merchants.length, totalItems: merchants.length, totalPages: 1 };
 
   return (
     <div className={`min-h-screen ${bgClass} ${textClass} p-6`}>

@@ -6,6 +6,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { signOut as firebaseSignOut } from 'firebase/auth';
 import { auth } from '../firebase/config';
+import payshieldApi from '../services/api/payshieldApi';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -330,7 +331,6 @@ const LoginPage = () => {
   //     setIsLoading(false);
   //   }
   // };
-  // src/pages/LoginPage.tsx
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
@@ -343,12 +343,31 @@ const LoginPage = () => {
 
     setIsLoading(true);
 
+    // ── Try backend JWT login first ──
     try {
-      // 1. Sign in the user
+      const tokenResponse = await payshieldApi.login({ email, password });
+      // Store JWT token for subsequent API calls
+      localStorage.setItem('token', tokenResponse.access_token);
+      localStorage.setItem('user', JSON.stringify(tokenResponse.user));
+      setSuccessMessage('Login successful!');
+      navigate(from, { replace: true });
+      return;
+    } catch (backendErr: any) {
+      console.log('Backend login failed, trying Firebase:', backendErr?.response?.status);
+      // If backend returns 401/403, show error directly
+      if (backendErr?.response?.status === 401 || backendErr?.response?.status === 403) {
+        setError(backendErr?.response?.data?.detail || 'Invalid email or password.');
+        setIsLoading(false);
+        return;
+      }
+      // Otherwise fall through to Firebase auth
+    }
+
+    // ── Firebase auth fallback ──
+    try {
       const userCredential = await login(email, password);
       const user = userCredential.user;
 
-      // 2. Check email verification status
       if (!user.emailVerified) {
         await sendVerificationEmail(user);
         await firebaseSignOut(auth);
@@ -359,11 +378,8 @@ const LoginPage = () => {
         return;
       }
 
-      // 3. If email is verified, force token refresh
       const token = await user.getIdToken(true);
       console.log('Token refreshed:', !!token);
-
-      // 4. Navigate to the intended destination
       navigate(from, { replace: true });
     } catch (error: any) {
       console.error('Login error:', error);
@@ -377,15 +393,13 @@ const LoginPage = () => {
             errorMessage = 'Invalid email or password.';
             break;
           case 'auth/too-many-requests':
-            errorMessage =
-              'Too many failed login attempts. Please try again later.';
+            errorMessage = 'Too many failed login attempts. Please try again later.';
             break;
           case 'auth/user-disabled':
             errorMessage = 'This account has been disabled.';
             break;
           case 'auth/network-request-failed':
-            errorMessage =
-              'Network error. Please check your internet connection.';
+            errorMessage = 'Network error. Please check your internet connection.';
             break;
         }
       }

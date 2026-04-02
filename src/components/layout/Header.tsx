@@ -8,7 +8,7 @@ import '../../styles/global.css';
 export const Header = () => {
   const navigate = useNavigate();
 
-  const { isAuthenticated, isEmailVerified, user, logout } = useAuth();
+  const { isAuthenticated, isEmailVerified, logout } = useAuth();
 
   return (
     <header className='sticky top-0 z-50 border-b border-gray-200 dark:border-border-dark bg-white/80 dark:bg-background-dark/80 backdrop-blur-md'>

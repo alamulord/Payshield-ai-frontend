@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useInvestigation } from '../../hooks/useApi';
+import payshieldApi from '../../services/api/payshieldApi';
 
 // Types
 type TimelineEvent = {
   id: string;
-  time: string;
-  title: string;
-  description: string;
-  type: 'high' | 'medium' | 'low';
+  time?: string;
+  title?: string;
+  description?: string;
+  type?: 'high' | 'medium' | 'low' | string;
+  timestamp?: string;
+  action?: string;
+  user?: string;
+  details?: string;
 };
 
 type FraudSignal = {
@@ -40,13 +46,17 @@ const InvestigationDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const [decision, setDecision] = useState<string>('');
   const [note, setNote] = useState<string>('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Mock data - in a real app, this would come from an API
+  // Fetch real data
+  const { data: invData, loading, refetch } = useInvestigation(id || '');
+
+  // Map API data to component structure, using fallbacks for things not yet in the backend schema
   const caseData = {
-    id: id || '8291-XJ',
-    title: 'High Velocity Transfer - User 49201',
-    status: 'open' as const,
-    riskScore: 88,
+    id: invData?.case_id || id || '8291-XJ',
+    title: invData?.title || 'High Velocity Transfer - User 49201',
+    status: invData?.status || 'open',
+    riskScore: invData?.severity === 'high' ? 88 : invData?.severity === 'medium' ? 65 : 30,
     user: {
       id: 'user-49201',
       name: 'Alex Johnson',
@@ -74,29 +84,7 @@ const InvestigationDetailPage: React.FC = () => {
         status: 'pending',
       },
     ] as Transaction[],
-    timeline: [
-      {
-        id: 'event-1',
-        time: '14:30',
-        title: 'Large Transfer',
-        description: 'Transfer of $3,499 initiated',
-        type: 'high',
-      },
-      {
-        id: 'event-2',
-        time: '14:25',
-        title: 'Password Changed',
-        description: 'Password was updated',
-        type: 'medium',
-      },
-      {
-        id: 'event-3',
-        time: '14:20',
-        title: 'Login from New Device',
-        description: 'iPhone 13, New York',
-        type: 'low',
-      },
-    ] as TimelineEvent[],
+    timeline: (invData?.timeline || []) as TimelineEvent[],
     fraudSignals: [
       {
         id: 'signal-1',
@@ -113,23 +101,38 @@ const InvestigationDetailPage: React.FC = () => {
         timestamp: '2023-11-15T14:20:15Z',
       },
     ] as FraudSignal[],
-    notes: [
-      {
-        id: 'note-1',
-        author: 'Sarah Chen',
-        avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
-        content:
-          'Customer confirmed this was not authorized. Marking as fraud.',
-        timestamp: '2023-11-15T14:45:30Z',
-      },
-    ] as Note[],
+    notes: (invData?.notes ? [{
+      id: 'note-1',
+      author: 'System Analyst',
+      avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
+      content: invData.notes,
+      timestamp: invData.updated_at,
+    }] : []) as Note[],
   };
 
-  const handleSubmitDecision = (e: React.FormEvent) => {
+  const handleSubmitDecision = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Decision submitted:', { decision, note });
+    if (!id || !invData?.id) return;
+    try {
+      setIsSubmitting(true);
+      await payshieldApi.submitVerdict(invData.id, { verdict: decision, notes: note });
+      await refetch();
+      // Optional: navigate back or show success message
+      navigate(-1);
+    } catch (err) {
+      console.error('Failed to submit verdict', err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-500 border-t-transparent"></div>
+      </div>
+    );
+  }
 
   return (
     <div className='flex flex-col h-screen bg-gray-50 dark:bg-gray-900 overflow-hidden'>
@@ -210,9 +213,9 @@ const InvestigationDetailPage: React.FC = () => {
                   Case Timeline
                 </h3>
                 <div className='space-y-6'>
-                  {caseData.timeline.map((event) => (
+                  {caseData.timeline.map((event, index) => (
                     <div
-                      key={event.id}
+                      key={event.id || index}
                       className='relative pl-8 pb-6 border-l-2 border-gray-200 dark:border-gray-700 last:border-l-0 last:pb-0'
                     >
                       <div className='absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-primary-500 flex items-center justify-center'>
@@ -220,14 +223,14 @@ const InvestigationDetailPage: React.FC = () => {
                       </div>
                       <div className='flex items-start'>
                         <div className='text-sm font-medium text-gray-500 dark:text-gray-400 w-16'>
-                          {event.time}
+                          {event.time || (event.timestamp ? new Date(event.timestamp as string).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '')}
                         </div>
                         <div className='ml-4'>
                           <h4 className='text-sm font-semibold text-gray-900 dark:text-white'>
-                            {event.title}
+                            {event.title || (event as any).action}
                           </h4>
                           <p className='text-sm text-gray-500 dark:text-gray-400'>
-                            {event.description}
+                            {event.description || (event as any).details}
                           </p>
                         </div>
                       </div>
@@ -429,9 +432,9 @@ const InvestigationDetailPage: React.FC = () => {
                     <button
                       type='submit'
                       className='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed'
-                      disabled={!decision}
+                      disabled={!decision || isSubmitting}
                     >
-                      Submit Decision
+                      {isSubmitting ? 'Submitting...' : 'Submit Decision'}
                     </button>
                   </div>
                 </form>

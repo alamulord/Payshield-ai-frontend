@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const ForgotPasswordPage = () => {
@@ -8,12 +8,14 @@ const ForgotPasswordPage = () => {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
   const { resetPassword } = useAuth();
 
   // Handle success message from login page
   useEffect(() => {
-    if (location.state?.message) {
-      setSuccessMessage(location.state.message);
+    const state = location.state as { message?: string } | null;
+    if (state?.message) {
+      setSuccessMessage(state.message);
       // Clear the message from location state to prevent showing it again on refresh
       window.history.replaceState({}, document.title);
     }

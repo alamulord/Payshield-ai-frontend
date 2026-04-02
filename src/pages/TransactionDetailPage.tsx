@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTransaction } from '../hooks/useApi';
 // Icons
 import {
   FiArrowLeft,
@@ -125,23 +126,71 @@ const mockTransactions: Record<string, Transaction> = {
 const TransactionDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const { transactionId } = useParams<{ transactionId: string }>();
-  const transaction = transactionId ? mockTransactions[transactionId] : null;
+  
+  const { data: apiTx, loading, error } = useTransaction(transactionId || '');
 
-  if (!transaction) {
+  if (loading) {
     return (
-      <div className='flex items-center justify-center min-h-screen'>
+      <div className="flex items-center justify-center min-h-screen bg-background-light dark:bg-background-dark">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+      </div>
+    );
+  }
+
+  if (error || !apiTx) {
+    return (
+      <div className='flex items-center justify-center min-h-screen bg-background-light dark:bg-background-dark'>
         <div className='text-center'>
-          <h1 className='text-4xl font-bold text-gray-900 dark:text-white'>
+          <h1 className='text-4xl font-bold text-slate-900 dark:text-white'>
             404 - Transaction Not Found
           </h1>
-          <p className='mt-2 text-gray-600 dark:text-gray-300'>
-            The transaction you're looking for doesn't exist or has been
-            removed.
+          <p className='mt-2 text-slate-600 dark:text-slate-300'>
+            The transaction you're looking for doesn't exist or has been removed.
           </p>
+          <button
+            onClick={() => navigate(-1)}
+            className='mt-6 text-primary hover:underline'
+          >
+            Go back
+          </button>
         </div>
       </div>
     );
   }
+
+  // Map API transaction to the schema expected by the UI
+  const transaction = {
+    id: apiTx.tx_id,
+    date: new Date(apiTx.timestamp).toLocaleString(),
+    amount: apiTx.amount,
+    currency: apiTx.currency,
+    status: apiTx.status,
+    riskScore: apiTx.risk_score,
+    method: { type: apiTx.payment_method, last4: apiTx.card_last4 || '' },
+    ipAddress: apiTx.ip_address || 'Unknown',
+    deviceId: apiTx.device || 'Unknown',
+    customer: {
+      name: 'User ' + apiTx.tx_id.substring(0, 4),
+      email: 'customer@placeholder.com',
+      status: apiTx.risk_level === 'high' ? 'Review Needed' : 'Verified',
+    },
+    merchant: {
+      name: apiTx.merchant_name,
+      category: apiTx.merchant_category || 'General',
+      location: apiTx.country_name || apiTx.country || 'Unknown',
+    },
+    location: {
+      lat: 37.7749, // Mock map coordinates since the database only has country codes
+      lng: -122.4194,
+      country: apiTx.country_name || apiTx.country || 'Unknown',
+      city: 'Unknown City',
+    },
+    timeline: [
+      { time: new Date(apiTx.created_at).toLocaleTimeString(), event: 'Transaction Initiated' },
+      { time: apiTx.processed_at ? new Date(apiTx.processed_at).toLocaleTimeString() : 'Pending', event: 'Risk Analysis Completed' },
+      ...(apiTx.status === 'Flagged' ? [{ time: 'Recent', event: 'Flagged for ' + apiTx.risk_factors }] : []),
+    ],
+  };
 
   return (
     <div className='bg-background-light dark:bg-background-dark min-h-screen'>

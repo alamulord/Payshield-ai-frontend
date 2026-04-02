@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   FiSearch,
@@ -22,6 +22,7 @@ import {
   FiAlertOctagon,
   FiShield,
 } from 'react-icons/fi';
+import { useAlerts, useAlertStats } from '../hooks/useApi';
 
 // Types
 type AlertStatus = 'New' | 'In Review' | 'Resolved';
@@ -58,72 +59,40 @@ const AlertsPage: React.FC = () => {
   const itemsPerPage = 10;
   const [selectedAlerts, setSelectedAlerts] = useState<string[]>([]);
 
-  // Mock data
-  const alerts: Alert[] = [
-    {
-      id: '1',
-      caseId: 'CASE-001',
-      amount: 4520.0,
-      merchant: 'Apple Store',
-      category: 'eCommerce',
-      transactionId: 'TXN-88329',
-      username: 'john.doe',
-      country: 'United States',
-      countryCode: 'US',
-      riskScore: 98,
-      status: 'New',
-      timestamp: '2023-11-25T14:32:10Z',
-      sla: '12m',
-      triggers: ['Velocity Spike', 'New Device'],
-      paymentMethod: 'VISA •••• 4242',
-      ipAddress: '192.168.1.1',
-      device: 'iPhone 13',
-      userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X)',
-      slaColor: 'text-red-500',
-    },
-    {
-      id: '2',
-      caseId: 'CASE-002',
-      amount: 1250.0,
-      merchant: 'Amazon',
-      category: 'Marketplace',
-      transactionId: 'TXN-77218',
-      username: 'jane.smith',
-      country: 'Canada',
-      countryCode: 'CA',
-      riskScore: 85,
-      status: 'In Review',
-      timestamp: '2023-11-25T13:45:22Z',
-      sla: '25m',
-      triggers: ['High Risk Country', 'Unusual Time'],
-      paymentMethod: 'Mastercard •••• 5555',
-      ipAddress: '203.0.113.45',
-      device: 'MacBook Pro',
-      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
-      slaColor: 'text-yellow-500',
-    },
-    {
-      id: '3',
-      caseId: 'CASE-003',
-      amount: 3200.0,
-      merchant: 'Best Buy',
-      category: 'Electronics',
-      transactionId: 'TXN-66107',
-      username: 'mike.johnson',
-      country: 'United Kingdom',
-      countryCode: 'GB',
-      riskScore: 92,
-      status: 'New',
-      timestamp: '2023-11-25T15:10:05Z',
-      sla: '8m',
-      triggers: ['Large Amount', 'New Merchant'],
-      paymentMethod: 'AMEX •••• 1005',
-      ipAddress: '198.51.100.22',
-      device: 'Windows PC',
-      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
-      slaColor: 'text-red-500',
-    },
-  ];
+  // ── API hooks ──
+  const { data: alertsData, loading } = useAlerts({
+    page: currentPage,
+    page_size: itemsPerPage,
+    status: selectedStatus !== 'All Statuses' ? selectedStatus : undefined,
+    search: searchQuery || undefined,
+  });
+  const { data: alertStats } = useAlertStats();
+
+  // Map API data to component format
+  const alerts: Alert[] = useMemo(() => {
+    if (!alertsData?.items) return [];
+    return alertsData.items.map((a: any) => ({
+      id: a.id,
+      caseId: a.case_id,
+      amount: a.amount,
+      merchant: a.merchant,
+      category: a.category || 'General',
+      transactionId: a.transaction_id || a.id,
+      username: a.username || 'unknown',
+      country: a.country || '',
+      countryCode: a.country_code || '',
+      riskScore: a.risk_score,
+      status: a.status as AlertStatus,
+      timestamp: a.timestamp || a.created_at,
+      sla: a.sla || '—',
+      triggers: typeof a.triggers === 'string' ? JSON.parse(a.triggers) : (a.triggers || []),
+      paymentMethod: a.payment_method || '',
+      ipAddress: a.ip_address || '',
+      device: a.device || '',
+      userAgent: a.user_agent || '',
+      slaColor: a.sla_color || 'text-yellow-500',
+    }));
+  }, [alertsData]);
 
   // Format currency
   const formatCurrency = (amount: number) => {
@@ -189,55 +158,30 @@ const AlertsPage: React.FC = () => {
     navigate(`/app/investigations/app/${id}`);
   };
 
-  // Filter and sort logic
-  const filteredAlerts = useMemo(() => {
-    return alerts.filter((alert) => {
-      const matchesSearch =
-        alert.merchant.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        alert.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        alert.transactionId.toLowerCase().includes(searchQuery.toLowerCase());
+  // Server-side pagination (alerts already filtered by API)
+  const totalPages = alertsData?.total_pages || 1;
+  const totalItems = alertsData?.total || 0;
+  const currentItems = alerts;
 
-      const matchesStatus =
-        selectedStatus === 'All Statuses' || alert.status === selectedStatus;
-
-      const matchesRisk =
-        selectedRisk === 'All Risk Levels' ||
-        (selectedRisk === 'High' && alert.riskScore >= 80) ||
-        (selectedRisk === 'Medium' &&
-          alert.riskScore >= 50 &&
-          alert.riskScore < 80) ||
-        (selectedRisk === 'Low' && alert.riskScore < 50);
-
-      return matchesSearch && matchesStatus && matchesRisk;
-    });
-  }, [alerts, searchQuery, selectedStatus, selectedRisk]);
-
-  // Pagination
-  const totalPages = Math.ceil(filteredAlerts.length / itemsPerPage);
-  const currentItems = filteredAlerts.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  // Stats
+  // Stats from API
   const stats = [
     {
       title: 'Total Value at Risk',
-      value: '$452,000',
-      change: '+12%',
+      value: alertStats ? `$${(alertStats.total_value_at_risk / 1000).toFixed(0)}K` : '$0',
+      change: alertStats?.total_value_change || '+0%',
       isPositive: true,
       icon: <FiDollarSign className='text-blue-500' />,
     },
     {
       title: 'Open Alerts',
-      value: '42',
-      change: '+5%',
+      value: String(alertStats?.open_alerts ?? totalItems),
+      change: alertStats?.open_alerts_change || '+0%',
       isPositive: true,
       icon: <FiAlertTriangle className='text-orange-500' />,
     },
     {
       title: 'SLA Breaches',
-      value: '3',
+      value: String(alertStats?.sla_breaches ?? 0),
       change: 'Critical',
       isPositive: false,
       icon: <FiClock className='text-red-500' />,
@@ -587,12 +531,12 @@ const AlertsPage: React.FC = () => {
                       setCurrentPage((prev) =>
                         Math.min(
                           prev + 1,
-                          Math.ceil(filteredAlerts.length / itemsPerPage)
+                          Math.ceil(totalItems / itemsPerPage)
                         )
                       )
                     }
                     disabled={
-                      currentPage * itemsPerPage >= filteredAlerts.length
+                      currentPage * itemsPerPage >= totalItems
                     }
                     className='ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700'
                   >
@@ -606,12 +550,12 @@ const AlertsPage: React.FC = () => {
                       <span className='font-medium'>
                         {Math.min(
                           currentPage * itemsPerPage,
-                          filteredAlerts.length
+                          totalItems
                         )}
                       </span>{' '}
                       of{' '}
                       <span className='font-medium'>
-                        {filteredAlerts.length}
+                        {totalItems}
                       </span>{' '}
                       results
                     </p>
@@ -635,13 +579,13 @@ const AlertsPage: React.FC = () => {
                         {
                           length: Math.min(
                             5,
-                            Math.ceil(filteredAlerts.length / itemsPerPage)
+                            Math.ceil(totalItems / itemsPerPage)
                           ),
                         },
                         (_, i) => {
                           let pageNum;
                           const totalPages = Math.ceil(
-                            filteredAlerts.length / itemsPerPage
+                            totalItems / itemsPerPage
                           );
 
                           if (totalPages <= 5) {
@@ -674,12 +618,12 @@ const AlertsPage: React.FC = () => {
                           setCurrentPage((prev) =>
                             Math.min(
                               prev + 1,
-                              Math.ceil(filteredAlerts.length / itemsPerPage)
+                              Math.ceil(totalItems / itemsPerPage)
                             )
                           )
                         }
                         disabled={
-                          currentPage * itemsPerPage >= filteredAlerts.length
+                          currentPage * itemsPerPage >= totalItems
                         }
                         className='relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed'
                       >

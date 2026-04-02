@@ -48,10 +48,13 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       proxy: {
-        '/api': {
-          target: 'http://localhost:3000',
+        '/api/v1': {
+          target: 'http://127.0.0.1:8000',
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ''),
+        },
+        '/ws': {
+          target: 'ws://127.0.0.1:8000',
+          ws: true,
         },
       },
     },
