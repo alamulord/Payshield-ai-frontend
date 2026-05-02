@@ -1,21 +1,18 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '@clerk/react';
 import { LoadingSpinner } from '../components/common/LoadingSpinner';
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, isLoading, isEmailVerified } = useAuth();
+  const { isLoaded, userId } = useAuth();
   const location = useLocation();
 
-  if (isLoading) {
+  if (!isLoaded) {
     return <LoadingSpinner />;
   }
 
-  if (!isAuthenticated) {
+  if (!userId) {
     // Redirect to login page, but save the location they were trying to go to
     return <Navigate to='/login' state={{ from: location }} replace />;
-  }
-  if (!isEmailVerified) {
-    return <Navigate to='/verify-email' state={{ from: location }} replace />;
   }
   return <>{children}</>;
 };

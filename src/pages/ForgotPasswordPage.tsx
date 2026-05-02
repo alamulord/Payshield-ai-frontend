@@ -1,66 +1,7 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
+import { SignIn } from '@clerk/react';
 
 const ForgotPasswordPage = () => {
-  const [email, setEmail] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { resetPassword } = useAuth();
-
-  // Handle success message from login page
-  useEffect(() => {
-    const state = location.state as { message?: string } | null;
-    if (state?.message) {
-      setSuccessMessage(state.message);
-      // Clear the message from location state to prevent showing it again on refresh
-      window.history.replaceState({}, document.title);
-    }
-  }, [location.state]);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError('');
-    setSuccessMessage('');
-
-    if (!email) {
-      setError('Please enter your email address');
-      return;
-    }
-
-    // Basic email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setError('Please enter a valid email address');
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      // For now, show backend credentials instead of Firebase reset
-      // TODO: Implement backend password reset endpoint
-      if (email === 'admin@payshield.ai' || email === 'analyst@payshield.ai') {
-        setSuccessMessage(
-          `Backend account detected. Default credentials:\n\n${email === 'admin@payshield.ai' ? 'admin@payshield.ai / admin123' : 'analyst@payshield.ai / analyst123'}\n\nPlease use these credentials to login. Password reset via Firebase is not available for backend accounts.`,
-        );
-      } else {
-        setError(
-          'Password reset is currently only available for seeded backend accounts (admin@payshield.ai, analyst@payshield.ai). Please contact support to reset your password.',
-        );
-      }
-      setEmail(''); // Clear the form
-    } catch (error: any) {
-      console.error('Password reset error:', error);
-      setError('Failed to process request. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     <div className='font-display bg-background-light text-[#111318]'>
       <div className='flex min-h-screen w-full'>
@@ -126,70 +67,9 @@ const ForgotPasswordPage = () => {
               </p>
             </div>
 
-            {error && (
-              <div className='bg-red-50 border border-red-200 rounded-lg p-3'>
-                <p className='text-red-600 text-sm'>{error}</p>
-              </div>
-            )}
-
-            {successMessage && (
-              <div className='bg-green-50 border border-green-200 rounded-lg p-4'>
-                <div className='flex items-start gap-3'>
-                  <span
-                    className='material-symbols-outlined text-green-600 mt-0.5'
-                    style={{ fontSize: '20px' }}
-                  >
-                    check_circle
-                  </span>
-                  <div>
-                    <p className='text-green-800 text-sm font-medium mb-1'>
-                      Email Sent Successfully
-                    </p>
-                    <p className='text-green-600 text-sm'>{successMessage}</p>
-                    <p className='text-green-600 text-sm mt-2'>
-                      Didn't receive the email? Check your spam folder or try
-                      again.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {!successMessage && (
-              <form className='flex flex-col space-y-5' onSubmit={handleSubmit}>
-                <div className='flex flex-col space-y-2'>
-                  <label className='text-[#111318] text-sm font-medium leading-normal'>
-                    Work Email
-                  </label>
-                  <input
-                    id='email'
-                    name='email'
-                    type='email'
-                    autoComplete='email'
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className='form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111318] focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#dcdfe5] bg-white focus:border-primary h-12 placeholder:text-[#636f88] px-4 text-base font-normal leading-normal transition-all'
-                    placeholder='name@company.com'
-                    style={{ backgroundColor: 'white' }}
-                  />
-                </div>
-
-                <button
-                  type='submit'
-                  disabled={isLoading}
-                  className='flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary hover:bg-primary/90 text-white text-base font-bold leading-normal tracking-[0.015em] transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed'
-                >
-                  <span
-                    className='material-symbols-outlined mr-2'
-                    style={{ fontSize: '20px' }}
-                  >
-                    {isLoading ? 'hourglass_empty' : 'email'}
-                  </span>
-                  {isLoading ? 'Sending...' : 'Send Reset Email'}
-                </button>
-              </form>
-            )}
+            <div className='flex flex-col space-y-5'>
+              <SignIn signUpUrl='/register' />
+            </div>
 
             <div className='pt-6 text-center'>
               <p className='text-[#636f88]'>
@@ -202,26 +82,6 @@ const ForgotPasswordPage = () => {
                 </Link>
               </p>
             </div>
-
-            {successMessage && (
-              <div className='pt-4 border-t border-gray-100'>
-                <button
-                  onClick={() => {
-                    setSuccessMessage('');
-                    setError('');
-                  }}
-                  className='w-full flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-white border border-[#dcdfe5] hover:bg-gray-50 text-[#111318] text-base font-medium leading-normal tracking-[0.015em] transition-colors'
-                >
-                  <span
-                    className='material-symbols-outlined mr-2'
-                    style={{ fontSize: '20px' }}
-                  >
-                    refresh
-                  </span>
-                  Try Another Email
-                </button>
-              </div>
-            )}
 
             <div className='mt-12 border-t border-gray-100 pt-6 flex flex-col items-center gap-2'>
               <p className='text-xs text-gray-400 flex items-center gap-1'>

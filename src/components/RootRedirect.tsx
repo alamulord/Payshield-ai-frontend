@@ -1,12 +1,12 @@
 // src/components/RootRedirect.tsx
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '@clerk/react';
 import LandingPage from '../pages/LandingPage';
 
 export const RootRedirect = () => {
-  const { isAuthenticated, isLoading, isEmailVerified } = useAuth();
+  const { isLoaded, userId } = useAuth();
 
-  if (isLoading) {
+  if (!isLoaded) {
     return (
       <div className='flex items-center justify-center min-h-screen'>
         Loading...
@@ -14,21 +14,11 @@ export const RootRedirect = () => {
     );
   }
 
-  // If user is authenticated and email is verified, redirect to dashboard
-  if (isAuthenticated && isEmailVerified) {
+  // If user is authenticated, redirect to dashboard
+  if (userId) {
     return <Navigate to='/app/overview' replace />;
   }
 
   // Show landing page for non-authenticated users
-  if (!isAuthenticated) {
-    return <LandingPage />;
-  }
-
-  // If user is authenticated but email is not verified, redirect to verification page
-  if (!isEmailVerified) {
-    return <Navigate to='/verify-email' replace />;
-  }
-
-  // Default fallback (shouldn't reach here)
   return <LandingPage />;
 };
