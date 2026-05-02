@@ -41,34 +41,21 @@ const ForgotPasswordPage = () => {
     setIsLoading(true);
 
     try {
-      await resetPassword(email);
-      setSuccessMessage('Password reset email sent! Please check your inbox and follow the instructions.');
+      // For now, show backend credentials instead of Firebase reset
+      // TODO: Implement backend password reset endpoint
+      if (email === 'admin@payshield.ai' || email === 'analyst@payshield.ai') {
+        setSuccessMessage(
+          `Backend account detected. Default credentials:\n\n${email === 'admin@payshield.ai' ? 'admin@payshield.ai / admin123' : 'analyst@payshield.ai / analyst123'}\n\nPlease use these credentials to login. Password reset via Firebase is not available for backend accounts.`,
+        );
+      } else {
+        setError(
+          'Password reset is currently only available for seeded backend accounts (admin@payshield.ai, analyst@payshield.ai). Please contact support to reset your password.',
+        );
+      }
       setEmail(''); // Clear the form
     } catch (error: any) {
       console.error('Password reset error:', error);
-      let errorMessage = 'Failed to send password reset email. Please try again.';
-
-      // Handle specific Firebase auth errors
-      switch (error.code) {
-        case 'auth/user-not-found':
-          errorMessage = 'No account found with this email address.';
-          break;
-        case 'auth/invalid-email':
-          errorMessage = 'Invalid email address format.';
-          break;
-        case 'auth/network-request-failed':
-          errorMessage = 'Network error. Please check your internet connection.';
-          break;
-        case 'auth/too-many-requests':
-          errorMessage = 'Too many requests. Please try again later.';
-          break;
-        default:
-          if (error.message) {
-            errorMessage = error.message;
-          }
-      }
-
-      setError(errorMessage);
+      setError('Failed to process request. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -106,7 +93,8 @@ const ForgotPasswordPage = () => {
                     Reset Your Password
                   </h2>
                   <p className='text-blue-100 text-lg md:text-xl opacity-90'>
-                    We'll send you a secure link to reset your password and regain access to your PayShield AI dashboard.
+                    We'll send you a secure link to reset your password and
+                    regain access to your PayShield AI dashboard.
                   </p>
                 </div>
               </div>
@@ -127,7 +115,7 @@ const ForgotPasswordPage = () => {
               PayShield AI
             </span>
           </div>
-          
+
           <div className='w-full max-w-[440px] flex flex-col space-y-8'>
             <div className='text-center lg:text-left space-y-2'>
               <h1 className='text-[#111318] tracking-tight text-[32px] font-bold leading-tight'>
@@ -157,11 +145,10 @@ const ForgotPasswordPage = () => {
                     <p className='text-green-800 text-sm font-medium mb-1'>
                       Email Sent Successfully
                     </p>
-                    <p className='text-green-600 text-sm'>
-                      {successMessage}
-                    </p>
+                    <p className='text-green-600 text-sm'>{successMessage}</p>
                     <p className='text-green-600 text-sm mt-2'>
-                      Didn't receive the email? Check your spam folder or try again.
+                      Didn't receive the email? Check your spam folder or try
+                      again.
                     </p>
                   </div>
                 </div>
