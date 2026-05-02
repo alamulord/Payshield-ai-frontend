@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import { User } from 'firebase/auth';
+import { useAuth } from '@clerk/react';
 
 interface NavigationItem {
   name: string;
@@ -30,7 +29,7 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
-  const { currentUser } = useAuth();
+  const { user } = useAuth();
   const location = useLocation();
 
   return (
@@ -105,16 +104,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       <div className='mt-auto border-t border-slate-800/50 p-4'>
         <div className='flex items-center gap-3 rounded-lg p-2 hover:bg-slate-800/50'>
           <div className='flex size-10 items-center justify-center rounded-full bg-slate-700 text-sm font-medium text-white'>
-            {currentUser?.displayName?.[0] ||
-              currentUser?.email?.[0]?.toUpperCase() ||
+            {user?.firstName?.[0] ||
+              user?.emailAddresses?.[0]?.emailAddress?.[0]?.toUpperCase() ||
               'U'}
           </div>
           <div className='flex-1 min-w-0'>
             <p className='truncate text-sm font-medium text-white'>
-              {currentUser?.displayName || currentUser?.email || 'User'}
+              {user?.fullName ||
+                user?.emailAddresses?.[0]?.emailAddress ||
+                'User'}
             </p>
             <p className='truncate text-xs text-slate-400'>
-              {currentUser?.email || 'No email'}
+              {user?.emailAddresses?.[0]?.emailAddress || 'No email'}
             </p>
           </div>
         </div>

@@ -1,19 +1,19 @@
 // src/pages/ProfilePage.tsx
 import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '@clerk/react';
 import { Avatar } from '../components/common/Avatar';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 
 const ProfilePage: React.FC = () => {
-  const { currentUser, logout, isEmailVerified } = useAuth() || {};
+  const { isLoaded, user, signOut, isSignedIn } = useAuth() || {};
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
       setIsLoggingOut(true);
-      await logout?.();
+      await signOut?.();
       navigate('/login');
     } catch (error) {
       console.error('Failed to log out:', error);
@@ -23,7 +23,7 @@ const ProfilePage: React.FC = () => {
     }
   };
 
-  if (!currentUser) {
+  if (!isLoaded || !isSignedIn || !user) {
     return (
       <div className='flex-1 flex items-center justify-center'>
         <div className='text-center'>
@@ -42,15 +42,15 @@ const ProfilePage: React.FC = () => {
   }
 
   const userInitial =
-    currentUser.displayName?.charAt(0).toUpperCase() ||
-    currentUser.email?.charAt(0).toUpperCase() ||
+    user.firstName?.charAt(0).toUpperCase() ||
+    user.lastName?.charAt(0).toUpperCase() ||
+    user.emailAddresses?.[0]?.emailAddress?.charAt(0).toUpperCase() ||
     'U';
   const userName =
-    currentUser.displayName || currentUser.email?.split('@')[0] || 'User';
-  const userEmail = currentUser.email || 'No email provided';
-  const userSince = currentUser.metadata?.creationTime
-    ? new Date(currentUser.metadata.creationTime).toLocaleDateString()
-    : 'N/A';
+    user.fullName ||
+    user.emailAddresses?.[0]?.emailAddress?.split('@')[0] ||
+    'User';
+  const userEmail = user.emailAddresses?.[0]?.emailAddress || 'No email provided';
 
   return (
     <div className='flex-1 overflow-y-auto p-4 md:p-6 scroll-smooth'>
@@ -106,26 +106,9 @@ const ProfilePage: React.FC = () => {
                         Email Status
                       </dt>
                       <dd className='text-sm text-gray-900 dark:text-white'>
-                        {isEmailVerified ? (
-                          <span className='inline-flex items-center text-green-600 dark:text-green-400'>
-                            <svg
-                              className='w-4 h-4 mr-1'
-                              fill='currentColor'
-                              viewBox='0 0 20 20'
-                            >
-                              <path
-                                fillRule='evenodd'
-                                d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z'
-                                clipRule='evenodd'
-                              />
-                            </svg>
-                            Verified
-                          </span>
-                        ) : (
-                          <span className='text-yellow-600 dark:text-yellow-400'>
-                            Not Verified
-                          </span>
-                        )}
+                        <span className='text-yellow-600 dark:text-yellow-400'>
+                          Clerk handles verification
+                        </span>
                       </dd>
                     </div>
                     <div className='flex justify-between pb-2 border-b border-gray-200 dark:border-gray-600'>
@@ -133,7 +116,7 @@ const ProfilePage: React.FC = () => {
                         Account Created
                       </dt>
                       <dd className='text-sm text-gray-900 dark:text-white'>
-                        {userSince}
+                        Clerk handles user data
                       </dd>
                     </div>
                     <div className='flex justify-between'>
@@ -141,10 +124,7 @@ const ProfilePage: React.FC = () => {
                         Provider
                       </dt>
                       <dd className='text-sm text-gray-900 dark:text-white'>
-                        {currentUser.providerData?.[0]?.providerId.replace(
-                          '.com',
-                          ''
-                        ) || 'Email/Password'}
+                        Clerk Authentication
                       </dd>
                     </div>
                   </dl>

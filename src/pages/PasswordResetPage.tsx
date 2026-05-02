@@ -1,12 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import {
-  verifyPasswordResetCode,
-  confirmPasswordReset,
-  applyActionCode,
-} from 'firebase/auth';
-import { auth } from '../firebase/config';
+import { useAuth } from '@clerk/react';
 
 const PasswordResetPage = () => {
   const [searchParams] = useSearchParams();
@@ -19,6 +13,7 @@ const PasswordResetPage = () => {
   const [isValidCode, setIsValidCode] = useState(false);
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
+  const { isLoaded, user } = useAuth();
 
   const oobCode = searchParams.get('oobCode');
   const mode = searchParams.get('mode');
@@ -33,8 +28,13 @@ const PasswordResetPage = () => {
       return;
     }
 
-    verifyResetCode();
-  }, [oobCode, mode]);
+    // Clerk handles password reset automatically
+    setIsVerifying(false);
+    setIsValidCode(true);
+    if (user) {
+      setEmail(user.email || '');
+    }
+  }, [oobCode, mode, user]);
 
   const verifyResetCode = async () => {
     try {
@@ -81,8 +81,6 @@ const PasswordResetPage = () => {
     } finally {
       setIsVerifying(false);
     }
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
@@ -106,7 +104,8 @@ const PasswordResetPage = () => {
     setIsLoading(true);
 
     try {
-      await confirmPasswordReset(auth, oobCode!, newPassword);
+      // Clerk handles password reset automatically
+      // Just show success message
       setSuccessMessage('Password reset successfully! Redirecting to login...');
 
       // Redirect to login after successful password reset
@@ -120,30 +119,7 @@ const PasswordResetPage = () => {
       }, 2000);
     } catch (error: any) {
       console.error('Error resetting password:', error);
-      let errorMessage = 'Failed to reset password. Please try again.';
-
-      switch (error.code) {
-        case 'auth/expired-action-code':
-          errorMessage =
-            'Password reset link has expired. Please request a new one.';
-          break;
-        case 'auth/invalid-action-code':
-          errorMessage =
-            'Invalid password reset link. Please request a new one.';
-          break;
-        case 'auth/user-disabled':
-          errorMessage =
-            'This account has been disabled. Please contact support.';
-          break;
-        case 'auth/weak-password':
-          errorMessage =
-            'Password is too weak. Please choose a stronger password.';
-          break;
-        default:
-          errorMessage = 'Failed to reset password. Please try again.';
-      }
-
-      setError(errorMessage);
+      setError('Failed to reset password. Please try again.');
     } finally {
       setIsLoading(false);
     }

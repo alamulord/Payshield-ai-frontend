@@ -1,16 +1,6 @@
-// // import React, { useState, useRef, useEffect } from 'react';
-// // import { useNavigate, useLocation } from 'react-router-dom';
-// // import { useAuth } from '../../context/AuthContext';
-// // import { Avatar } from '../common/Avatar';
-// // import { useClickOutside } from '../../hooks/useClickOutside';
 
-// // declare global {
-// //   namespace JSX {
-// //     interface IntrinsicElements {
-// //       [elemName: string]: any;
-// //     }
-// //   }
-// // }
+
+
 
 // // interface Notification {
 // //   id: number;
@@ -526,10 +516,7 @@
 // //     </div>
 // //   );
 // // };
-// // src/components/layout/TopBar.tsx
-// import React, { useState } from 'react';
-// import { Link } from 'react-router-dom';
-// import { useAuth } from '../../context/AuthContext';
+// 
 
 // interface TopBarProps {
 //   onMenuClick: () => void;
@@ -634,15 +621,14 @@
 //               </button>
 //             </div>
 //           )}
-// src/components/layout/TopBar.tsx
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '@clerk/react';
 
 // Hook to handle clicks outside of an element
 const useClickOutside = (
   ref: React.RefObject<HTMLElement>,
-  callback: () => void
+  callback: () => void,
 ) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

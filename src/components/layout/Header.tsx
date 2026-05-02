@@ -1,14 +1,15 @@
 // src/components/layout/Header.tsx
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '@clerk/react';
 import { Button } from '../common/Button';
 import '../../styles/global.css';
 
 export const Header = () => {
   const navigate = useNavigate();
 
-  const { isAuthenticated, isEmailVerified, logout } = useAuth();
+  const { isLoaded, userId, signOut } = useAuth();
+  const isAuthenticated = isLoaded && !!userId;
 
   return (
     <header className='sticky top-0 z-50 border-b border-gray-200 dark:border-border-dark bg-white/80 dark:bg-background-dark/80 backdrop-blur-md'>
@@ -56,16 +57,14 @@ export const Header = () => {
         <nav className='flex items-center space-x-6'>
           {isAuthenticated ? (
             <>
-              {isEmailVerified && (
-                <Link
-                  to='/app/overview'
-                  className='text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium'
-                >
-                  Dashboard
-                </Link>
-              )}
+              <Link
+                to='/app/overview'
+                className='text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium'
+              >
+                Dashboard
+              </Link>
               <button
-                onClick={logout}
+                onClick={() => signOut()}
                 className='text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium'
               >
                 Logout
@@ -79,11 +78,11 @@ export const Header = () => {
               >
                 Log in
               </Link>
-              <Link
-                to='/register'
-                className=''
-              >
-                <Button className='bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700'> Sign up</Button>
+              <Link to='/register' className=''>
+                <Button className='bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700'>
+                  {' '}
+                  Sign up
+                </Button>
               </Link>
             </>
           )}

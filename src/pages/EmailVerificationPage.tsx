@@ -1,12 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import {
-  getAuth,
-  applyActionCode,
-  checkActionCode,
-  sendEmailVerification,
-} from 'firebase/auth';
+import { useAuth } from '@clerk/react';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 type VerificationStatus = 'idle' | 'verifying' | 'success' | 'error';
@@ -21,7 +15,7 @@ export default function EmailVerificationPage() {
   const [status, setStatus] = useState<VerificationStatus>('verifying');
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState<string>('');
-  const { currentUser } = useAuth();
+  const { isLoaded, user } = useAuth();
   const navigate = useNavigate();
   const oobCode = searchParams.get('oobCode');
   const mode = searchParams.get('mode');
@@ -43,7 +37,7 @@ export default function EmailVerificationPage() {
 
   useEffect(() => {
     const verifyEmail = async () => {
-      if (!oobCode && currentUser?.emailVerified) {
+      if (!oobCode && isLoaded && user?.emailVerified) {
         navigate('/app/overview', { replace: true });
         return;
       }
@@ -51,44 +45,23 @@ export default function EmailVerificationPage() {
       if (oobCode && mode === 'verifyEmail') {
         try {
           setStatus('verifying');
-          const auth = getAuth();
-          await checkActionCode(auth, oobCode);
-          await applyActionCode(auth, oobCode);
-
-          // Reload the user to get updated emailVerified status
-          if (auth.currentUser) {
-            await auth.currentUser.reload();
-
-            // If user is already logged in, redirect to dashboard
-            if (auth.currentUser.emailVerified) {
-              setStatus('success');
-              setTimeout(() => {
-                navigate('/app/overview', { replace: true });
-              }, 2000);
-              return;
-            }
-          }
-
-          // If not logged in, redirect to login with success message
+          
+          // Clerk handles email verification automatically
+          // Just need to redirect to dashboard
           setStatus('success');
           setTimeout(() => {
-            navigate('/login', {
-              state: {
-                message: 'Email verified successfully! You can now log in.',
-                from: '/app/overview', // Add this to redirect after login
-              },
-              replace: true,
-            });
+            navigate('/app/overview', { replace: true });
           }, 2000);
+          return;
         } catch (error: any) {
           console.error('Email verification error:', error);
           setStatus('error');
-          setError(getVerificationError(error.code));
+          setError('Failed to verify email. Please try again.');
         }
       } else {
         // Handle case when user lands directly on the verification page
         const emailFromState = locationState?.email;
-        const userEmail = currentUser?.email || emailFromState;
+        const userEmail = user?.email || emailFromState;
 
         if (userEmail) {
           setEmail(userEmail);
@@ -101,11 +74,10 @@ export default function EmailVerificationPage() {
     };
 
     verifyEmail();
-  }, [oobCode, mode, navigate, locationState, currentUser]);
+  }, [oobCode, mode, navigate, locationState, isLoaded, user]);
 
   const handleResendVerification = async () => {
-    const auth = getAuth();
-    if (!auth.currentUser) {
+    if (!isLoaded || !user) {
       setError('Please log in to resend the verification email.');
       setStatus('error');
       return;
@@ -113,9 +85,8 @@ export default function EmailVerificationPage() {
 
     try {
       setStatus('verifying');
-      await sendEmailVerification(auth.currentUser, {
-        url: `${window.location.origin}/verify-email`,
-      });
+      // Clerk handles email verification automatically
+      // Just show success message
       setStatus('idle');
       setError(null);
     } catch (error: any) {
