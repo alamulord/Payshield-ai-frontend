@@ -1,19 +1,19 @@
 // src/pages/ProfilePage.tsx
 import React, { useState } from 'react';
-import { useAuth } from '@clerk/react';
-import { Avatar } from '../components/common/Avatar';
+import { useAuth, useUser } from '@clerk/react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 
 const ProfilePage: React.FC = () => {
-  const { isLoaded, user, signOut, isSignedIn } = useAuth() || {};
+  const { isLoaded, signOut } = useAuth();
+  const { user, isLoaded: isUserLoaded } = useUser();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
       setIsLoggingOut(true);
-      await signOut?.();
+      await signOut();
       navigate('/login');
     } catch (error) {
       console.error('Failed to log out:', error);
@@ -23,7 +23,7 @@ const ProfilePage: React.FC = () => {
     }
   };
 
-  if (!isLoaded || !isSignedIn || !user) {
+  if (!isLoaded || !isUserLoaded || !user) {
     return (
       <div className='flex-1 flex items-center justify-center'>
         <div className='text-center'>
@@ -51,6 +51,7 @@ const ProfilePage: React.FC = () => {
     user.emailAddresses?.[0]?.emailAddress?.split('@')[0] ||
     'User';
   const userEmail = user.emailAddresses?.[0]?.emailAddress || 'No email provided';
+  const isEmailVerified = user.emailAddresses?.[0]?.verification?.status === 'verified';
 
   return (
     <div className='flex-1 overflow-y-auto p-4 md:p-6 scroll-smooth'>
@@ -106,9 +107,15 @@ const ProfilePage: React.FC = () => {
                         Email Status
                       </dt>
                       <dd className='text-sm text-gray-900 dark:text-white'>
-                        <span className='text-yellow-600 dark:text-yellow-400'>
-                          Clerk handles verification
-                        </span>
+                        {isEmailVerified ? (
+                          <span className='text-green-600 dark:text-green-400'>
+                            Verified
+                          </span>
+                        ) : (
+                          <span className='text-yellow-600 dark:text-yellow-400'>
+                            Pending Verification
+                          </span>
+                        )}
                       </dd>
                     </div>
                     <div className='flex justify-between pb-2 border-b border-gray-200 dark:border-gray-600'>
@@ -116,7 +123,7 @@ const ProfilePage: React.FC = () => {
                         Account Created
                       </dt>
                       <dd className='text-sm text-gray-900 dark:text-white'>
-                        Clerk handles user data
+                        {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
                       </dd>
                     </div>
                     <div className='flex justify-between'>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { useAuth } from '@clerk/react';
+import { useUser } from '@clerk/react';
 
 interface NavigationItem {
   name: string;
@@ -29,7 +29,7 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
-  const { user } = useAuth();
+  const { user } = useUser();
   const location = useLocation();
 
   return (

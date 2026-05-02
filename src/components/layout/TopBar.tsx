@@ -623,7 +623,7 @@
 //           )}
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '@clerk/react';
+import { useAuth, useUser } from '@clerk/react';
 
 // Hook to handle clicks outside of an element
 const useClickOutside = (
@@ -657,7 +657,8 @@ export const TopBar: React.FC<TopBarProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const { currentUser, logout } = useAuth() || {};
+  const { signOut } = useAuth();
+  const { user } = useUser();
   const navigate = useNavigate();
   const profileRef = useRef<HTMLDivElement>(null);
 
@@ -668,7 +669,7 @@ export const TopBar: React.FC<TopBarProps> = ({
 
   const handleLogout = async () => {
     try {
-      await logout?.();
+      await signOut();
       navigate('/login');
     } catch (error) {
       console.error('Failed to log out', error);
@@ -735,12 +736,12 @@ export const TopBar: React.FC<TopBarProps> = ({
             aria-haspopup='true'
           >
             <div className='flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 font-medium text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'>
-              {currentUser?.displayName
-                ? currentUser.displayName.charAt(0).toUpperCase()
+              {user?.firstName
+                ? user.firstName.charAt(0).toUpperCase()
                 : 'U'}
             </div>
             <span className='hidden text-sm font-medium text-slate-700 dark:text-slate-200 md:inline'>
-              {currentUser?.displayName || 'User'}
+              {user?.fullName || 'User'}
             </span>
             <span className='material-symbols-outlined text-slate-400'>
               {isProfileOpen ? 'expand_less' : 'expand_more'}
@@ -766,7 +767,7 @@ export const TopBar: React.FC<TopBarProps> = ({
               </Link>
               <button
                 onClick={() => {
-                  logout?.();
+                  signOut();
                   setIsProfileOpen(false);
                 }}
                 className='block w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20'

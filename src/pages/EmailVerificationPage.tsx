@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@clerk/react';
+import { useAuth, useUser } from '@clerk/react';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 type VerificationStatus = 'idle' | 'verifying' | 'success' | 'error';
@@ -15,7 +15,8 @@ export default function EmailVerificationPage() {
   const [status, setStatus] = useState<VerificationStatus>('verifying');
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState<string>('');
-  const { isLoaded, user } = useAuth();
+  const { isLoaded } = useAuth();
+  const { user } = useUser();
   const navigate = useNavigate();
   const oobCode = searchParams.get('oobCode');
   const mode = searchParams.get('mode');
@@ -37,7 +38,7 @@ export default function EmailVerificationPage() {
 
   useEffect(() => {
     const verifyEmail = async () => {
-      if (!oobCode && isLoaded && user?.emailVerified) {
+      if (!oobCode && isLoaded && user?.primaryEmailAddress?.verification?.status === 'verified') {
         navigate('/app/overview', { replace: true });
         return;
       }
@@ -61,7 +62,7 @@ export default function EmailVerificationPage() {
       } else {
         // Handle case when user lands directly on the verification page
         const emailFromState = locationState?.email;
-        const userEmail = user?.email || emailFromState;
+        const userEmail = user?.primaryEmailAddress?.emailAddress || emailFromState;
 
         if (userEmail) {
           setEmail(userEmail);

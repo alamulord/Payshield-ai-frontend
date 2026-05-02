@@ -13,11 +13,10 @@ const PasswordResetPage = () => {
   const [isValidCode, setIsValidCode] = useState(false);
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
-  const { isLoaded, user } = useAuth();
+  const { isLoaded, userId } = useAuth();
 
   const oobCode = searchParams.get('oobCode');
   const mode = searchParams.get('mode');
-  const continueUrl = searchParams.get('continueUrl');
 
   useEffect(() => {
     if (!oobCode || !mode) {
@@ -31,56 +30,8 @@ const PasswordResetPage = () => {
     // Clerk handles password reset automatically
     setIsVerifying(false);
     setIsValidCode(true);
-    if (user) {
-      setEmail(user.email || '');
-    }
-  }, [oobCode, mode, user]);
+  }, [oobCode, mode]);
 
-  const verifyResetCode = async () => {
-    try {
-      if (mode === 'resetPassword' && oobCode) {
-        const email = await verifyPasswordResetCode(auth, oobCode);
-        setEmail(email);
-        setIsValidCode(true);
-      } else if (mode === 'verifyEmail' && oobCode) {
-        // Handle email verification if needed
-        await applyActionCode(auth, oobCode);
-        setSuccessMessage('Email verified successfully! You can now log in.');
-        setTimeout(() => {
-          navigate('/login', {
-            state: { message: 'Email verified successfully! Please log in.' },
-          });
-        }, 2000);
-      }
-    } catch (error: any) {
-      console.error('Error verifying reset code:', error);
-      let errorMessage =
-        'Invalid or expired reset link. Please request a new password reset.';
-
-      switch (error.code) {
-        case 'auth/expired-action-code':
-          errorMessage =
-            'Password reset link has expired. Please request a new one.';
-          break;
-        case 'auth/invalid-action-code':
-          errorMessage =
-            'Invalid password reset link. Please request a new one.';
-          break;
-        case 'auth/user-disabled':
-          errorMessage =
-            'This account has been disabled. Please contact support.';
-          break;
-        case 'auth/user-not-found':
-          errorMessage = 'User not found. Please check your email or sign up.';
-          break;
-        default:
-          errorMessage = 'Failed to verify reset link. Please try again.';
-      }
-
-      setError(errorMessage);
-    } finally {
-      setIsVerifying(false);
-    }
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
