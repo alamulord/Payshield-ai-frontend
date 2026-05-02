@@ -343,27 +343,7 @@ const LoginPage = () => {
 
     setIsLoading(true);
 
-    // ── Try backend JWT login first ──
-    try {
-      const tokenResponse = await payshieldApi.login({ email, password });
-      // Store JWT token for subsequent API calls
-      localStorage.setItem('token', tokenResponse.access_token);
-      localStorage.setItem('user', JSON.stringify(tokenResponse.user));
-      setSuccessMessage('Login successful!');
-      navigate(from, { replace: true });
-      return;
-    } catch (backendErr: any) {
-      console.log('Backend login failed, trying Firebase:', backendErr?.response?.status);
-      // If backend returns 401/403, show error directly
-      if (backendErr?.response?.status === 401 || backendErr?.response?.status === 403) {
-        setError(backendErr?.response?.data?.detail || 'Invalid email or password.');
-        setIsLoading(false);
-        return;
-      }
-      // Otherwise fall through to Firebase auth
-    }
-
-    // ── Firebase auth fallback ──
+    // ── Use Firebase auth directly (backend is unavailable) ──
     try {
       const userCredential = await login(email, password);
       const user = userCredential.user;
@@ -393,13 +373,15 @@ const LoginPage = () => {
             errorMessage = 'Invalid email or password.';
             break;
           case 'auth/too-many-requests':
-            errorMessage = 'Too many failed login attempts. Please try again later.';
+            errorMessage =
+              'Too many failed login attempts. Please try again later.';
             break;
           case 'auth/user-disabled':
             errorMessage = 'This account has been disabled.';
             break;
           case 'auth/network-request-failed':
-            errorMessage = 'Network error. Please check your internet connection.';
+            errorMessage =
+              'Network error. Please check your internet connection.';
             break;
         }
       }
